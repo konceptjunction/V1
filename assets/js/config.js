@@ -8,9 +8,9 @@ window.KJ_CONFIG = {
   APP_NAME: "KONCEPT JUNCTION",
   TAGLINE: "State Level Competitive Exams",
   TAGLINE_TE: "రాష్ట్ర స్థాయి పోటీ పరీక్షలు",
-  NOTES_BRAND: "Notes by KJ Team",
-  CONCEPTS_BRAND: "Quick Revision Concepts by KJ Team ",
-  VERSION: "V8",
+  NOTES_BRAND: "Notes by BALAJI SIR",
+  CONCEPTS_BRAND: "Quick Revision Concepts by BALAJI SIR",
+  VERSION: "V9",
   BUILD_DATE: "2026-10-23",
 
   CONTACT_EMAIL: "YOUR_NEW_MAIL@gmail.com",          // <<< CHANGE (new Gmail)
@@ -47,7 +47,7 @@ window.KJ_CONFIG = {
 
   /* V4: Google Sheet student register (Apps Script web app – see tools/google_apps_script_students.gs) */
   SHEET: {
-    webapp_url: "https://script.google.com/macros/s/AKfycbz9Rubi5nKwekNyETGU-C1fhlWcrBDxpAiksehQf_FgI36NniqE_rXiKE5_2s647DOkPw/exec"        // <<< CHANGE  (https://script.google.com/macros/s/…/exec)
+    webapp_url: "YOUR_APPS_SCRIPT_WEB_APP_URL"        // <<< CHANGE  (https://script.google.com/macros/s/…/exec)
   },
 
   DEFAULT_LANG: "bi",          // "en" | "te" | "bi" (bilingual English + Telugu)

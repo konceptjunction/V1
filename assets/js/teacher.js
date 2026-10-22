@@ -345,24 +345,25 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
   const CSV_HEAD = ["subject", "topic", "exams", "year", "level", "q_en", "q_te", "o1_en", "o2_en", "o3_en", "o4_en", "o1_te", "o2_te", "o3_te", "o4_te", "ans", "exp_en", "exp_te", "video", "img"];
 
   P.import = (el) => {
+    /* V9: left = paper (PDF / file / text) · right = subject & Topic Test details */
     el.innerHTML = `<div class="two">
 <div class="card"><h3 style="margin-top:0">📄 Question paper – PDF or pasted text</h3>
 <div class="row"><label class="btn acc sm" style="margin:0">📄 Read PDF question paper<input type="file" id="pdfin" accept="application/pdf,.pdf" hidden></label>
-<span class="small" id="pdfst"></span></div>
+<button class="btn alt sm" id="tpl">⬇ CSV template</button>
+<label class="btn acc sm" style="margin:0" title="Topic Test file (.json) adds the questions and creates the test in one step">📂 CSV / JSON / Topic Test file<input type="file" id="cf" accept=".csv,.json" hidden></label></div>
+<div class="small" id="pdfst" style="margin-top:6px"></div><div id="cres" class="small" style="margin-top:4px"></div>
 <p class="small muted">The PDF is read into the box below (Telugu pages are read with OCR, about 10–30 s per page – use a laptop). <b>Check the text</b>, type the <b>answer key</b>, then Preview → Import. Diagrams are not read – add them later in ➕ Add / Edit. You can also paste text from a Word file here.</p>
-<textarea id="pt" style="min-height:220px" placeholder="1. Ginger and turmeric propagate naturally through:&#10;అల్లం మరియు పసుపు …?&#10;A) Tubers / దుంపలు&#10;B) Rhizomes / భూగర్భ కాండాలు&#10;C) Bulbs / కాండాలు&#10;D) Runners / నేలపై పాకే కాండాలు">${esc(S.get("t_import_text", ""))}</textarea>
+<textarea id="pt" style="min-height:260px" placeholder="1. Ginger and turmeric propagate naturally through:&#10;అల్లం మరియు పసుపు …?&#10;A) Tubers / దుంపలు&#10;B) Rhizomes / భూగర్భ కాండాలు&#10;C) Bulbs / కాండాలు&#10;D) Runners / నేలపై పాకే కాండాలు">${esc(S.get("t_import_text", ""))}</textarea>
 <label>Answer key (e.g. 1-B 2-C 3-D 4-B)</label><input id="pk">
-<div class="row"><div style="flex:2"><label>Subject</label><select id="ps">${SUBS.map((s) => `<option value="${s.id}">${esc(s.name.en)}</option>`).join("")}</select></div>
-<div style="flex:2"><label>Topic</label><input id="pto"></div></div>
-<label>Exams</label><div id="pe">${EXAMS.map((x) => `<label class="chk"><input type="checkbox" value="${x.id}">${esc(x.name.en)}</label>`).join("")}</div>
-<div class="row"><label class="chk"><input type="checkbox" id="mkp"> Also create a Topic Test – Set</label><label class="chk"><input type="checkbox" id="pvis" checked> Visible to students</label><input id="pset" value="A" style="width:60px"><input id="ptitle" placeholder="Test title" style="flex:1"></div>
 <div class="row" style="margin-top:10px"><button class="btn alt sm" id="pp">Preview</button><span class="sp"></span><button class="btn ok" id="pi">Import</button></div>
 <div id="pres"></div></div>
-<div class="card"><h3 style="margin-top:0">📊 CSV / JSON / Topic Test file</h3>
-<p class="small"><b>Topic Test file</b> (from BALAJI SIR's prepared papers, e.g. <code>KJ_General_Science_Set_S_topic_test.json</code>): choose it below – questions are added <b>and</b> the Topic Test is created in one step.</p>
-<p class="small muted">CSV columns: <code>${CSV_HEAD.join(", ")}</code>. <b>exams</b> separated by <code>;</code>, <b>ans</b> = A/B/C/D (blank for conventional).</p>
-<div class="row"><button class="btn alt sm" id="tpl">⬇ CSV template</button><label class="btn acc sm" style="margin:0">Choose CSV / JSON / Topic Test file<input type="file" id="cf" accept=".csv,.json" hidden></label></div>
-<div id="cres" class="small" style="margin-top:10px"></div></div></div>`;
+<div class="card" style="align-self:start"><h3 style="margin-top:0">🎯 Subject & Topic Test</h3>
+<div class="row"><div style="flex:2;min-width:180px"><label>Subject</label><select id="ps">${SUBS.map((s) => `<option value="${s.id}">${esc(s.name.en)}</option>`).join("")}</select></div>
+<div style="flex:2;min-width:180px"><label>Topic</label><input id="pto"></div></div>
+<label>Exams</label><div id="pe">${EXAMS.map((x) => `<label class="chk"><input type="checkbox" value="${x.id}">${esc(x.name.en)}</label>`).join("")}</div>
+<div class="row" style="margin-top:10px"><label class="chk"><input type="checkbox" id="mkp"> Also create a Topic Test – Set</label><label class="chk"><input type="checkbox" id="pvis" checked> Visible to students</label></div>
+<div class="row"><div style="width:80px"><label>Set</label><input id="pset" value="A"></div><div style="flex:1"><label>Test title</label><input id="ptitle" placeholder="Test title"></div></div>
+</div></div>`;
     const prev = () => {
       const r = KJ.parsePaperText($("#pt").value, $("#pk").value);
       const noKey = r.filter((x) => x.a == null).length, bad4 = r.filter((x) => x.o.en.length !== 4);
