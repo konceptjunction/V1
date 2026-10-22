@@ -9,7 +9,7 @@ window.KJ_CONFIG = {
   TAGLINE: "State Level Competitive Exams",
   TAGLINE_TE: "రాష్ట్ర స్థాయి పోటీ పరీక్షలు",
   NOTES_BRAND: "Notes by BALAJI SIR",
-  CONCEPTS_BRAND: "Quick Revision Concepts by BALAJI SIR",
+  CONCEPTS_BRAND: "Quick Revision Concepts by KJ Team ",
   VERSION: "V8",
   BUILD_DATE: "2026-10-23",
 
