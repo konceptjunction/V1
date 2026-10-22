@@ -118,5 +118,815 @@
   },
   "img": "",
   "video": ""
+ },
+ {
+  "id": "geo-0004",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Question: Match List-1 with List-I1.\nList-1 (Coast)\na) Coromandel Coast\nb) Konkan Coast\nChoose the correct answer:",
+   "te": "ప్రశ్న: జాబితా-1ను జాబితా-1తో జతపరచండి.\nజాబితా-1 (తీరం)        [15-11 (State) / జాబితా-11 (రాష్ట్రం)\nకోరమాండల్ తీరం      i) Maharashtra / మహారాష్ట్ర\nకొంకణ్ తీరం                  ii) Kerala / కేరళ\n౦) Malabar Coast / మలబార్ తీరం               iii) Tamil Nadu / తమిళనాడు\nసరైన సమాధానాన్ని ఎంచుకోండి:"
+  },
+  "o": {
+   "en": [
+    "a-iii, 0-1 c-ii",
+    "2-1, 0-౪, c-iii",
+    "1-1, 0-11, 61",
+    "a-iii, b-ii, ౮1"
+   ],
+   "te": [
+    "a-iii, 0-1 c-ii",
+    "2-1, 0-౪, c-iii",
+    "1-1, 0-11, 61",
+    "a-iii, b-ii, ౮1"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0005",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following rivers crosses the Tropic of Cancer twice?",
+   "te": "కర్కట రేఖను రెండుసార్లు దాటే నది ఏది?"
+  },
+  "o": {
+   "en": [
+    "Narmada",
+    "Mahi",
+    "Sabarmati",
+    "Tapi"
+   ],
+   "te": [
+    "నర్మదా",
+    "మాహి",
+    "సబర్మతి",
+    "తాపీ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0006",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which river has carved the famous Gandikota Gorge in Andhra Pradesh?",
+   "te": "ఆంధ్రపందేశ్‌లోని ప్రసిద్ధ గండికోట గార్‌జ్‌ను ఏర్పరిచిన నది ఏది?"
+  },
+  "o": {
+   "en": [
+    "Cauvery",
+    "Manjira",
+    "Penna",
+    "Tungabhadra"
+   ],
+   "te": [
+    "కావేరి",
+    "మంజీరా",
+    "పెన్నా",
+    "తుంగభదం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0007",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which expression correctly represents Indian Standard Time?",
+   "te": "భారత ప్రామాణిక కాలాన్ని సరిగ్గా సూచించే సమీకరణం ఏది?"
+  },
+  "o": {
+   "en": [
+    "GMT + 4 hours 30 minutes",
+    "GMT — 5 hours 30 minutes",
+    "GMT — 4 hours 30 minutes",
+    "GMT + 5 hours 30 minutes"
+   ],
+   "te": [
+    "GMT + 4 hours 30 minutes",
+    "GMT — 5 hours 30 minutes",
+    "GMT — 4 hours 30 minutes",
+    "GMT + 5 hours 30 minutes"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0008",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Arasavalli Sun Temple is located in which district?",
+   "te": "అరసవల్లి సూర్య దేవాలయం ఏ జిల్లాలో ఉంది?"
+  },
+  "o": {
+   "en": [
+    "Vizianagaram",
+    "Srikakulam",
+    "Kakinada",
+    "Visakhapatnam"
+   ],
+   "te": [
+    "విజయనగరం",
+    "శ్రీకాకుళం",
+    "కాకినాడ",
+    "విశాఖపట్నం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0009",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which branch of zoology deals with the scientific study of birds, including their\nclassification and behaviour?",
+   "te": "పక్షుల వర్గీకరణ మరియు ప్రవర్తనతో సహా వాటి శాస్త్రీయ అధ్యయనానికి సంబంధించిన జంతుశాస్త్ర శాఖ\nఏది?"
+  },
+  "o": {
+   "en": [
+    "Entomology",
+    "Ornithology",
+    "Ichthyology",
+    "Herpetology"
+   ],
+   "te": [
+    "ఏంటోమోలోజి",
+    "ఆర్నిథాలజీ",
+    "ఇచ్చోలజీ",
+    "హెర్పెటోలోజి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0010",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Match the following revolutions with their associated products.\nList-1: Revolution\na) Green Revolution\nb) Blue Revolution\nd) Grey Revolution\nOptions",
+   "te": "క్రింది విప్లవాలను వాటికి సంబంధించిన ఉత్పత్తులతో జతపరచండి.\nవిప్లవం          115౯11: Associated product / సంబంధిత ఉత్పత్తి\nహరిత విప్లవం |) Fish production / చేపల ఉత్పత్తి\nనీలి విప్లవం        ii) Fertilizer production / ఎరువుల ఉత్పత్తి\n౦) Yellow Revolution / పసుపు విప్లవం 11) Oilseed production / నూనెగింజల ఉత్పత్తి\nబూడిద విప్లవం 11) Food-grain production / ఆహార ధాన్యాల ఉత్పత్తి\nఎంపికలు"
+  },
+  "o": {
+   "en": [
+    "a-iii, b-i, c-iv, d-ii",
+    "a-iv, b-iii, 6-1 d-ii",
+    "a-iv, bi, c-iii, d-ii",
+    "a-ii, bi, c-iii, d-iv"
+   ],
+   "te": [
+    "a-iii, b-i, c-iv, d-ii",
+    "a-iv, b-iii, 6-1 d-ii",
+    "a-iv, bi, c-iii, d-ii",
+    "a-ii, bi, c-iii, d-iv"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0011",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following groups consists entirely of tributaries of the Godavari River?\nConsider the following rivers:\n1.       Indravati\n2.       Pranhita\n3.       Sabari\n4.       Tungabhadra\nWhich of the above are tributaries of the Godavari River?",
+   "te": "కింది సమూహాలలో గోదావరి నదికి ఉపనదులుగా ఉన్న నదులు మాతుమే కలిగిన సమూహం ఏది?\nఇంద్రావతి\nప్రాణహిత\nశబరి\nతుంగభదం\nపై వాటిలో గోదావరి నదికి ఉపనదులు ఏవి?"
+  },
+  "o": {
+   "en": [
+    "1and 3 only",
+    "1,2 and 3 only",
+    "1,2,3and4/1,2,3 మరియు 4",
+    "1and 2 only"
+   ],
+   "te": [
+    "1 మరియు 3 మాత్రమే",
+    "1, 2 మరియు 3 మాత్రమే",
+    "1,2,3and4/1,2,3 మరియు 4",
+    "1 మరియు 2 మాత్రమే"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0012",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Where is the headquarters of INTERPOL?",
+   "te": "ఇంటర్‌పోల్ ప్రధాన కార్యాలయం ఎక్కడ ఉంది?"
+  },
+  "o": {
+   "en": [
+    "Lyon",
+    "Brussels",
+    "Rome",
+    "Madrid"
+   ],
+   "te": [
+    "లియోన్",
+    "బ్రస్సెల్స్",
+    "రోమ్",
+    "మాడ్విడ్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0013",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The ongoing decennial Census exercise of India is officially designated as which Census?",
+   "te": "భారతదేశంలో నిర్వహిస్తున్న దశాబ్ద జనగణనను అధికారికంగా ఏ జనగణనగా పేర్కొన్నారు?"
+  },
+  "o": {
+   "en": [
+    "Census of India 2026",
+    "Census of India 2021",
+    "Census of India 2027",
+    "Census of India 2031"
+   ],
+   "te": [
+    "భారత జనగణన 2026",
+    "భారత జనగణన 2021",
+    "భారత జనగణన 2027",
+    "భారత జనగణన 2031"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0014",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is a Ramsar site in Andhra Pradesh?",
+   "te": "ఆంధ్రపుదేశ్‌లోని రామ్‌సర్ ప్రదేశం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Pulicat Lake",
+    "Kolleru Lake",
+    "Kondakarla Ava",
+    "Coringa Wildlife Sanctuary"
+   ],
+   "te": [
+    "పులికాట్ సరస్సు",
+    "§8& సరస్సు",
+    "కొండకర్ల ఆవ",
+    "కోరింగ వన్యప్వాణుల అభయారణ్యం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0015",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What is the revised length of the coastline of Andhra Pradesh?",
+   "te": "ఆంధ్రపదేశ్ రాష్ట్ర సవరించిన తీరరేఖ పొడవు ఎంత?\n973.7 ]0౧ / 973.7 కి.మీ."
+  },
+  "o": {
+   "en": [
+    "1,053.07 km",
+    "1,068.69 km",
+    "877.97 km"
+   ],
+   "te": [
+    "1,053.07 కి.మీ.",
+    "1,068.69 కి.మీ.",
+    "877.97 కి.మీ."
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0016",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which conflict has been responsible for the recent disruption of shipping through the Strait of\nHormuz?",
+   "te": "హార్ముజ్ జలసంధి గుండా నౌకా రవాణా అంతరాయానికి ఇటీవల కారణమైన సంఘర్షణ ఏది?"
+  },
+  "o": {
+   "en": [
+    "Russia—Ukraine conflict",
+    "Iran-US conflict",
+    "Ethiopia—Sudan conflict"
+   ],
+   "te": [
+    "రష్యా-ఉకెయిన్ సంఘర్షణ",
+    "ఇరాన్‌-అమెరికా సంఘర్షణ ౦) ౦102-1020 conflict / చైనా-జపాన్ సంఘర్షణ",
+    "ఇథియోపియా- సూడాన్ సంఘర్షణ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0017",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which chemical compound is primarily responsible for the characteristic reddish appearance of\nred soils?",
+   "te": "ఎర నేలలకు పుత్యేకమైన ఎరుపు రంగును కలిగించడానికి ప్రధానంగా కారణమయ్యే రసాయన సమ్మేళనం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Magnesium oxide",
+    "Humus",
+    "Ferric oxide",
+    "Calcium phosphate"
+   ],
+   "te": [
+    "మెగ్నీషియం ఆక్సైడ్",
+    "హ్యూమస్",
+    "268 ఆక్సైడ్",
+    "కాల్షియం ఫాస్ఫేట్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0018",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which type of bill cannot be returned by the President to Parliament for reconsideration?",
+   "te": "పునఃపరిశీలన కోసం రాష్ట్రపతి పార్లమెంటుకు తిరిగి పంపలేని బిల్లు ఏది?"
+  },
+  "o": {
+   "en": [
+    "Ordinary Bill",
+    "Money Bill",
+    "Private Member's Bill",
+    "Constitutional Amendment Bill"
+   ],
+   "te": [
+    "సాధారణ బిల్లు",
+    "ద్వవ్య బిల్లు",
+    "ప్రైవేట్ సభ్యుని బిల్లు",
+    "రాజ్యాంగ సవరణ బిల్లు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0019",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which writ is issued to produce a person who has been unlawfully detained before a court?",
+   "te": "చట్టవిరుద్ధంగా నిర్బంధించిన వ్యక్తిని న్యాయస్థానం ముందు హాజరుపరచడానికి జారీ చేసే రిట్ ఏది?"
+  },
+  "o": {
+   "en": [
+    "Mandamus",
+    "Certiorari / 288558",
+    "Habeas Corpus",
+    "Quo Warranto"
+   ],
+   "te": [
+    "మాండమస్",
+    "Certiorari / 288558",
+    "హెబియస్ కార్బన్",
+    "కో వారంటో"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0020",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following correctly identifies the three constituents of the Parliament of India?",
+   "te": "భారత పార్లమెంటులోని మూడు భాగాలను సరిగ్గా గుర్తించిన ఎంపిక ఏది?"
+  },
+  "o": {
+   "en": [
+    "President, Prime Minister and Lok Sabha",
+    "Lok Sabha, Rajya Sabha and Prime Minister",
+    "President, Lok Sabha and Rajya Sabha",
+    "President, Council of Ministers and Rajya Sabha"
+   ],
+   "te": [
+    "రాష్ట్రపతి, ప్రధానమంత్రి మరియు లోక్‌సభ",
+    "లోక్‌సభ, రాజ్యసభ మరియు ప్రుధానమంతి",
+    "రాష్ట్రపతి, లోక్‌సభ మరియు రాజ్యసభ",
+    "రాష్ట్రపతి, మంత్రిమండలి మరియు రాజ్యసభ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0021",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which Article of the Indian Constitution deals with the formation of new states and alteration of\nexisting state boundaries?",
+   "te": "కొత్త రాష్ట్రాల ఏర్పాటు మరియు ప్రస్తుత రాష్ట్రాల సరిహద్దుల మార్పుకు సంబంధించిన రాజ్యాంగ అధికరణం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Article 2",
+    "Article 3",
+    "Article 14",
+    "Article 368"
+   ],
+   "te": [
+    "అధికరణం 2",
+    "అధికరణం 3",
+    "అధికరణం 14",
+    "అధికరణం 368"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0022",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What does SIR stand for in the context of electoral rolls?",
+   "te": "ఓటర్ల జాబితాల సందర్భంలో SIR అనే సంక్షిప్త పదానికి పూర్తి రూపం ఏమిటి?"
+  },
+  "o": {
+   "en": [
+    "Systematic Intensive Revision",
+    "Special Integrated Revision",
+    "Special Intensive Revision",
+    "Systematic Internal Review"
+   ],
+   "te": [
+    "క్రమబద్ధమైన సమగ) సవరణ",
+    "ప్రత్యేక సమీకృత సవరణ",
+    "ప్రత్యేక సమగ్ర సవరణ",
+    "కొమబద్ధమైన అంతర్గత సమీక్ష ౧             ౧"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0023",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The Chief Election Commissioner can be removed through a process similar to that applicable to\nwhich constitutional office?",
+   "te": "ప్రధాన ఎన్నికల కమిషనర్‌ను ఏ రాజ్యాంగ పదవికి వర్తించే విధానానికి సమానమైన ప్రక్రియ ద్వారా\nతొలగించవచ్చు?"
+  },
+  "o": {
+   "en": [
+    "Comptroller and Auditor General",
+    "Judge of the Supreme Court",
+    "Attorney General of India",
+    "Governor of a State"
+   ],
+   "te": [
+    "కంప్ట్రోలర్ అండ్ ఆడిటర్ జనరల్ చర్,",
+    "సుపీీంకోర్టు న్యాయమూర్తి",
+    "భారత అటార్నీ జనరల్",
+    "రాష్ట్ర గవర్నర్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0024",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What is the minimum age required to become the President of India?",
+   "te": "భారత రాష్ట్రపతిగా ఎన్నిక కావడానికి కనీస వయస్సు ఎంత?"
+  },
+  "o": {
+   "en": [
+    "25 years",
+    "30 years",
+    "35 years",
+    "40 years"
+   ],
+   "te": [
+    "25 సంవత్సరాలు",
+    "30 సంవత్సరాలు",
+    "35 సంవత్సరాలు",
+    "40 సంవత్సరాలు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
+ },
+ {
+  "id": "geo-0025",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which commission’s report was the basis for the revised BC reservations in Andhra Pradesh\nlocal body elections in 2026?",
+   "te": "2026లో ఆంధ్రపదేశ్ స్థానిక సంస్థల ఎన్నికల్లో బీసీ రిజర్వేషన్ల సవరణకు ఏ కమిషన్ నివేదిక ఆధారంగా\nతీసుకోబడింది?"
+  },
+  "o": {
+   "en": [
+    "Mandal Commission",
+    "Rajiv Ranjan Mishra Commission",
+    "Sarkaria Commission",
+    "Punchhi Commission"
+   ],
+   "te": [
+    "మండల్ కమిషన్",
+    "రాజీవ్ రంజన్ మిశ్రా కమిషన్",
+    "సర్కారియా కమిషన్",
+    "పుంఛీ కమిషన్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-005"
  }
 ]
