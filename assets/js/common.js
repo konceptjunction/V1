@@ -22,12 +22,12 @@
   KJ.lang = () => KJ.store.get("lang", C.DEFAULT_LANG || "bi");
   const UI = {
     en: { home: "Home", practice: "Subjects", mock: "Mock Tests", daily: "Daily Quiz", notes: "Notes", concepts: "Concepts", ca: "Current Affairs",
-      bookmarks: "Bookmarks", wrong: "Wrong Answers", results: "Results", profile: "Profile", papers: "Topic Tests", perf: "Performance", submit: "Submit",
-      next: "Save & Next", prev: "Previous", mark: "Mark for Review & Next", clear: "Clear Response", start: "Start Test", custom: "Custom Test",
+      bookmarks: "Bookmarks", wrong: "Wrong Answers", results: "Results", profile: "Profile", papers: "Topic Tests", perf: "Performance", submit: "Submit Test",
+      next: "Save & Next", prev: "Previous", mark: "Mark for Review & Next", clear: "Edit Answer", start: "Start Test", custom: "Custom Test",
       target: "Target exam", answer: "Show answer", video: "Video solution", noq: "No questions available yet.", resume: "Resume test" },
     te: { home: "హోమ్", practice: "సబ్జెక్టులు", mock: "మాక్ టెస్టులు", daily: "డైలీ క్విజ్", notes: "నోట్స్", concepts: "కాన్సెప్ట్స్", ca: "వర్తమాన అంశాలు",
-      bookmarks: "బుక్‌మార్క్స్", wrong: "తప్పు సమాధానాలు", results: "ఫలితాలు", profile: "ప్రొఫైల్", papers: "టాపిక్ టెస్టులు", perf: "పనితీరు", submit: "సమర్పించు",
-      next: "సేవ్ చేసి తదుపరి", prev: "మునుపటి", mark: "రివ్యూ కోసం గుర్తించి తదుపరి", clear: "సమాధానం తొలగించు", start: "పరీక్ష ప్రారంభించు", custom: "కస్టమ్ టెస్ట్",
+      bookmarks: "బుక్‌మార్క్స్", wrong: "తప్పు సమాధానాలు", results: "ఫలితాలు", profile: "ప్రొఫైల్", papers: "టాపిక్ టెస్టులు", perf: "పనితీరు", submit: "పరీక్ష సమర్పించు",
+      next: "సేవ్ చేసి తదుపరి", prev: "మునుపటి", mark: "రివ్యూ కోసం గుర్తించి తదుపరి", clear: "సమాధానం మార్చు", start: "పరీక్ష ప్రారంభించు", custom: "కస్టమ్ టెస్ట్",
       target: "లక్ష్య పరీక్ష", answer: "సమాధానం చూపు", video: "వీడియో వివరణ", noq: "ఇంకా ప్రశ్నలు అందుబాటులో లేవు.", resume: "పరీక్ష కొనసాగించు" }
   };
   KJ.t = (k) => (UI[KJ.lang() === "te" ? "te" : "en"][k] || k);

@@ -1,6 +1,6 @@
 /* KONCEPT JUNCTION — service worker (V1)
    Bump VERSION in every new upload pack so phones pick up new files. */
-const VERSION = "kj-v7";
+const VERSION = "kj-v8";
 const SHELL = [
   "./", "home.html", "index.html", "manifest.json",
   "assets/css/app.css",

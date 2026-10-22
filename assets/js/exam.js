@@ -48,15 +48,20 @@
   </div>
   <div class="xh-sec" id="xs"></div>
   <div class="xh-body">
-    <div class="xh-q" id="xq"></div>
+    <div class="xh-main">
+      <div class="xh-q" id="xq"></div>
+      <!-- V8: buttons sit under the question only (not under the palette) -->
+      <div class="xh-bar">
+        <button class="btn rev sm" id="bm">${KJ.t("mark")}</button>
+        <button class="btn alt sm xb-edit" id="bc">✏️ ${KJ.t("clear")}</button>
+        <span class="sp"></span>
+        <div class="xb-nav">
+          <button class="btn alt sm" id="bp">◀ ${KJ.t("prev")}</button>
+          <button class="btn ok sm" id="bn">${KJ.t("next")} ▶</button>
+        </div>
+      </div>
+    </div>
     <div class="xh-pal" id="xp"></div>
-  </div>
-  <div class="xh-bar">
-    <button class="btn rev sm" id="bm">${KJ.t("mark")}</button>
-    <button class="btn alt sm" id="bc">${KJ.t("clear")}</button>
-    <span class="sp"></span>
-    <button class="btn alt sm" id="bp">${KJ.t("prev")}</button>
-    <button class="btn ok sm" id="bn">${KJ.t("next")}</button>
   </div>
 </div>`;
     $("#xlang").value = KJ.lang();
@@ -64,7 +69,11 @@
     $("#xpb").onclick = () => $("#xp").classList.toggle("open");
     $("#bn").onclick = () => { commit(); go(st.cur + 1); };
     $("#bm").onclick = () => { commit(); st.marked[st.cur] = 1; go(st.cur + 1); };
-    $("#bc").onclick = () => { delete st.ans[st.cur]; st.pending = null; save(); drawQ(); drawPal(); };
+    $("#bc").onclick = () => {                         // V8: Edit Answer – frees the saved answer so a new option can be chosen
+      const had = st.ans[st.cur] != null || st.pending != null;
+      delete st.ans[st.cur]; st.pending = null; save(); drawQ(); drawPal();
+      KJ.toast(had ? "Choose your new answer, then press Save & Next" : "Choose an answer, then press Save & Next");
+    };
     $("#bp").onclick = () => go(st.cur - 1);
     window.onbeforeunload = () => "Test in progress";
     drawAll();

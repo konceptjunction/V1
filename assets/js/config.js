@@ -10,8 +10,8 @@ window.KJ_CONFIG = {
   TAGLINE_TE: "రాష్ట్ర స్థాయి పోటీ పరీక్షలు",
   NOTES_BRAND: "Notes by BALAJI SIR",
   CONCEPTS_BRAND: "Quick Revision Concepts by BALAJI SIR",
-  VERSION: "V7",
-  BUILD_DATE: "2026-10-22",
+  VERSION: "V8",
+  BUILD_DATE: "2026-10-23",
 
   CONTACT_EMAIL: "YOUR_NEW_MAIL@gmail.com",          // <<< CHANGE (new Gmail)
   CONTACT_PHONE: "9494780174",                      // printed on question papers (from your model paper)
