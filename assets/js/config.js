@@ -47,7 +47,7 @@ window.KJ_CONFIG = {
 
   /* V4: Google Sheet student register (Apps Script web app – see tools/google_apps_script_students.gs) */
   SHEET: {
-    webapp_url: "YOUR_APPS_SCRIPT_WEB_APP_URL"        // <<< CHANGE  (https://script.google.com/macros/s/…/exec)
+    webapp_url: "https://script.google.com/macros/s/AKfycbz9Rubi5nKwekNyETGU-C1fhlWcrBDxpAiksehQf_FgI36NniqE_rXiKE5_2s647DOkPw/exec"        // <<< CHANGE  (https://script.google.com/macros/s/…/exec)
   },
 
   DEFAULT_LANG: "bi",          // "en" | "te" | "bi" (bilingual English + Telugu)
