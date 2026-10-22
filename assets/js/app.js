@@ -119,14 +119,26 @@
       S.set("sync_pending", false); S.set("seen_day", KJ.today()); return true;
     } catch (e) { S.set("sync_pending", true); return false; }
   };
+  /* V10: is this Mail ID already in the teacher's sheet?  → returns {id,name,email,exam,examId,college} or null */
+  KJ.lookupStudent = async function (email) {
+    const url = (C.SHEET && C.SHEET.webapp_url) || "";
+    if (!/^https:\/\/script\.google\.com\//.test(url) || !navigator.onLine) return null;
+    try {
+      const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 8000);
+      const j = await (await fetch(url + "?action=lookup&email=" + encodeURIComponent(email), { signal: ctl.signal })).json();
+      clearTimeout(tm);
+      return j && j.ok && j.found && j.student ? j.student : null;
+    } catch (e) { return null; }
+  };
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   function regFields(exams, st, withMobile) {
     const known = exams.some((x) => x.id === st.examId);
     return `
-<label for="rn">Student name <span class="t-te">/ విద్యార్థి పేరు</span></label>
-<input id="rn" autocomplete="name" maxlength="80" value="${esc(st.name || "")}">
 <label for="re">Mail ID <span class="t-te">/ ఈమెయిల్</span></label>
 <input id="re" type="email" inputmode="email" autocomplete="email" maxlength="120" value="${esc(st.email || "")}">
+<div id="rfound" class="reg-found hide" role="status"></div>
+<label for="rn">Student name <span class="t-te">/ విద్యార్థి పేరు</span></label>
+<input id="rn" autocomplete="name" maxlength="80" value="${esc(st.name || "")}">
 <label for="rx">Exam to be prepared <span class="t-te">/ సిద్ధమవుతున్న పరీక్ష</span></label>
 <select id="rx"><option value="">Select exam</option>${exams.map((x) => `<option value="${x.id}" ${x.id === st.examId ? "selected" : ""}>${esc(x.name.en)}</option>`).join("")}
 <option value="other" ${st.examId === "other" || (st.examId && !known) ? "selected" : ""}>Other exam</option></select>
@@ -337,16 +349,48 @@ ${x.note ? `<div class="tag">${esc(x.note)}</div>` : ""}
     el.innerHTML = `<div class="reg-wrap">
 <img class="reg-logo" src="${esc(C.LOGO)}" alt="KONCEPT JUNCTION logo">
 <h1 class="reg-name">${esc(C.APP_NAME)}</h1><div class="reg-motto">${esc(C.MOTTO || "")}</div>
-<p class="reg-intro">Register once to start.<br><span class="t-te">ఒకసారి నమోదు చేసుకుని ప్రారంభించండి.</span></p>
+<p class="reg-intro">Register once to start. Already registered? Type the same Mail ID.<br><span class="t-te">ఒకసారి నమోదు చేసుకుని ప్రారంభించండి. ఇప్పటికే నమోదైతే అదే ఈమెయిల్ ఇవ్వండి.</span></p>
 <form class="reg-form" id="rf" novalidate>${regFields(exams, { name: old.name || "", examId: S.get("target", "") }, false)}
 <div class="reg-err" id="rerr" role="alert"></div>
 <button class="btn acc reg-btn" type="submit" id="rgo">Continue</button></form>
 <p class="small muted reg-note">Your details are kept by ${esc(C.APP_NAME)} (${esc(C.NOTES_BRAND.replace(/^Notes by /, ""))}) for student records only.</p></div>`;
     bindRegFields();
+    /* V10: check the Mail ID against the teacher's student register */
+    let found = null, checked = "";
+    const enter = async (rec) => {                     // already registered → log in with the existing record
+      const st = { id: rec.id, name: rec.name, email: rec.email, examId: rec.examId || "", exam: rec.exam || "", college: rec.college || "", mobile: rec.mobile || old.mobile || "", regAt: rec.registeredOn || new Date().toISOString() };
+      S.set("student", st); S.set("profile", { name: st.name, mobile: st.mobile });
+      if (st.examId && st.examId !== "other" && exams.some((x) => x.id === st.examId)) S.set("target", st.examId);
+      KJ.sync("seen");
+      KJ.toast("Welcome back, " + st.name.split(" ")[0] + "!");
+      if (location.hash === "#/home" || !location.hash) render(); else location.hash = "#/home";
+    };
+    const check = async () => {
+      const email = $("#re").value.trim().toLowerCase();
+      if (!EMAIL_RE.test(email) || email === checked) return found;
+      checked = email; const box = $("#rfound");
+      box.className = "reg-found"; box.textContent = "Checking this Mail ID…";
+      found = await KJ.lookupStudent(email);
+      if ($("#re").value.trim().toLowerCase() !== email) return found;      // student kept typing
+      if (found) {
+        box.innerHTML = `<span>✔ <b>${esc(found.name)}</b>, you are already registered${found.exam ? " (" + esc(found.exam) + ")" : ""}.</span> <button type="button" class="btn ok sm" id="rback">Continue as ${esc(found.name.split(" ")[0])}</button>`;
+        $("#rback").onclick = () => enter(found);
+        $("#rn").value = found.name; $("#rc").value = found.college || "";
+        if (found.examId && [...$("#rx").options].some((o) => o.value === found.examId)) $("#rx").value = found.examId;
+        $("#rgo").textContent = "Continue";
+      } else { box.className = "reg-found hide"; box.textContent = ""; }
+      return found;
+    };
+    $("#re").addEventListener("change", check);
+    $("#re").addEventListener("blur", check);
     $("#rf").addEventListener("submit", async (e) => {
       e.preventDefault();
       const r = readReg(exams);
       if (r.err) { $("#rerr").textContent = r.err; $(r.f).focus(); return; }
+      $("#rgo").disabled = true; $("#rgo").textContent = "Checking…";
+      const rec = (await check()) || found;
+      if (rec && rec.email === r.data.email) return enter({ ...rec, name: r.data.name || rec.name, college: r.data.college || rec.college, examId: r.data.examId, exam: r.data.exam });
+      $("#rgo").disabled = false;
       const st = { id: KJ.uid("st"), ...r.data, mobile: old.mobile || "", regAt: new Date().toISOString() };
       S.set("student", st);
       S.set("profile", { name: st.name, mobile: st.mobile });

@@ -200,3 +200,7 @@ body.reg main{padding-bottom:40px}
 .xb-nav{display:flex;gap:10px;margin-right:clamp(0px,5vw,90px)}
 .xh-bar .btn.sm{padding:8px 14px}
 @media(max-width:760px){.xb-edit{margin-left:0}.xb-nav{margin-right:0;margin-left:auto}}
+
+/* ===== V10 : already-registered notice on the first page ===== */
+.reg-found{margin-top:8px;padding:10px 12px;border-radius:10px;font-size:13.5px;background:color-mix(in srgb,var(--ok) 12%,var(--card));border:1px solid var(--ok);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.reg-found .btn{margin-left:auto}
