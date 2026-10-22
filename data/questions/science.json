@@ -441,5 +441,704 @@
   },
   "img": "",
   "video": ""
+ },
+ {
+  "id": "sci-0110",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Ginger and turmeric propagate naturally through:",
+   "te": "అల్లం మరియు పసుపు సహజంగా ఏ విధమైన కాండాల ద్వారా వ్యాప్తి చెందుతాయి?"
+  },
+  "o": {
+   "en": [
+    "Tubers",
+    "Rhizomes",
+    "Bulbs",
+    "Runners"
+   ],
+   "te": [
+    "దుంపలు",
+    "భూగర్భ కాండాలు",
+    "కాండాలు",
+    "నేలపై పాకే కాండాలు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0111",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "An organism that transmits a pathogen from an infected host to another host is called:",
+   "te": "వ్యాధికారకాన్ని (Pathogen) ఒక సోకిన అతిథేయి నుండి మరొక అతిథేయికి వ్యాపింపజేసే జీవిని ఏమంటారు?"
+  },
+  "o": {
+   "en": [
+    "Secondary host",
+    "Primary host",
+    "Vector",
+    "Parasite"
+   ],
+   "te": [
+    "సెకండరీ హోస్ట్",
+    "ప్రైమరీ హోస్ట్",
+    "వెక్టార్",
+    "పేరాసైట్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0112",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which disease is caused specifically by a deficiency of Vitamin 817?",
+   "te": "విటమిన్ B1 లోపం వల్ల ప్రత్యేకంగా ఏ వ్యాధి వస్తుంది?"
+  },
+  "o": {
+   "en": [
+    "Rickets",
+    "Night blindness",
+    "Scurvy",
+    "Beri-beri"
+   ],
+   "te": [
+    "రికెట్స్",
+    "రేచీకటి",
+    "స్కర్వ",
+    "బెరిబెరి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0113",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which mirror is used as a rear-view mirror in vehicles?",
+   "te": "వాహనాలలో వెనుక దృశ్యాలను చూడటానికి ఏ అద్దాన్ని ఉపయోగిస్తారు?"
+  },
+  "o": {
+   "en": [
+    "Concave mirror",
+    "Convex mirror",
+    "Plane mirror",
+    "Cylindrical mirror"
+   ],
+   "te": [
+    "పుటాకార దర్పణం",
+    "కుంభాకార దర్పణం",
+    "సమతల దర్పణం",
+    "స్థూపాకార దర్పణ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0114",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is a thermoplastic polymer?",
+   "te": "క్రింది వాటిలో థర్మోప్లాస్టిక్ పాలిమర్ ఏది?"
+  },
+  "o": {
+   "en": [
+    "Bakelite",
+    "Melamine-formaldehyde resin",
+    "Polyethene",
+    "Vulcanised rubber"
+   ],
+   "te": [
+    "బేకలైట్",
+    "మెలమైన్‌-ఫార్మాల్టిహైడ్ రెసిన్",
+    "పాలిథీన్",
+    "Sey 3 రబ్బరు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0115",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Bats can navigate in darkness by emitting and detecting:",
+   "te": "గబ్బిలాలు ఏ తరంగాలను విడుదల చేసి, వాటిని గుర్తించడం ద్వారా చీకటిలో దిశను తెలుసుకుంటాయి?"
+  },
+  "o": {
+   "en": [
+    "Radio waves",
+    "Infrasonic waves",
+    "Ultrasonic waves",
+    "Visible light waves"
+   ],
+   "te": [
+    "రేడియో తరంగాలు",
+    "అవశ్రవ్య తరంగాలు",
+    "పరాశ్రవ్య తరంగాలు",
+    "దృశ్య కాంతి తరంగాలు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0116",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A sound wave travels at 330 m/s and has a wavelength of 1.5 m. What is its frequency?",
+   "te": "ఒక ధ్వని తరంగం 330 మీ/సె వేగంతో ప్రయాణిస్తూ , దాని తరంగదైర్హ్యం 1.5 మీ. అయితే, దాని పౌనఃపున్యం ఎంత?"
+  },
+  "o": {
+   "en": [
+    "220 Hz",
+    "110 Hz",
+    "495 Hz",
+    "330 Hz"
+   ],
+   "te": [
+    "220 Hz",
+    "110 Hz",
+    "495 Hz",
+    "330 Hz"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0117",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following pairs is correctly matched?",
+   "te": "క్రింది జతలలో సరైన జత ఏది?"
+  },
+  "o": {
+   "en": [
+    "Mond process — Purification of nickel",
+    "Van Arkel process — Purification of copper",
+    "Zone refining — Extraction of iron from haematite",
+    "Froth flotation — Purification of nickel carbonyl"
+   ],
+   "te": [
+    "మోండ్ ప్రక్తియ — నికెల్ శుద్ధి",
+    "వాన్ ఆర్కెల్ పుక్తియ — రాగి శుద్ధి ౦) జోన్ రిఫైనింగ్ — హేమటైట్ ఖనిజం నుండి ఇనుము వెలికితీత",
+    "నురుగు తేలిక 598905 — నికెల్ కార్బొనైల్ శుద్ధి",
+    "Froth flotation — Purification of nickel carbonyl"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0118",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which statement about German silver is correct?",
+   "te": "జర్మన్ సిల్వర్‌కు సంబంధించి సరైన వాక్యం ఏది?"
+  },
+  "o": {
+   "en": [
+    "It contains a large proportion of actual silver",
+    "It contains copper, zinc and nickel.",
+    "It contains only copper and",
+    "It is an alloy of iron and chromium."
+   ],
+   "te": [
+    "ఇందులో నిజమైన వెండి అధిక పరిమాణంలో ఉంటుంది.",
+    "ఇందులో రాగి, జింక్ మరియు నికెల్ ఉంటాయి.",
+    "(1౧. ఇందులో రాగి మరియు తగరం మాత్రమే ఉంటాయి.",
+    "ఇది ఇనుము మరియు కొమియం మిశ్రమ లోహం."
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0119",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What is the chemical formula of cinnabar?",
+   "te": "సిన్నబార్ యొక్క రసాయన సూతం ఏది?"
+  },
+  "o": {
+   "en": [
+    "HgS",
+    "ZnS",
+    "PbS",
+    "7610,"
+   ],
+   "te": [
+    "HgS",
+    "ZnS",
+    "PbS",
+    "7610,"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0120",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Bauxite is considered the principal ore of which element?",
+   "te": "బాక్సైట్‌ను ఏ మూలకానికి ప్రధాన ఖనిజంగా పరిగణిస్తారు?"
+  },
+  "o": {
+   "en": [
+    "Zinc",
+    "Aluminium",
+    "Lead",
+    "Mercury"
+   ],
+   "te": [
+    "జింక్",
+    "అల్యూమినియం",
+    "సీసం",
+    "పాదరసం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0121",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which cell organelle is known as the “suicide bag” of the cell?",
+   "te": "కణంలోని “ఆత్మహత్య సంచి”గా పిలువబడే కణాంగం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Ribosome",
+    "Lysosome",
+    "Golgi apparatus"
+   ],
+   "te": [
+    "రైబోసోమ్",
+    "లైసోసోమ్ ౦0) Mitochondrion / మైటోకాండ్రియా",
+    "గాల్జీ ఉపకరణం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0122",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is the chemical formula of baking soda?",
+   "te": "బేకింగ్ సోడా యొక్క రసాయన ఫార్ములా ఏది?"
+  },
+  "o": {
+   "en": [
+    "Na,CO0;",
+    "NaHCO;",
+    "NaOH",
+    "NaCl"
+   ],
+   "te": [
+    "Na,CO0;",
+    "NaHCO;",
+    "NaOH",
+    "NaCl"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0123",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The modern periodic law is based on the periodicity of properties with respect to:",
+   "te": "ఆధునిక ఆవర్తన నియమం ప్రకారం మూలకాల ధర్మాలు దేని ఆధారంగా ఆవర్తనంగా మారుతాయి?"
+  },
+  "o": {
+   "en": [
+    "Atomic mass",
+    "Atomic number",
+    "Neutron number",
+    "Mass number"
+   ],
+   "te": [
+    "పరమాణు ద్వవ్యరాశి",
+    "పరమాణు సంఖ్య",
+    "న్యూట్వాన్ల సంఖ్య",
+    "ద్రవ్యరాశి సంఖ్య"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0124",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which radioactive emission has the greatest penetrating power among alpha, beta and gamma\nradiation?",
+   "te": "ఆల్ఫా, బీటా, గామా వికిరణాలలో అత్యధిక చొచ్చుకుపోయే సామర్థ్యం దేనికి ఉంటుంది?"
+  },
+  "o": {
+   "en": [
+    "Alpha rays",
+    "Beta rays",
+    "Gamma rays",
+    "All have equal penetration"
+   ],
+   "te": [
+    "ఆలా కిరణాలు",
+    "బీటా కిరణాలు",
+    "గామా కిరణాలు",
+    "అన్నింటికీ సమాన సామర్థ్యం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0125",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A fuse wire should have which combination of properties?",
+   "te": "ఫ్యూజ్ తీగలో ఏ లక్షణాల కలయిక ఉండాలి?"
+  },
+  "o": {
+   "en": [
+    "High resistivity and high melting point",
+    "Low resistivity and high melting point",
+    "High resistivity and low melting point",
+    "Low resistivity and low melting point"
+   ],
+   "te": [
+    "అధిక విశిష్ట నిరోధకత మరియు అధిక ద్రవీభవన స్థానం",
+    "తక్కువ విశిష్ట నిరోధకత మరియు అధిక ద్వవీభవన స్థానం",
+    "అధిక విశిష్ట నిరోధకత మరియు తక్కువ ద్వవీభవన స్థానం",
+    "తక్కువ విశిష్ట నిరోధకత మరియు తక్కువ ద్రవీభవన స్థానం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0126",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "An object has potential energy of 400 J. Its mass is 20 kg and (g = 10) m/s? Find its height.",
+   "te": "ఒక వస్తువు స్థితిజ శక్తి 400 జౌళ్లు. దాని ద్రవ్యరాశి 20 కిలోగ్రాములు మరియు (g = 10) మీ/సె*. అయితే, ఆ\nవస్తువు ఎత్తును కనుగొనండి.\nడీ 0.5 ౧1 /0.5 మీ"
+  },
+  "o": {
+   "en": [
+    "4m/ 4",
+    "21 /2మీ"
+   ],
+   "te": [
+    "0111/1మీ",
+    "21 /2మీ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0127",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who is credited with the discovery of the proton?",
+   "te": "పటాన్ ఆవిష్కరణకు గుర్తింపు పొందిన శాస్త్రవేత్త ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Ernest Rutherford",
+    ").). Thomson",
+    "Max Planck",
+    "James Chadwick"
+   ],
+   "te": [
+    "ఎర్నెస్ట్ రూథరిఫోర్డ్",
+    "జె. జె. థామ్సన్",
+    "మాక్స్ ప్లాంక్",
+    "జీమ్స్ చాడ్విక్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "sci-0128",
+  "type": "mcq",
+  "subject": "science",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "With reference to eutrophication, consider the following statements:\nI. It decreases dissolved oxygen in water.\nII. It is a phenomenon of nutrient enrichment of a water body.\nChoose the correct answer:",
+   "te": "యూటోఫికేషన్‌కు సంబంధించి క్రింది వాక్యాలను పరిశీలించండి:\nఇది నీటిలో కరిగిన ఆక్సిజన్ పరిమాణాన్ని తగ్గిస్తుంది.\nఇది జలాశయంలో పోషక పదార్థాలు అధికంగా చేరే ప్రక్రియ.\nసరైన సమాధానాన్ని ఎంచుకోండి:"
+  },
+  "o": {
+   "en": [
+    "Both statements are true",
+    "Both statements are false",
+    "Statement I is true, but Statement II is false",
+    "Statement I is false, but Statement Il is true",
+    "333V"
+   ],
+   "te": [
+    "15 న్యూటన్లు",
+    "11 N /11న్యూటన్లు",
+    "4 న్యూటన్లు",
+    "0 న్యూటన్లు 30. The potential difference across the 5 {2 resistor in the following circuit is: క్రింది వలయంలో 5 Q నిరోధం మీద ఉన్న పొటెన్షియల్ భేదం ఎంత? SQ                   10Q 10+ త) 1017 (GIA 1) 6.67 1/7",
+    "333V"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
  }
 ]
