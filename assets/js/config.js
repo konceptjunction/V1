@@ -10,7 +10,7 @@ window.KJ_CONFIG = {
   TAGLINE_TE: "రాష్ట్ర స్థాయి పోటీ పరీక్షలు",
   NOTES_BRAND: "Notes by BALAJI SIR",
   CONCEPTS_BRAND: "Quick Revision Concepts by BALAJI SIR",
-  VERSION: "V4",
+  VERSION: "V5",
   BUILD_DATE: "2026-10-22",
 
   CONTACT_EMAIL: "YOUR_NEW_MAIL@gmail.com",          // <<< CHANGE (new Gmail)
@@ -23,8 +23,8 @@ window.KJ_CONFIG = {
      path_prefix = "" when the app files sit at the repo root.
      If you keep the app inside a folder (like V43 earlier), put "FOLDER/" here. */
   GITHUB: {
-    owner: "YOUR_GITHUB_ID",                          // <<< CHANGE (new GitHub user)
-    repo: "koncept-junction",                         // <<< CHANGE if you name it differently
+    owner: "konceptjunction",                         // V5: taken from your link konceptjunction.github.io
+    repo: "V1",                                       // V5: your repo name (link …github.io/V1/)
     branch: "main",
     path_prefix: ""
   },

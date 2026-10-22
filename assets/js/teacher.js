@@ -72,7 +72,7 @@ ${dev ? `<p class="small"><a href="#" id="lr">Forget this device</a></p>` : ""}
 
   /* ================= MAIN ================= */
   const TABS = [["add", "➕ Add / Edit"], ["students", "👥 Students"], ["bank", "📚 Question Bank"], ["import", "📥 Bulk Import"], ["papers", "🎯 Topic Tests"],
-    ["notes", "📒 Notes & Concepts"], ["ca", "📰 Current Affairs"], ["ann", "📢 Announcements"], ["exams", "🎯 Exams"],
+    ["notes", "📒 Notes & Concepts"], ["ca", "📰 Current Affairs"], ["ann", "📢 Announcements"], ["exams", "📋 Exam Patterns"],
     ["export", "📤 Export"], ["publish", "🚀 Publish"], ["settings", "⚙️ Settings"]];
   let tab = "add", editing = null;
 
@@ -82,7 +82,15 @@ ${dev ? `<p class="small"><a href="#" id="lr">Forget this device</a></p>` : ""}
     draw();
   }
   function draw() {
-    root().innerHTML = `<div class="tabs">${TABS.map(([k, n]) => `<button data-tab="${k}" class="${k === tab ? "on" : ""}">${n}${k === "publish" && dirty.size ? " (" + dirty.size + ")" : ""}</button>`).join("")}</div><div id="tp"></div>`;
+    /* V5: header ⚙️ Settings button + reminder when GitHub / Cloudinary are not set yet */
+    const hb = $("#hdrSet"); hb.style.display = ""; hb.onclick = () => { tab = "settings"; editing = null; draw(); };
+    const G = cfg(), miss = [];
+    if (!pat()) miss.push("GitHub token");
+    if (!G.owner || G.owner.startsWith("YOUR_")) miss.push("GitHub user");
+    if (!G.cloud || G.cloud.startsWith("YOUR_") || !G.preset || G.preset.startsWith("YOUR_")) miss.push("Cloudinary");
+    const bar = miss.length && tab !== "settings" ? `<div class="setbar">⚙️ Not set yet: <b>${miss.join(", ")}</b><span class="sp"></span><button class="btn acc sm" id="goSet">Open Settings</button></div>` : "";
+    root().innerHTML = bar + `<div class="tabs">${TABS.map(([k, n]) => `<button data-tab="${k}" class="${k === tab ? "on" : ""}">${n}${k === "publish" && dirty.size ? " (" + dirty.size + ")" : ""}</button>`).join("")}</div><div id="tp"></div>`;
+    if ($("#goSet")) $("#goSet").onclick = () => { tab = "settings"; draw(); };
     $(".tabs").onclick = (e) => { const b = e.target.closest("[data-tab]"); if (b) { tab = b.dataset.tab; if (tab !== "add") editing = null; draw(); } };
     (P[tab] || P.add)($("#tp"));
     KJ.math($("#tp"));
@@ -407,22 +415,93 @@ ${list.slice().map((x, k) => ({ x, k })).sort((a, b) => String(b.x.date).localeC
   P.ca = (el) => listEditor(el, "data/current_affairs.json", "📰 Current Affairs", '<label>Tags (comma separated)</label><input id="ltag" placeholder="AP, Schemes, Awards">');
   P.ann = (el) => listEditor(el, "data/announcements.json", "📢 Announcements / Exam calendar", '<label>Link (notification URL)</label><input id="llink"><label class="chk" style="margin-top:8px"><input type="checkbox" id="lpin">Pin to top</label>');
 
-  /* ---------- Exams (pattern editor) ---------- */
+  /* ---------- Exam patterns (V5: form instead of JSON code) ---------- */
+  let XD = null;                                   // unsaved draft of exam patterns
+  const NEG = [[0, "No negative marking"], [0.25, "−1/4 per wrong"], [0.3333, "−1/3 per wrong"], [0.2, "−1/5 per wrong"], [0.5, "−1/2 per wrong"]];
   P.exams = (el) => {
-    el.innerHTML = `<div class="card"><h3 style="margin-top:0">🎯 Exam patterns</h3>
-<p class="small muted">Each exam: <code>duration_min</code>, <code>mark</code>, <code>negative</code> (fraction of a mark cut per wrong, e.g. 0.3333 = 1/3) and <code>sections</code> (subject id + number of questions). Subject ids: ${SUBS.map((s) => "<code>" + s.id + "</code>").join(" ")}</p>
-<textarea id="ej" style="min-height:420px;font:12.5px ui-monospace,Consolas,monospace">${esc(JSON.stringify(EXAMS, null, 2))}</textarea>
-<div class="row" style="margin-top:8px"><span class="small" id="eres"></span><span class="sp"></span><button class="btn ok" id="es">Validate & save</button></div></div>`;
-    $("#es").onclick = () => {
-      try {
-        const j = JSON.parse($("#ej").value);
-        if (!Array.isArray(j)) throw new Error("must be a list [ … ]");
-        j.forEach((x, i) => {
-          if (!x.id || !x.name || !Array.isArray(x.sections)) throw new Error("exam #" + (i + 1) + " needs id, name, sections");
-          x.sections.forEach((s) => { if (!SUBS.find((u) => u.id === s.subject)) throw new Error(x.id + ": unknown subject " + s.subject); });
+    if (!XD) XD = JSON.parse(JSON.stringify(EXAMS));
+    const mcqIn = (sid) => bank(sid).filter((q) => q.type !== "conv").length;
+    const negSel = (v) => {
+      const known = NEG.some(([n]) => Math.abs(n - v) < 1e-4);
+      return NEG.map(([n, t]) => `<option value="${n}" ${Math.abs(n - v) < 1e-4 ? "selected" : ""}>${t}</option>`).join("") +
+        (known ? "" : `<option value="${v}" selected>−${v} per wrong (custom)</option>`);
+    };
+    const card = (x, k) => {
+      const total = x.sections.reduce((t, s) => t + (+s.count || 0), 0);
+      return `<div class="card" data-x="${k}">
+<div class="row"><b>${esc(x.name.en || "New exam")}</b><span class="pill">${total} Qs · ${x.duration_min} min · +${x.mark}${x.negative ? " / −" + +(x.mark * x.negative).toFixed(2) : ""}</span><span class="tag">id: ${esc(x.id)}</span>
+<span class="sp"></span><button class="btn alt sm" data-up="${k}" ${k ? "" : "disabled"} title="Move up">↑</button><button class="btn alt sm" data-dn="${k}" ${k < XD.length - 1 ? "" : "disabled"} title="Move down">↓</button><button class="btn bad sm" data-del="${k}">Delete</button></div>
+<div class="row"><div style="flex:2;min-width:200px"><label>Exam name (English)</label><input data-f="name.en" value="${esc(x.name.en || "")}"></div>
+<div style="flex:2;min-width:200px"><label>పరీక్ష పేరు (తెలుగు)</label><input data-f="name.te" value="${esc(x.name.te || "")}"></div>
+<div style="flex:1;min-width:120px"><label>Board</label><input data-f="board" value="${esc(x.board || "")}" placeholder="APPSC"></div></div>
+<div class="row"><div style="flex:1;min-width:120px"><label>Duration (minutes)</label><input type="number" min="1" data-f="duration_min" value="${x.duration_min}"></div>
+<div style="flex:1;min-width:120px"><label>Marks per question</label><input type="number" min="0.25" step="0.25" data-f="mark" value="${x.mark}"></div>
+<div style="flex:2;min-width:180px"><label>Negative marking</label><select data-f="negative">${negSel(+x.negative || 0)}</select></div></div>
+<label>Sections – subject and number of questions</label>
+<div style="overflow-x:auto"><table class="t sec-t"><tr><th>Subject</th><th style="width:120px">Questions</th><th>In your bank</th><th></th></tr>
+${x.sections.map((s, i) => `<tr><td><select data-s="${i}" data-sf="subject">${SUBS.map((u) => `<option value="${u.id}" ${u.id === s.subject ? "selected" : ""}>${esc(u.name.en)}</option>`).join("")}</select></td>
+<td><input type="number" min="1" data-s="${i}" data-sf="count" value="${s.count}"></td>
+<td class="small ${mcqIn(s.subject) < s.count ? "dirty" : "muted"}">${mcqIn(s.subject)} MCQs${mcqIn(s.subject) < s.count ? " – add more" : ""}</td>
+<td><button class="btn alt sm" data-sdel="${i}" title="Remove">✕</button></td></tr>`).join("")}</table></div>
+<div class="row" style="margin-top:6px"><button class="btn alt sm" data-sadd="1">➕ Add subject</button><span class="sp"></span><span class="small muted">Total: <b>${total}</b> questions</span></div>
+<label>Note shown to students</label><input data-f="note" value="${esc(x.note || "")}" placeholder="e.g. As per APPSC notification 2026">
+</div>`;
+    };
+    const paint = () => {
+      el.innerHTML = `<div class="card"><div class="row"><h3 style="margin:0">📋 Exam patterns</h3><span class="sp"></span><button class="btn sm" id="xa">➕ Add exam</button></div>
+<p class="small muted" style="margin-bottom:0">Students' <b>Full Mock</b>, <b>Daily Quiz</b> and the <b>Target exam</b> list follow these patterns. Edit, then press <b>Save exam patterns</b> and <b>🚀 Publish</b>.</p></div>
+${XD.map(card).join("")}
+<div class="row" style="margin:4px 0 14px"><span class="small" id="eres"></span><span class="sp"></span><button class="btn alt sm" id="xr">Undo changes</button><button class="btn ok" id="es">Save exam patterns</button></div>
+<details class="card"><summary>Advanced: view / paste as JSON</summary><p class="small muted">Only for copying patterns between devices. Normal editing uses the form above.</p>
+<textarea id="ej" style="min-height:260px;font:12.5px ui-monospace,Consolas,monospace">${esc(JSON.stringify(XD, null, 2))}</textarea>
+<div class="row" style="margin-top:6px"><span class="sp"></span><button class="btn alt sm" id="ejs">Apply JSON to form</button></div></details>`;
+    };
+    paint();
+    const setF = (x, f, v) => { if (f.startsWith("name.")) x.name[f.slice(5)] = v; else x[f] = v; };
+    el.oninput = (e) => {                          // keep draft in step while typing (no repaint → no lost focus)
+      const c = e.target.closest("[data-x]"); if (!c) return;
+      const x = XD[+c.dataset.x], t = e.target;
+      if (t.dataset.f) setF(x, t.dataset.f, t.type === "number" || t.tagName === "SELECT" && t.dataset.f === "negative" ? +t.value : t.value);
+      if (t.dataset.sf) x.sections[+t.dataset.s][t.dataset.sf] = t.dataset.sf === "count" ? +t.value : t.value;
+    };
+    el.onchange = (e) => { el.oninput(e); if (e.target.closest("[data-x]") && e.target.id !== "ej") { const y = window.scrollY; paint(); window.scrollTo(0, y); } };
+    el.onclick = (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      const c = b.closest("[data-x]"), k = c ? +c.dataset.x : -1, y = window.scrollY;
+      if (b.id === "xa") {
+        XD.push({ id: "exam_" + Date.now().toString(36), board: "", name: { en: "New exam", te: "" }, duration_min: 60, mark: 1, negative: 0, sections: [{ subject: SUBS[0].id, count: 10 }], note: "" });
+        paint(); window.scrollTo(0, document.body.scrollHeight); return;
+      }
+      if (b.dataset.del != null) { if (KJ.confirm("Delete exam \"" + XD[k].name.en + "\"?")) XD.splice(k, 1); }
+      else if (b.dataset.up != null) [XD[k - 1], XD[k]] = [XD[k], XD[k - 1]];
+      else if (b.dataset.dn != null) [XD[k + 1], XD[k]] = [XD[k], XD[k + 1]];
+      else if (b.dataset.sadd) XD[k].sections.push({ subject: SUBS.find((u) => !XD[k].sections.some((s) => s.subject === u.id))?.id || SUBS[0].id, count: 10 });
+      else if (b.dataset.sdel != null) XD[k].sections.splice(+b.dataset.sdel, 1);
+      else if (b.id === "xr") { XD = JSON.parse(JSON.stringify(EXAMS)); }
+      else if (b.id === "ejs") {
+        try { const j = JSON.parse($("#ej").value); if (!Array.isArray(j)) throw new Error("must be a list [ … ]"); XD = j; }
+        catch (err) { $("#eres").textContent = "✖ JSON: " + err.message; return; }
+      }
+      else if (b.id === "es") {
+        const errs = [];
+        XD.forEach((x, i) => {
+          const n = x.name.en || "Exam " + (i + 1);
+          if (!x.name.en) errs.push(`Exam ${i + 1}: enter the English name`);
+          if (!(x.duration_min > 0)) errs.push(`${n}: duration must be more than 0`);
+          if (!(x.mark > 0)) errs.push(`${n}: marks per question must be more than 0`);
+          if (!x.sections.length) errs.push(`${n}: add at least one subject`);
+          x.sections.forEach((s) => { if (!(s.count > 0)) errs.push(`${n}: question count must be more than 0`); });
+          const d = x.sections.map((s) => s.subject).filter((v, j, a) => a.indexOf(v) !== j);
+          if (d.length) errs.push(`${n}: ${subName(d[0])} is listed twice`);
+          if (!x.id) x.id = "exam_" + Date.now().toString(36) + i;
         });
-        W["data/exams.json"] = EXAMS = j; markDirty("data/exams.json"); $("#eres").textContent = "✔ Saved (" + j.length + " exams)";
-      } catch (err) { $("#eres").textContent = "✖ " + err.message; }
+        if (errs.length) { $("#eres").innerHTML = '<span style="color:var(--bad)">✖ ' + errs.map(esc).join("<br>✖ ") + "</span>"; return; }
+        W["data/exams.json"] = EXAMS = JSON.parse(JSON.stringify(XD));
+        markDirty("data/exams.json"); XD = null;
+        draw(); KJ.toast("Exam patterns saved – press 🚀 Publish to send to students"); return;
+      }
+      else return;
+      paint(); window.scrollTo(0, y);
     };
   };
 
