@@ -10,7 +10,7 @@ window.KJ_CONFIG = {
   TAGLINE_TE: "రాష్ట్ర స్థాయి పోటీ పరీక్షలు",
   NOTES_BRAND: "Notes by BALAJI SIR",
   CONCEPTS_BRAND: "Quick Revision Concepts by BALAJI SIR",
-  VERSION: "V5",
+  VERSION: "V7",
   BUILD_DATE: "2026-10-22",
 
   CONTACT_EMAIL: "YOUR_NEW_MAIL@gmail.com",          // <<< CHANGE (new Gmail)
@@ -47,7 +47,7 @@ window.KJ_CONFIG = {
 
   /* V4: Google Sheet student register (Apps Script web app – see tools/google_apps_script_students.gs) */
   SHEET: {
-    webapp_url: "https://script.google.com/macros/s/AKfycbxlUOt6CQQBY4YWwHLFntaFDbGXekzsfrcvbSkCtKHddJ1vBUOm0C9UuASySSgVAgD_Jw/exec"        // <<< CHANGE  (https://script.google.com/macros/s/…/exec)
+    webapp_url: "YOUR_APPS_SCRIPT_WEB_APP_URL"        // <<< CHANGE  (https://script.google.com/macros/s/…/exec)
   },
 
   DEFAULT_LANG: "bi",          // "en" | "te" | "bi" (bilingual English + Telugu)

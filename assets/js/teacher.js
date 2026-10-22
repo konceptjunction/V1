@@ -159,7 +159,7 @@ ${o.e.en || o.e.te ? `<div class="exp">${KJ.txt(o.e, "bi")}</div>` : ""}${o.vide
       const f = e.target.files[0]; if (!f) return;
       $("#ocrOut").innerHTML = '<div class="small muted">Running OCR (English + Telugu)… first time downloads language data.</div>';
       try {
-        await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js");
+        await loadScript(TESS_URL);
         const r = await window.Tesseract.recognize(f, "eng+tel");
         $("#ocrOut").innerHTML = `<label>OCR text – copy what you need</label><textarea style="min-height:140px">${esc(r.data.text)}</textarea>
 <button class="btn alt sm" id="ocrImp">Send to Bulk Import parser</button>`;
@@ -216,32 +216,121 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
        B) English            (Telugu may also come on the next line)
           తెలుగు
      Answer key lines like  1-B 2-C 3-D  or  1) B  */
-  const isTe = (s) => /[\u0C00-\u0C7F]/.test(s);
+  const isTe = (s) => /[ఀ-౿]/.test(s);
+  /* V7: splits one line into English / Telugu parts.
+     "English / తెలుగు"  ·  "English text తెలుగు text"  ·  pure Telugu  ·  pure English */
+  function splitEnTe(t) {
+    t = t.trim();
+    if (!isTe(t)) return { en: t, te: "" };
+    const sl = t.split(/\s+\/\s+|\s\/(?=\s*[ఀ-౿])|\/\s(?=[ఀ-౿])/);
+    if (sl.length > 1 && !isTe(sl[0])) return { en: sl[0].trim(), te: sl.slice(1).join(" / ").trim() };
+    const m = t.match(/^([^ఀ-౿]*?)\s+([ఀ-౿“"‘'(].*)$/);
+    if (m && (m[1].match(/[A-Za-z]/g) || []).length >= 8) return { en: m[1].trim(), te: m[2].trim() };
+    return { en: "", te: t };
+  }
+  /* Model-paper text (Word paste or PDF read):
+       1. English question …            ← a new question only when the number is the next one (1, 2, 3 …)
+       తెలుగు ప్రశ్న …                     so statement lists "1. … 2. …" inside a question stay inside it
+       A) English / తెలుగు   or  (A) …  or  (1) …
+       B) English            (Telugu may also come on the next line)
+     Answer key:  1-B 2-C 3-D   or  1) B   or  1-2 (option number)  */
   KJ.parsePaperText = function (txt, keyTxt) {
     const key = {};
-    (keyTxt || "").replace(/(\d+)\s*[-:.)=]\s*\(?([A-Da-d])\)?/g, (_, n, l) => (key[+n] = "ABCD".indexOf(l.toUpperCase())));
-    const blocks = txt.replace(/\r/g, "").split(/\n(?=\s*\d{1,3}\s*[.)]\s+)/).map((b) => b.trim()).filter((b) => /^\d{1,3}\s*[.)]/.test(b));
-    return blocks.map((b) => {
-      const no = +b.match(/^(\d{1,3})/)[1];
-      const lines = b.replace(/^\d{1,3}\s*[.)]\s*/, "").split("\n").map((l) => l.trim()).filter(Boolean);
-      const q = { en: [], te: [] }, o = { en: [], te: [] };
-      let inOpts = false;
-      for (const l of lines) {
-        const m = l.match(/^\(?([A-Da-d])\s*[).]\s*(.*)$/);
-        if (m) {
-          inOpts = true;
-          const parts = m[2].split(/\s+\/\s+|\s\/|\/\s/);
-          let en = parts[0] || "", te = parts.slice(1).join(" / ");
-          if (!te && isTe(en)) { te = en; en = ""; }
-          o.en.push(en.trim()); o.te.push(te.trim());
-        } else if (inOpts && o.en.length) {
-          const k = o.en.length - 1;
-          if (isTe(l)) o.te[k] = (o.te[k] ? o.te[k] + " " : "") + l; else o.en[k] = (o.en[k] + " " + l).trim();
-        } else (isTe(l) ? q.te : q.en).push(l);
+    (keyTxt || "").replace(/(\d+)\s*[-:.)=]\s*\(?([A-Da-d1-4])\)?/g, (_, n, l) => (key[+n] = /\d/.test(l) ? +l - 1 : "ABCD".indexOf(l.toUpperCase())));
+    const lines = txt.replace(/\r/g, "")
+      .split("\n").flatMap((l) => (/^\s*\(?A\).*\(B\).*\(C\).*\(D\)/.test(l) ? l.split(/[ \t]+(?=\([B-D]\)\s)/) : [l]))  // "(A) In (B) On (C) At (D) By" → one per line
+      .map((l) => l.trim()).filter(Boolean);
+    const out = []; let cur = null, last = 0;
+    const OPT = /^\(?([A-D])\s*\)(?!\s*:)\s*(.*)$/, NOPT = /^\(([1-4])\)(?!\s*:)\s*(.*)$/;   // "(A): statement" is not an option
+    for (const l of lines) {
+      const m = l.match(/^(\d{1,3})\s*[.)]\s*(.*)$/);
+      if (m && +m[1] === last + 1 && (!cur || cur.o.en.length >= 2)) {
+        cur = { no: +m[1], q: { en: [], te: [] }, o: { en: [], te: [] }, inOpt: false }; out.push(cur); last = +m[1];
+        if (m[2]) { const p = splitEnTe(m[2]); p.en && cur.q.en.push(p.en); p.te && cur.q.te.push(p.te); }
+        continue;
       }
-      return { no, q: { en: q.en.join(" "), te: q.te.join(" ") }, o, a: key[no] != null ? key[no] : null };
-    });
+      if (!cur) continue;
+      let om = l.match(OPT) || l.match(NOPT);
+      const nOpt = cur.o.en.length, exp = "ABCD"[cur.blk2 != null ? cur.blk2 : nOpt];
+      if (om && cur.inOpt && exp) {                                       // letter read wrongly but in the option sequence
+        const i0 = /\d/.test(om[1]) ? +om[1] - 1 : "ABCD".indexOf(om[1]);
+        if (i0 !== "ABCD".indexOf(exp) && !(i0 === 0 && nOpt >= 2)) om = [l, exp, om[2]];
+      }
+      if (!om && cur.inOpt && exp && (/^\(\S\)\s/.test(l) || /^\(?[0O8]\s*\)/.test(l) || new RegExp("^\\(?" + exp + "[\\]}|Y.,:]\\s").test(l)))
+        om = [l, exp, l.replace(/^\(?\S\S?\s*\)?\s*/, "")];              // OCR slips: "(9) …", "(౧) …", "0) …", "DY …" → expected letter
+      if (om) {
+        const idx = /\d/.test(om[1]) ? +om[1] - 1 : "ABCD".indexOf(om[1]);
+        if (cur.inOpt && idx < nOpt && (idx === 0 || cur.blk2 === idx)) {  // 2nd list "A) తెలుగు … D) …" = Telugu of the same options
+          const p2 = splitEnTe(om[2]); cur.o.te[idx] = p2.te || p2.en; cur.blk2 = idx + 1; continue;
+        }
+        cur.inOpt = true;
+        const p = splitEnTe(om[2]);
+        cur.o.en.push(p.en || p.te); cur.o.te.push(p.te);
+        continue;
+      }
+      if (cur.inOpt && cur.blk2) { const k = cur.blk2 - 1; cur.o.te[k] = (cur.o.te[k] + " " + l).trim(); continue; }
+      if (cur.inOpt && cur.o.en.length) {
+        const k = cur.o.en.length - 1, p = splitEnTe(l);
+        if (p.en) cur.o.en[k] = (cur.o.en[k] + " " + p.en).trim();
+        if (p.te) cur.o.te[k] = (cur.o.te[k] ? cur.o.te[k] + " " : "") + p.te;
+        continue;
+      }
+      const p = splitEnTe(l);
+      if (p.en) cur.q.en.push(p.en); if (p.te) cur.q.te.push(p.te);
+    }
+    return out.map((x) => ({ no: x.no, q: { en: x.q.en.join("\n"), te: x.q.te.join("\n") }, o: { en: x.o.en, te: x.o.te.map((t, i) => t || x.o.en[i]) }, a: key[x.no] != null ? key[x.no] : null }));
   };
+
+  /* ---------- V7: read a PDF question paper into the paste box ----------
+     • PDF with clean text (English-only papers)  → read the text directly (exact, fast)
+     • PDF with Telugu (Word "Print to PDF" fonts give broken text) or scanned PDF → OCR English + Telugu */
+  const PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+  const PDFJS_WORKER = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const TESS_URL = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";
+  function cleanPaperText(t) {
+    return t.replace(/‌(?=[\s\/,.?:)]|$)/gm, "")
+      .split("\n").map((l) => l.replace(/\s+$/, ""))
+      .filter((l) => !/KONCEPT\s*JUNCTION|DREAM\s*TO\s*ACHIEVE|^\s*(?:DREAM|KONCEPT|JUNCTION|ACHIEVE|JUN|CEPT)[A-Z ]{0,12}$|CONTACT\s*:|^\s*[_\-—=–.]{5,}\s*$|^\s*\[?\s*\]?\s*$/i.test(l))
+      .map((l) => l.replace(/^(\s*\d{1,3}),\s/, "$1. ").replace(/^(\s*\d{1,3})\s+\.\s*/, "$1. "))
+      .map((l) => ((l.match(/\s(?:-?>|—>|→)\s/g) || []).length >= 3 ? l.replace(/\s(?:-?>|—>)\s/g, " → ") : l))   // arrows read as ">"
+      .map((l) => (isTe(l) ? l.replace(/(^|[\s:])8908(?=\s|$|[:,])/g, "$1క్రింది") : l))                   // common OCR slip for క్రింది
+      .join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
+  KJ.readPdfPaper = async function (file, onProg) {
+    await loadScript(PDFJS);
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+    const pdf = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+    const n = pdf.numPages, pages = [];
+    let text = "", set = "";
+    for (let i = 1; i <= n; i++) {
+      const tc = await (await pdf.getPage(i)).getTextContent();
+      text += tc.items.map((it) => it.str + (it.hasEOL ? "\n" : "")).join("") + "\n";
+    }
+    const setM = text.match(/^\s*([A-Z])\s*$/m); if (setM) set = setM[1];
+    const useText = !isTe(text) && (text.match(/[A-Za-z]/g) || []).length > 200;
+    if (useText) { onProg && onProg("Read text from " + n + " page(s)"); return { text: cleanPaperText(text), set, pages: n, mode: "text" }; }
+    await loadScript(TESS_URL);
+    onProg && onProg("Loading Telugu + English reader (first time ~15 MB)…");
+    const worker = await window.Tesseract.createWorker(["eng", "tel"], 1);
+    await worker.setParameters({ tessedit_pageseg_mode: "6", preserve_interword_spaces: "1" });
+    let all = "";
+    for (let i = 1; i <= n; i++) {
+      onProg && onProg("Reading page " + i + " of " + n + "…");
+      const page = await pdf.getPage(i), vp = page.getViewport({ scale: 3.5 });
+      const c = document.createElement("canvas"); c.width = vp.width; c.height = vp.height;
+      const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      const im = ctx.getImageData(0, 0, c.width, c.height), d = im.data;      // remove the grey watermark
+      for (let k = 0; k < d.length; k += 4) { const v = (d[k] * 0.3 + d[k + 1] * 0.59 + d[k + 2] * 0.11) < 140 ? 0 : 255; d[k] = d[k + 1] = d[k + 2] = v; }
+      ctx.putImageData(im, 0, 0);
+      const r = await worker.recognize(c);
+      all += r.data.text + "\n";
+    }
+    await worker.terminate();
+    const sm = all.match(/^\s*([A-Z])\s*$/m); if (sm && !set) set = sm[1];
+    return { text: cleanPaperText(all), set, pages: n, mode: "ocr" };
+  };
+
   function parseCSV(text) {
     const rows = []; let row = [], cur = "", q = false;
     for (let i = 0; i < text.length; i++) {
@@ -257,27 +346,45 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
 
   P.import = (el) => {
     el.innerHTML = `<div class="two">
-<div class="card"><h3 style="margin-top:0">📄 Paste model-paper text</h3>
-<p class="small muted">Paste from your Word file (Unicode Telugu). Text copied out of a PDF made with legacy Telugu fonts comes out garbled – use the Word source or OCR instead.</p>
+<div class="card"><h3 style="margin-top:0">📄 Question paper – PDF or pasted text</h3>
+<div class="row"><label class="btn acc sm" style="margin:0">📄 Read PDF question paper<input type="file" id="pdfin" accept="application/pdf,.pdf" hidden></label>
+<span class="small" id="pdfst"></span></div>
+<p class="small muted">The PDF is read into the box below (Telugu pages are read with OCR, about 10–30 s per page – use a laptop). <b>Check the text</b>, type the <b>answer key</b>, then Preview → Import. Diagrams are not read – add them later in ➕ Add / Edit. You can also paste text from a Word file here.</p>
 <textarea id="pt" style="min-height:220px" placeholder="1. Ginger and turmeric propagate naturally through:&#10;అల్లం మరియు పసుపు …?&#10;A) Tubers / దుంపలు&#10;B) Rhizomes / భూగర్భ కాండాలు&#10;C) Bulbs / కాండాలు&#10;D) Runners / నేలపై పాకే కాండాలు">${esc(S.get("t_import_text", ""))}</textarea>
 <label>Answer key (e.g. 1-B 2-C 3-D 4-B)</label><input id="pk">
 <div class="row"><div style="flex:2"><label>Subject</label><select id="ps">${SUBS.map((s) => `<option value="${s.id}">${esc(s.name.en)}</option>`).join("")}</select></div>
 <div style="flex:2"><label>Topic</label><input id="pto"></div></div>
 <label>Exams</label><div id="pe">${EXAMS.map((x) => `<label class="chk"><input type="checkbox" value="${x.id}">${esc(x.name.en)}</label>`).join("")}</div>
-<div class="row"><label class="chk"><input type="checkbox" id="mkp"> Also create a Topic Test – Set</label><input id="pset" value="A" style="width:60px"><input id="ptitle" placeholder="Test title" style="flex:1"></div>
+<div class="row"><label class="chk"><input type="checkbox" id="mkp"> Also create a Topic Test – Set</label><label class="chk"><input type="checkbox" id="pvis" checked> Visible to students</label><input id="pset" value="A" style="width:60px"><input id="ptitle" placeholder="Test title" style="flex:1"></div>
 <div class="row" style="margin-top:10px"><button class="btn alt sm" id="pp">Preview</button><span class="sp"></span><button class="btn ok" id="pi">Import</button></div>
 <div id="pres"></div></div>
-<div class="card"><h3 style="margin-top:0">📊 CSV / JSON import</h3>
+<div class="card"><h3 style="margin-top:0">📊 CSV / JSON / Topic Test file</h3>
+<p class="small"><b>Topic Test file</b> (from BALAJI SIR's prepared papers, e.g. <code>KJ_General_Science_Set_S_topic_test.json</code>): choose it below – questions are added <b>and</b> the Topic Test is created in one step.</p>
 <p class="small muted">CSV columns: <code>${CSV_HEAD.join(", ")}</code>. <b>exams</b> separated by <code>;</code>, <b>ans</b> = A/B/C/D (blank for conventional).</p>
-<div class="row"><button class="btn alt sm" id="tpl">⬇ CSV template</button><label class="btn alt sm" style="margin:0">Choose CSV / JSON<input type="file" id="cf" accept=".csv,.json" hidden></label></div>
+<div class="row"><button class="btn alt sm" id="tpl">⬇ CSV template</button><label class="btn acc sm" style="margin:0">Choose CSV / JSON / Topic Test file<input type="file" id="cf" accept=".csv,.json" hidden></label></div>
 <div id="cres" class="small" style="margin-top:10px"></div></div></div>`;
     const prev = () => {
       const r = KJ.parsePaperText($("#pt").value, $("#pk").value);
-      $("#pres").innerHTML = `<p class="small"><b>${r.length}</b> questions found · ${r.filter((x) => x.a == null).length} without answer key · ${r.filter((x) => x.o.en.length !== 4).length} not having 4 options</p>` +
-        r.slice(0, 40).map((x) => `<div class="small" style="border-top:1px solid var(--line);padding:4px 0"><b>${x.no}.</b> ${esc(x.q.en)} <span class="t-te" style="display:inline">${esc(x.q.te)}</span><br>${x.o.en.map((o, i) => `<span class="${i === x.a ? "pill acc" : "pill"}">${KJ.LETTERS[i]}) ${esc(o)}${x.o.te[i] ? " / " + esc(x.o.te[i]) : ""}</span>`).join(" ")}</div>`).join("");
+      const noKey = r.filter((x) => x.a == null).length, bad4 = r.filter((x) => x.o.en.length !== 4);
+      $("#pres").innerHTML = `<p class="small"><b>${r.length}</b> questions found · <span style="${noKey ? "color:var(--bad);font-weight:700" : ""}">${noKey} without answer key</span> · <span style="${bad4.length ? "color:var(--warn);font-weight:700" : ""}">${bad4.length} not having 4 options${bad4.length ? " (Q" + bad4.map((x) => x.no).join(", Q") + ")" : ""}</span></p>` +
+        r.slice(0, 200).map((x) => `<div class="small" style="border-top:1px solid var(--line);padding:4px 0"><b>${x.no}.</b> ${esc(x.q.en)} <span class="t-te" style="display:inline">${esc(x.q.te)}</span><br>${x.o.en.map((o, i) => `<span class="${i === x.a ? "pill acc" : "pill"}">${KJ.LETTERS[i]}) ${esc(o)}${x.o.te[i] ? " / " + esc(x.o.te[i]) : ""}</span>`).join(" ")}</div>`).join("");
       return r;
     };
     $("#pp").onclick = prev;
+    $("#pdfin").onchange = async (e) => {                 // V7
+      const f = e.target.files[0]; if (!f) return;
+      const st = $("#pdfst"); st.textContent = "Opening " + f.name + "…";
+      try {
+        const r = await KJ.readPdfPaper(f, (m) => (st.textContent = m));
+        $("#pt").value = r.text; S.set("t_import_text", r.text);
+        if (r.set) $("#pset").value = r.set;
+        if (!$("#ptitle").value) $("#ptitle").value = f.name.replace(/\.pdf$/i, "").replace(/^KJ[_ ]*/i, "").replace(/_/g, " ").trim() + (r.set ? " – Set " + r.set : "");
+        $("#mkp").checked = true;
+        const q = prev();
+        st.innerHTML = `✔ ${r.pages} page(s) read ${r.mode === "ocr" ? "with OCR" : "as text"} → <b>${q.length}</b> questions. ${r.mode === "ocr" ? "Please check spellings, " : ""}type the answer key, choose Subject, then Import.`;
+      } catch (err) { st.innerHTML = '<span style="color:var(--bad)">✖ Could not read the PDF: ' + esc(err.message) + "</span>"; }
+      e.target.value = "";
+    };
     $("#pt").oninput = () => S.set("t_import_text", $("#pt").value);
     $("#pi").onclick = () => {
       const r = prev(); if (!r.length) return KJ.toast("Nothing to import");
@@ -291,9 +398,9 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       });
       markDirty(bankPath(sid));
       if ($("#mkp").checked) {
-        const papers = W["data/papers.json"]; const pid = "KJ-TT-" + String(papers.length + 1).padStart(3, "0");
+        const papers = W["data/papers.json"]; let pn = papers.length + 1, pid; do { pid = "KJ-TT-" + String(pn++).padStart(3, "0"); } while (papers.some((p) => p.id === pid));
         papers.push({ id: pid, subject: sid, topic: $("#pto").value.trim(), set: $("#pset").value.trim() || "A", title: { en: $("#ptitle").value.trim() || $("#pto").value.trim() || "Topic Test " + (papers.length + 1), te: "" },
-          date: KJ.today(), duration_min: ids.length, mark: 1, negative: 0.25, visible: false, qids: ids });
+          date: KJ.today(), duration_min: ids.length, mark: 1, negative: 0.25, visible: $("#pvis").checked, qids: ids });
         bank(sid).forEach((q) => ids.includes(q.id) && (q.paper = pid));
         markDirty("data/papers.json");
       }
@@ -304,9 +411,16 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     $("#cf").onchange = async (e) => {
       const f = e.target.files[0]; if (!f) return;
       const text = (await f.text()).replace(/^\ufeff/, "");
-      let items = [];
+      let items = [], TT = null;
       try {
-        if (f.name.endsWith(".json")) items = JSON.parse(text);
+        if (f.name.endsWith(".json")) {
+          items = JSON.parse(text);
+          /* V6: Topic Test bundle  { "topic_test": {...}, "questions": [...] }  → questions + Topic Test in one go */
+          if (items && !Array.isArray(items) && Array.isArray(items.questions)) { TT = items.topic_test || null; items = items.questions; }
+          if (!Array.isArray(items)) throw new Error("JSON must be a list of questions or a Topic Test bundle");
+          if (TT && TT.key && W["data/papers.json"].some((p) => p.key === TT.key) &&
+              !KJ.confirm("This Topic Test (" + (TT.title?.en || TT.key) + ") was already imported. Import it again as a second copy?")) { $("#cres").textContent = "Cancelled – nothing imported."; e.target.value = ""; return; }
+        }
         else {
           const rows = parseCSV(text), h = rows.shift().map((x) => x.trim().toLowerCase());
           const g = (r, k) => (r[h.indexOf(k)] || "").trim();
@@ -320,15 +434,29 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
           });
         }
       } catch (err) { $("#cres").textContent = "✖ " + err.message; return; }
-      let ok = 0, bad = [];
+      let ok = 0, bad = []; const newIds = [];
       items.forEach((it, i) => {
-        if (!SUBS.find((s) => s.id === it.subject)) return bad.push("row " + (i + 2) + ": unknown subject '" + it.subject + "'");
-        if (it.type === "mcq" && !(it.a >= 0)) return bad.push("row " + (i + 2) + ": bad answer");
+        const row = TT ? "Q" + (i + 1) : "row " + (i + 2);
+        if (!SUBS.find((s) => s.id === it.subject)) return bad.push(row + ": unknown subject '" + it.subject + "'");
+        if (it.type === "mcq" && !(it.a >= 0)) return bad.push(row + ": bad answer");
         it.id = it.id && !allQs().some((q) => q.id === it.id) ? it.id : nextId(it.subject);
         it.img = it.img || ""; it.video = it.video || ""; it.e = it.e || { en: "", te: "" };
-        bank(it.subject).push(it); markDirty(bankPath(it.subject)); ok++;
+        bank(it.subject).push(it); markDirty(bankPath(it.subject)); ok++; newIds.push(it.id);
       });
-      $("#cres").innerHTML = `✔ Imported ${ok}` + (bad.length ? `<br>✖ Skipped ${bad.length}:<br>${bad.map(esc).join("<br>")}` : "");
+      let ttMsg = "";
+      if (TT && newIds.length) {                         // V6: create the Topic Test from the imported questions
+        const papers = W["data/papers.json"];
+        let n = papers.length + 1, pid; do { pid = "KJ-TT-" + String(n++).padStart(3, "0"); } while (papers.some((p) => p.id === pid));
+        const p = { id: pid, key: TT.key || "", subject: SUBS.some((u) => u.id === TT.subject) ? TT.subject : items[0].subject, topic: TT.topic || "",
+          set: TT.set || "A", title: { en: TT.title?.en || "Topic Test", te: TT.title?.te || "" }, date: TT.date || KJ.today(),
+          duration_min: +TT.duration_min || newIds.length, mark: +TT.mark || 1, negative: TT.negative != null ? +TT.negative : 0.25,
+          visible: TT.visible !== false, qids: newIds };
+        papers.push(p); markDirty("data/papers.json");
+        items.forEach((it) => { if (newIds.includes(it.id)) it.paper = pid; });
+        ttMsg = `<br>✔ Topic Test created: <b>${esc(p.title.en)}</b> (Set ${esc(p.set)}, ${newIds.length} Qs, ${p.duration_min} min, ${p.visible ? "Visible" : "Hidden"}) – check it in 🎯 Topic Tests, then 🚀 Publish.`;
+      }
+      $("#cres").innerHTML = `✔ Imported ${ok} questions` + ttMsg + (bad.length ? `<br>✖ Skipped ${bad.length}:<br>${bad.map(esc).join("<br>")}` : "");
+      e.target.value = "";
       pill();
     };
   };
