@@ -1,0 +1,13 @@
+[
+  { "id": "polity",    "file": "data/questions/polity.json",    "icon": "⚖️", "name": { "en": "Indian Polity & Constitution", "te": "భారత రాజ్యాంగం & పాలిటీ" } },
+  { "id": "history",   "file": "data/questions/history.json",   "icon": "🏛️", "name": { "en": "Indian History", "te": "భారతదేశ చరిత్ర" } },
+  { "id": "state",     "file": "data/questions/state.json",     "icon": "🗺️", "name": { "en": "AP & Telangana – History, Culture & Reorganisation", "te": "ఆంధ్రప్రదేశ్ & తెలంగాణ – చరిత్ర, సంస్కృతి & పునర్విభజన" } },
+  { "id": "geography", "file": "data/questions/geography.json", "icon": "🌏", "name": { "en": "Geography", "te": "భూగోళశాస్త్రం" } },
+  { "id": "economy",   "file": "data/questions/economy.json",   "icon": "📈", "name": { "en": "Indian Economy", "te": "భారత ఆర్థిక వ్యవస్థ" } },
+  { "id": "science",   "file": "data/questions/science.json",   "icon": "🔬", "name": { "en": "General Science", "te": "సాధారణ శాస్త్రం" } },
+  { "id": "reasoning", "file": "data/questions/reasoning.json", "icon": "🧩", "name": { "en": "Reasoning & Mental Ability", "te": "రీజనింగ్ & మానసిక సామర్థ్యం" } },
+  { "id": "quant",     "file": "data/questions/quant.json",     "icon": "🔢", "name": { "en": "Quantitative Aptitude", "te": "అంకగణితం" } },
+  { "id": "english",   "file": "data/questions/english.json",   "icon": "🔤", "name": { "en": "General English", "te": "జనరల్ ఇంగ్లీష్" } },
+  { "id": "eee",       "file": "data/questions/eee.json",       "icon": "⚡", "name": { "en": "Electrical Engineering (AE/AEE)", "te": "ఎలక్ట్రికల్ ఇంజనీరింగ్ (AE/AEE)" } },
+  { "id": "current",   "file": "data/questions/current.json",   "icon": "📰", "name": { "en": "Current Affairs", "te": "వర్తమాన అంశాలు" } }
+]

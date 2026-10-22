@@ -1,0 +1,113 @@
+[
+ {
+  "id": "eng-0001",
+  "type": "mcq",
+  "subject": "english",
+  "topic": "Synonyms",
+  "exams": [
+   "ae_eee",
+   "group4"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Choose the synonym of 'Abundant'.",
+   "te": "'Abundant' పదానికి సమానార్థకం ఎంచుకోండి."
+  },
+  "o": {
+   "en": [
+    "Scarce",
+    "Plentiful",
+    "Rare",
+    "Limited"
+   ],
+   "te": [
+    "Scarce",
+    "Plentiful",
+    "Rare",
+    "Limited"
+   ]
+  },
+  "a": 1,
+  "e": {
+   "en": "Abundant means existing in large quantity — plentiful.",
+   "te": "Abundant అంటే అధికంగా ఉన్న — Plentiful."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "eng-0002",
+  "type": "mcq",
+  "subject": "english",
+  "topic": "Antonyms",
+  "exams": [
+   "ae_eee",
+   "group4"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Choose the antonym of 'Ancient'.",
+   "te": "'Ancient' పదానికి వ్యతిరేకార్థకం ఎంచుకోండి."
+  },
+  "o": {
+   "en": [
+    "Old",
+    "Antique",
+    "Modern",
+    "Archaic"
+   ],
+   "te": [
+    "Old",
+    "Antique",
+    "Modern",
+    "Archaic"
+   ]
+  },
+  "a": 2,
+  "e": {
+   "en": "Ancient means very old; its opposite is Modern.",
+   "te": "Ancient అంటే చాలా పాతది; దీని వ్యతిరేకార్థం Modern."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "eng-0003",
+  "type": "mcq",
+  "subject": "english",
+  "topic": "Prepositions",
+  "exams": [
+   "ae_eee",
+   "group4"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "She has been working here ____ 2019.",
+   "te": "ఖాళీని పూరించండి: She has been working here ____ 2019."
+  },
+  "o": {
+   "en": [
+    "for",
+    "since",
+    "from",
+    "by"
+   ],
+   "te": [
+    "for",
+    "since",
+    "from",
+    "by"
+   ]
+  },
+  "a": 1,
+  "e": {
+   "en": "'Since' is used with a point of time in the perfect continuous tense.",
+   "te": "Perfect continuous tense లో ఒక నిర్దిష్ట సమయ బిందువుతో 'since' వాడతారు."
+  },
+  "img": "",
+  "video": ""
+ }
+]

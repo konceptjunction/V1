@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>KJ Teacher Upload</title>
+<meta name="theme-color" content="#1b3a6b">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+  main{max-width:1180px;padding-bottom:30px}
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px}
+  .tabs button{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:7px 12px;font-size:13px}
+  .tabs button.on{background:var(--brand2);color:#fff;border-color:var(--brand2)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .two3{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+  @media(max-width:860px){.two,.two3{grid-template-columns:1fr}}
+  textarea{min-height:64px}
+  .optrow{display:grid;grid-template-columns:30px 1fr 1fr;gap:6px;align-items:center;margin-bottom:6px}
+  .qlist .qi{display:flex;gap:8px;align-items:flex-start;border-bottom:1px solid var(--line);padding:8px 2px;font-size:13.5px}
+  .qlist .qi .q{flex:1;min-width:0}
+  .log{font:12px ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;max-height:240px;overflow:auto;white-space:pre-wrap}
+  .lock{max-width:380px;margin:40px auto;text-align:center}
+  .lock img{width:110px;height:110px;border-radius:50%;background:#fff;box-shadow:var(--shadow)}
+  .dirty{color:var(--warn);font-weight:700}
+  .chk{display:inline-flex;gap:5px;align-items:center;margin:0 10px 4px 0;color:var(--ink);font-size:13px}
+  .chk input{width:auto}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <img class="logo" src="assets/icons/logo.png" alt="KJ">
+  <div class="ttl"><b>KONCEPT JUNCTION</b><small>Teacher Upload</small></div>
+  <span class="pill acc" id="dirtyPill" style="display:none"></span>
+  <a class="tb-btn" href="home.html" style="text-decoration:none">Student view ↗</a>
+</header>
+<main id="t"></main>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/teacher.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+[
+ {
+  "id": "eee-0001",
+  "type": "mcq",
+  "subject": "eee",
+  "topic": "Basic Electrical",
+  "exams": [
+   "ae_eee"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What is the hot resistance of a 100 W, 250 V lamp?",
+   "te": "100 W, 250 V బల్బు నిరోధం ఎంత?"
+  },
+  "o": {
+   "en": [
+    "2.5 Ω",
+    "625 Ω",
+    "25 Ω",
+    "400 Ω"
+   ],
+   "te": [
+    "2.5 Ω",
+    "625 Ω",
+    "25 Ω",
+    "400 Ω"
+   ]
+  },
+  "a": 1,
+  "e": {
+   "en": "$R=\\dfrac{V^2}{P}=\\dfrac{250^2}{100}=625\\,\\Omega$",
+   "te": "$R=\\dfrac{V^2}{P}=\\dfrac{250^2}{100}=625\\,\\Omega$"
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "eee-0002",
+  "type": "mcq",
+  "subject": "eee",
+  "topic": "Transformers",
+  "exams": [
+   "ae_eee"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A transformer works on the principle of:",
+   "te": "ట్రాన్స్‌ఫార్మర్ ఏ సూత్రంపై పనిచేస్తుంది?"
+  },
+  "o": {
+   "en": [
+    "Self induction",
+    "Electrostatic induction",
+    "Mutual induction",
+    "Electrolysis"
+   ],
+   "te": [
+    "స్వయం ప్రేరణ",
+    "స్థిర విద్యుత్ ప్రేరణ",
+    "పరస్పర ప్రేరణ",
+    "విద్యుద్విశ్లేషణ"
+   ]
+  },
+  "a": 2,
+  "e": {
+   "en": "An alternating flux set up by the primary links the secondary and induces an EMF — mutual induction.",
+   "te": "ప్రైమరీ వల్ల ఏర్పడిన మారే ఫ్లక్స్ సెకండరీని అనుసంధానించి EMF ను ప్రేరేపిస్తుంది — పరస్పర ప్రేరణ."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "eee-0003",
+  "type": "mcq",
+  "subject": "eee",
+  "topic": "Power System Protection",
+  "exams": [
+   "ae_eee"
+  ],
+  "year": "",
+  "level": "medium",
+  "q": {
+   "en": "Zone-1 of a distance relay is normally set to about what percentage of the protected line impedance?",
+   "te": "డిస్టెన్స్ రిలే జోన్-1 సాధారణంగా రక్షిత లైన్ ఇంపెడెన్స్‌లో ఎంత శాతానికి సెట్ చేస్తారు?"
+  },
+  "o": {
+   "en": [
+    "50%",
+    "80%",
+    "120%",
+    "150%"
+   ],
+   "te": [
+    "50%",
+    "80%",
+    "120%",
+    "150%"
+   ]
+  },
+  "a": 1,
+  "e": {
+   "en": "Zone-1 is set to about 80% (typically 80–85%) of the line to avoid overreach from CT/VT and line-data errors; it trips without intentional delay.",
+   "te": "CT/VT మరియు లైన్ డేటా లోపాల వల్ల ఓవర్‌రీచ్ కాకుండా జోన్-1 ను లైన్‌లో సుమారు 80% (సాధారణంగా 80–85%) కు సెట్ చేస్తారు; ఇది ఉద్దేశపూర్వక ఆలస్యం లేకుండా ట్రిప్ చేస్తుంది."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "eee-0004",
+  "type": "mcq",
+  "subject": "eee",
+  "topic": "Electrical Machines",
+  "exams": [
+   "ae_eee"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The synchronous speed of a 4-pole, 50 Hz induction motor is:",
+   "te": "4-పోల్, 50 Hz ఇండక్షన్ మోటార్ సింక్రోనస్ వేగం ఎంత?"
+  },
+  "o": {
+   "en": [
+    "750 rpm",
+    "1000 rpm",
+    "1500 rpm",
+    "3000 rpm"
+   ],
+   "te": [
+    "750 rpm",
+    "1000 rpm",
+    "1500 rpm",
+    "3000 rpm"
+   ]
+  },
+  "a": 2,
+  "e": {
+   "en": "$N_s=\\dfrac{120f}{P}=\\dfrac{120\\times 50}{4}=1500$ rpm",
+   "te": "$N_s=\\dfrac{120f}{P}=\\dfrac{120\\times 50}{4}=1500$ rpm"
+  },
+  "img": "",
+  "video": ""
+ }
+]

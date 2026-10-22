@@ -1,0 +1,116 @@
+[
+ {
+  "id": "qua-0001",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "Simple Interest",
+  "exams": [
+   "group4",
+   "police_si",
+   "ae_eee"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Find the simple interest on ₹5000 at 8% per annum for 3 years.",
+   "te": "₹5000 పై సంవత్సరానికి 8% సాధారణ వడ్డీ రేటుతో 3 సంవత్సరాలకు వడ్డీ ఎంత?"
+  },
+  "o": {
+   "en": [
+    "₹1000",
+    "₹1200",
+    "₹1250",
+    "₹1400"
+   ],
+   "te": [
+    "₹1000",
+    "₹1200",
+    "₹1250",
+    "₹1400"
+   ]
+  },
+  "a": 1,
+  "e": {
+   "en": "$SI=\\dfrac{PRT}{100}=\\dfrac{5000\\times 8\\times 3}{100}=1200$, i.e. ₹1200.",
+   "te": "$SI=\\dfrac{PRT}{100}=\\dfrac{5000\\times 8\\times 3}{100}=1200$, అంటే ₹1200."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "qua-0002",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "Percentage",
+  "exams": [
+   "group4",
+   "police_si",
+   "ae_eee"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What is 20% of 450?",
+   "te": "450 లో 20% ఎంత?"
+  },
+  "o": {
+   "en": [
+    "90",
+    "80",
+    "95",
+    "100"
+   ],
+   "te": [
+    "90",
+    "80",
+    "95",
+    "100"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "$\\dfrac{20}{100}\\times 450 = 90$",
+   "te": "$\\dfrac{20}{100}\\times 450 = 90$"
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "qua-0003",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "Averages",
+  "exams": [
+   "group4",
+   "police_si",
+   "ae_eee"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What is the average of the first 10 natural numbers?",
+   "te": "మొదటి 10 సహజ సంఖ్యల సగటు ఎంత?"
+  },
+  "o": {
+   "en": [
+    "6",
+    "6.5",
+    "5.5",
+    "5"
+   ],
+   "te": [
+    "6",
+    "6.5",
+    "5.5",
+    "5"
+   ]
+  },
+  "a": 2,
+  "e": {
+   "en": "Average of first $n$ natural numbers $=\\dfrac{n+1}{2}=\\dfrac{11}{2}=5.5$",
+   "te": "మొదటి $n$ సహజ సంఖ్యల సగటు $=\\dfrac{n+1}{2}=\\dfrac{11}{2}=5.5$"
+  },
+  "img": "",
+  "video": ""
+ }
+]

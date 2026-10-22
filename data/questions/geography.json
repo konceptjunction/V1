@@ -1,0 +1,122 @@
+[
+ {
+  "id": "geo-0001",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "Rivers",
+  "exams": [
+   "appsc_g2",
+   "appsc_g1",
+   "tspsc_g2",
+   "group4",
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Where does the river Krishna originate?",
+   "te": "కృష్ణా నది ఎక్కడ జన్మిస్తుంది?"
+  },
+  "o": {
+   "en": [
+    "Mahabaleshwar",
+    "Trimbakeshwar",
+    "Amarkantak",
+    "Brahmagiri"
+   ],
+   "te": [
+    "మహాబలేశ్వర్",
+    "త్ర్యంబకేశ్వర్",
+    "అమర్‌కంటక్",
+    "బ్రహ్మగిరి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "The Krishna rises near Mahabaleshwar in the Western Ghats (Maharashtra); the Godavari rises at Trimbakeshwar.",
+   "te": "కృష్ణా నది మహారాష్ట్రలోని పశ్చిమ కనుమలలో మహాబలేశ్వర్ వద్ద జన్మిస్తుంది; గోదావరి త్ర్యంబకేశ్వర్ వద్ద జన్మిస్తుంది."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "geo-0002",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "Rivers",
+  "exams": [
+   "appsc_g2",
+   "appsc_g1",
+   "tspsc_g2",
+   "group4",
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which is the longest river of peninsular India?",
+   "te": "ద్వీపకల్ప భారతదేశంలో అతి పొడవైన నది ఏది?"
+  },
+  "o": {
+   "en": [
+    "Krishna",
+    "Godavari",
+    "Kaveri",
+    "Mahanadi"
+   ],
+   "te": [
+    "కృష్ణా",
+    "గోదావరి",
+    "కావేరి",
+    "మహానది"
+   ]
+  },
+  "a": 1,
+  "e": {
+   "en": "The Godavari (about 1,465 km) is called 'Dakshina Ganga'.",
+   "te": "గోదావరి (సుమారు 1,465 కి.మీ) ని 'దక్షిణ గంగ' అంటారు."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "geo-0003",
+  "type": "mcq",
+  "subject": "geography",
+  "topic": "Lakes",
+  "exams": [
+   "appsc_g2",
+   "appsc_g1",
+   "tspsc_g2",
+   "group4",
+   "police_si"
+  ],
+  "year": "",
+  "level": "medium",
+  "q": {
+   "en": "Kolleru Lake lies between the deltas of which rivers?",
+   "te": "కొల్లేరు సరస్సు ఏ నదుల డెల్టాల మధ్య ఉంది?"
+  },
+  "o": {
+   "en": [
+    "Krishna and Penna",
+    "Godavari and Vamsadhara",
+    "Godavari and Krishna",
+    "Penna and Swarnamukhi"
+   ],
+   "te": [
+    "కృష్ణా, పెన్నా",
+    "గోదావరి, వంశధార",
+    "గోదావరి, కృష్ణా",
+    "పెన్నా, స్వర్ణముఖి"
+   ]
+  },
+  "a": 2,
+  "e": {
+   "en": "Kolleru, a freshwater lake, lies between the Godavari and Krishna deltas.",
+   "te": "కొల్లేరు మంచినీటి సరస్సు గోదావరి, కృష్ణా డెల్టాల మధ్య ఉంది."
+  },
+  "img": "",
+  "video": ""
+ }
+]

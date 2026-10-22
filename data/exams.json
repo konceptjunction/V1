@@ -1,0 +1,73 @@
+[
+  {
+    "id": "appsc_g2", "board": "APPSC",
+    "name": { "en": "APPSC Group-II (Screening)", "te": "APPSC గ్రూప్-II (స్క్రీనింగ్)" },
+    "duration_min": 150, "mark": 1, "negative": 0.3333,
+    "sections": [
+      { "subject": "state", "count": 30 }, { "subject": "history", "count": 15 },
+      { "subject": "polity", "count": 30 }, { "subject": "geography", "count": 15 },
+      { "subject": "economy", "count": 15 }, { "subject": "science", "count": 15 },
+      { "subject": "current", "count": 15 }, { "subject": "reasoning", "count": 15 }
+    ],
+    "note": "Default pattern — verify with the latest official notification and edit in Teacher Upload > Exams."
+  },
+  {
+    "id": "appsc_g1", "board": "APPSC",
+    "name": { "en": "APPSC Group-I (Prelims – GS)", "te": "APPSC గ్రూప్-I (ప్రిలిమ్స్ – జనరల్ స్టడీస్)" },
+    "duration_min": 120, "mark": 1, "negative": 0.3333,
+    "sections": [
+      { "subject": "history", "count": 25 }, { "subject": "state", "count": 20 },
+      { "subject": "polity", "count": 25 }, { "subject": "geography", "count": 20 },
+      { "subject": "economy", "count": 15 }, { "subject": "science", "count": 15 }
+    ],
+    "note": "Default pattern — verify with the latest official notification."
+  },
+  {
+    "id": "tspsc_g2", "board": "TGPSC",
+    "name": { "en": "TGPSC / TSPSC Group-II (Paper-wise GS)", "te": "TGPSC / TSPSC గ్రూప్-II" },
+    "duration_min": 150, "mark": 1, "negative": 0,
+    "sections": [
+      { "subject": "state", "count": 40 }, { "subject": "history", "count": 20 },
+      { "subject": "polity", "count": 30 }, { "subject": "economy", "count": 20 },
+      { "subject": "geography", "count": 15 }, { "subject": "current", "count": 15 },
+      { "subject": "reasoning", "count": 10 }
+    ],
+    "note": "Default pattern — verify with the latest official notification."
+  },
+  {
+    "id": "group4", "board": "APPSC / TGPSC",
+    "name": { "en": "Group-IV / VRO / Panchayat Secretary", "te": "గ్రూప్-IV / VRO / పంచాయతీ కార్యదర్శి" },
+    "duration_min": 150, "mark": 1, "negative": 0,
+    "sections": [
+      { "subject": "state", "count": 25 }, { "subject": "history", "count": 20 },
+      { "subject": "polity", "count": 20 }, { "subject": "geography", "count": 15 },
+      { "subject": "economy", "count": 10 }, { "subject": "science", "count": 15 },
+      { "subject": "reasoning", "count": 20 }, { "subject": "quant", "count": 15 },
+      { "subject": "current", "count": 10 }
+    ],
+    "note": "Default pattern — verify with the latest official notification."
+  },
+  {
+    "id": "police_si", "board": "SLPRB",
+    "name": { "en": "Police SI / Constable (Prelims)", "te": "పోలీస్ SI / కానిస్టేబుల్ (ప్రిలిమ్స్)" },
+    "duration_min": 180, "mark": 1, "negative": 0.2,
+    "sections": [
+      { "subject": "reasoning", "count": 50 }, { "subject": "quant", "count": 50 },
+      { "subject": "history", "count": 20 }, { "subject": "state", "count": 20 },
+      { "subject": "polity", "count": 15 }, { "subject": "geography", "count": 15 },
+      { "subject": "science", "count": 15 }, { "subject": "current", "count": 15 }
+    ],
+    "note": "Default pattern — verify with the latest official notification."
+  },
+  {
+    "id": "ae_eee", "board": "GENCO / TRANSCO / DISCOM / PSC",
+    "name": { "en": "AE / AEE – Electrical", "te": "AE / AEE – ఎలక్ట్రికల్" },
+    "duration_min": 120, "mark": 1, "negative": 0,
+    "sections": [
+      { "subject": "eee", "count": 100 }, { "subject": "reasoning", "count": 10 },
+      { "subject": "quant", "count": 10 }, { "subject": "state", "count": 10 },
+      { "subject": "current", "count": 10 }, { "subject": "english", "count": 10 }
+    ],
+    "note": "Default pattern — verify with the latest official notification."
+  }
+]

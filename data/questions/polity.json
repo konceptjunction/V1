@@ -1,0 +1,162 @@
+[
+ {
+  "id": "pol-0001",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "Constitution Making",
+  "exams": [
+   "appsc_g2",
+   "appsc_g1",
+   "tspsc_g2",
+   "group4",
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who is known as the 'Father of the Indian Constitution'?",
+   "te": "'భారత రాజ్యాంగ పితామహుడు' అని ఎవరిని పిలుస్తారు?"
+  },
+  "o": {
+   "en": [
+    "Dr. B.R. Ambedkar",
+    "Jawaharlal Nehru",
+    "Dr. Rajendra Prasad",
+    "Sardar Vallabhbhai Patel"
+   ],
+   "te": [
+    "డా. బి.ఆర్. అంబేద్కర్",
+    "జవహర్‌లాల్ నెహ్రూ",
+    "డా. రాజేంద్ర ప్రసాద్",
+    "సర్దార్ వల్లభ్‌భాయ్ పటేల్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "Dr. B.R. Ambedkar chaired the Drafting Committee of the Constituent Assembly.",
+   "te": "డా. బి.ఆర్. అంబేద్కర్ రాజ్యాంగ పరిషత్ ముసాయిదా కమిటీకి అధ్యక్షత వహించారు."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "pol-0002",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "Fundamental Rights",
+  "exams": [
+   "appsc_g2",
+   "appsc_g1",
+   "tspsc_g2",
+   "group4",
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Article 21 of the Constitution deals with:",
+   "te": "రాజ్యాంగంలోని ఆర్టికల్ 21 దేనికి సంబంధించినది?"
+  },
+  "o": {
+   "en": [
+    "Right to Equality",
+    "Protection of life and personal liberty",
+    "Freedom of religion",
+    "Right to constitutional remedies"
+   ],
+   "te": [
+    "సమానత్వ హక్కు",
+    "ప్రాణ, వ్యక్తిగత స్వేచ్ఛ రక్షణ",
+    "మత స్వేచ్ఛ",
+    "రాజ్యాంగ పరిహారాల హక్కు"
+   ]
+  },
+  "a": 1,
+  "e": {
+   "en": "Under Article 21, no person shall be deprived of life or personal liberty except according to procedure established by law.",
+   "te": "ఆర్టికల్ 21 ప్రకారం చట్టం నిర్దేశించిన విధానం ద్వారా తప్ప ఎవరి ప్రాణాన్ని, వ్యక్తిగత స్వేచ్ఛను హరించరాదు."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "pol-0003",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "Fundamental Duties",
+  "exams": [
+   "appsc_g2",
+   "appsc_g1",
+   "tspsc_g2",
+   "group4",
+   "police_si"
+  ],
+  "year": "",
+  "level": "medium",
+  "q": {
+   "en": "Fundamental Duties were added to the Constitution by which Amendment?",
+   "te": "ప్రాథమిక విధులను రాజ్యాంగంలో ఏ సవరణ ద్వారా చేర్చారు?"
+  },
+  "o": {
+   "en": [
+    "44th Amendment",
+    "73rd Amendment",
+    "42nd Amendment (1976)",
+    "86th Amendment"
+   ],
+   "te": [
+    "44వ సవరణ",
+    "73వ సవరణ",
+    "42వ సవరణ (1976)",
+    "86వ సవరణ"
+   ]
+  },
+  "a": 2,
+  "e": {
+   "en": "The 42nd Amendment (1976) added Part IV-A (Article 51A) containing Fundamental Duties.",
+   "te": "1976లో 42వ సవరణ ద్వారా భాగం IV-A (ఆర్టికల్ 51A) లో ప్రాథమిక విధులు చేర్చబడ్డాయి."
+  },
+  "img": "",
+  "video": ""
+ },
+ {
+  "id": "pol-0004",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "Local Government",
+  "exams": [
+   "appsc_g2",
+   "appsc_g1",
+   "tspsc_g2",
+   "group4",
+   "police_si"
+  ],
+  "year": "",
+  "level": "medium",
+  "q": {
+   "en": "Which Schedule was added by the 73rd Constitutional Amendment?",
+   "te": "73వ రాజ్యాంగ సవరణ ద్వారా ఏ షెడ్యూల్ చేర్చబడింది?"
+  },
+  "o": {
+   "en": [
+    "Twelfth Schedule",
+    "Tenth Schedule",
+    "Ninth Schedule",
+    "Eleventh Schedule"
+   ],
+   "te": [
+    "12వ షెడ్యూల్",
+    "10వ షెడ్యూల్",
+    "9వ షెడ్యూల్",
+    "11వ షెడ్యూల్"
+   ]
+  },
+  "a": 3,
+  "e": {
+   "en": "The 11th Schedule lists 29 subjects for Panchayats; the 12th Schedule (74th Amendment) lists 18 subjects for Municipalities.",
+   "te": "11వ షెడ్యూల్‌లో పంచాయతీలకు 29 అంశాలు; 74వ సవరణ ద్వారా చేర్చిన 12వ షెడ్యూల్‌లో మున్సిపాలిటీలకు 18 అంశాలు ఉన్నాయి."
+  },
+  "img": "",
+  "video": ""
+ }
+]

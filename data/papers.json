@@ -1,0 +1,25 @@
+[
+ {
+  "id": "KJ-MP-001",
+  "set": "S",
+  "title": {
+   "en": "Model Paper 1 – General Science",
+   "te": "మోడల్ పేపర్ 1 – సాధారణ శాస్త్రం"
+  },
+  "date": "2026-10-21",
+  "duration_min": 10,
+  "mark": 1,
+  "negative": 0.25,
+  "visible": true,
+  "qids": [
+   "sci-0101",
+   "sci-0102",
+   "sci-0103",
+   "sci-0104",
+   "sci-0106",
+   "sci-0107",
+   "sci-0108",
+   "sci-0109"
+  ]
+ }
+]
