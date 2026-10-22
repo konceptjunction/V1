@@ -158,5 +158,1290 @@
   },
   "img": "",
   "video": ""
+ },
+ {
+  "id": "pol-0005",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "When was the Constitution of India adopted?",
+   "te": "భారత రాజ్యాంగాన్ని ఏ తేదీన ఆమోదించారు?"
+  },
+  "o": {
+   "en": [
+    "August 15, 1947",
+    "November 26, 1947",
+    "November 26, 1949",
+    "January 26, 1950"
+   ],
+   "te": [
+    "ఆగస్టు 15, 1947",
+    "నవంబర్ 26, 1947",
+    "నవంబర్ 26, 1949",
+    "జనవరి 26, 1950"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0006",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The name by which Ashoka is generally referred to in his inscriptions is:",
+   "te": "అశోకుని శాసనాలలో సాధారణంగా ఏ పేరుతో ప్రస్తావించారు?"
+  },
+  "o": {
+   "en": [
+    "Chakravarti / £5958",
+    "Dharmadeva",
+    "Dharmakirti",
+    "Priyadarsi"
+   ],
+   "te": [
+    "Chakravarti / £5958",
+    "ధర్మదేవ",
+    "ధర్మకీర్తి",
+    "ప్రియదర్శి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0007",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Read the following statements carefully:\n(A): The Arya Samaj was founded by Swami Dayanand Saraswati in 1875.\n(B): The Arya Samaj supported idol worship.\nChoose the correct option",
+   "te": "కింది ప్రకటనలను జాగ్రత్తగా చదవండి:\n(ఓ): ఆర్య సమాజాన్ని స్వామి దయానంద సరస్వతి 1875లో స్థాపించారు.\n(B): ఆర్య సమాజం విగుహారాధనను సమర్థించింది.\nసరైన ఎంపికను గుర్తించండి:"
+  },
+  "o": {
+   "en": [
+    "Both (A) and (B) are false",
+    "(A) is true, but (B) is false",
+    "(A) is false, but (B) is true",
+    "Both (A) and (B) are true"
+   ],
+   "te": [
+    "రెండూ తప్పు",
+    "(A) సరైనది, కానీ (B) తప్పు",
+    "(A) తప్పు, కానీ (B) సరైనది",
+    "రెండూ సరైనవి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0008",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "When did India first participate in the Commonwealth Games?",
+   "te": "భారతదేశం మొదటిసారిగా కామన్వెల్త్ క్రీడల్లో ఎప్పుడు పాల్గొంది?"
+  },
+  "o": {
+   "en": [
+    "1930",
+    "1934",
+    "1938",
+    "1942"
+   ],
+   "te": [
+    "1930",
+    "1934",
+    "1938",
+    "1942"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0009",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which commission recommended the Indian Universities Act of 1904?",
+   "te": "1904 నాటి భారతీయ విశ్వవిద్యాలయాల చట్టాన్ని సిఫారసు చేసిన కమిషన్ ఏది?"
+  },
+  "o": {
+   "en": [
+    "Raleigh Commission",
+    "Hunter Commission",
+    "Macaulay Commission"
+   ],
+   "te": [
+    "రాలీ కమిషన్",
+    "హంటర్ కమిషన్ (0౨) Wood's Despatch Commission / వుడ్ డిస్పాచ్ కమిషన్",
+    "మెకాలే కమిషన్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0010",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Match List-I with 115611 and select the correct answer.\nOptions",
+   "te": "జాబితా-1లోని మహాజనపదాలను జాబితా-!1లోని రాజధానులతో జతపరచి సరైన సమాధానాన్ని\nఎంచుకోండి.\nఎంపికలు"
+  },
+  "o": {
+   "en": [
+    "1-B, 2-0 3-D, 4-4",
+    "1-C, 2-B, 3-A, 4-D",
+    "1-D, 2-C, 3-B, 4-A",
+    "1-B, 2-D, 3-C, 4-A"
+   ],
+   "te": [
+    "1-B, 2-0 3-D, 4-4",
+    "1-C, 2-B, 3-A, 4-D",
+    "1-D, 2-C, 3-B, 4-A",
+    "1-B, 2-D, 3-C, 4-A"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0011",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The famous Mehrauli Iron Pillar inscription describes the conquests of which ruler?",
+   "te": "ప్రసిద్ధ 59D ఇనుప స్తంభ శాసనం ఏ రాజు విజయాలను వివరిస్తుంది?"
+  },
+  "o": {
+   "en": [
+    "Samudragupta",
+    "Chandragupta Il",
+    "Chandragupta Maurya",
+    "Chandra of Indraprastha"
+   ],
+   "te": [
+    "సముద్రగుప్తుడు",
+    "రెండవ చంద్రగుప్తుడు",
+    "చంద్రగుప్త మౌర్యుడు",
+    "ఇంద్రపునస్థానికి చెందిన చంద్రుడు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0012",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which Governor-General of India was in office when the introduction of Enfield rifles contributed\nto the Revolt of 1857?",
+   "te": "ఎన్‌ఫీల్డ్ రైఫిళ్ల పరిచయం 1857 సిపాయిల తిరుగుబాటుకు దారితీసిన సమయంలో భారత గవర్నర్ జనరల్‌గా\nఉన్నవారు ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Lord Dalhousie",
+    "Lord Canning",
+    "Lord Hardinge",
+    "Lord Wellesley"
+   ],
+   "te": [
+    "లార్డ్ డల్హౌసీ",
+    "లార్డ్ కానింగ్",
+    "లార్డ్ హార్డింజ్",
+    "లార్డ్ వెల్లెస్లీ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0013",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following statements regarding the three Pitakas of Buddhist literature are correct?\n1. Vinaya Pitaka deals with monastic rules and discipline.\n2. Sutta Pitaka contains the discourses of the Buddha.\n3. Abhidhamma Pitaka deals primarily with philosophical and psychological analysis of Buddhist\nteachings.\nOptions",
+   "te": "బౌద్ధ సాహిత్యంలోని మూడు పిటకాల గురించి క్రింది వాక్యాలలో ఏవి సరైనవి?\nవినయ పిటకం భిక్షువుల నియమాలు, క్రమశిక్షణకు సంబంధించినది.\nసుత్త పిటకం బుద్ధుని బోధనలను కలిగి ఉంటుంది.\nఅభిధమ్మ పిటకం ప్రధానంగా బౌద్ధ బోధనల తాత్విక, మానసిక విశ్లేషణకు సంబంధించినది.\nఎంపికలు"
+  },
+  "o": {
+   "en": [
+    "1 only",
+    "Land 2 only",
+    "2 and 3 only",
+    "1,2and3/1,2 మరియు 3"
+   ],
+   "te": [
+    "1 మాత్రమే",
+    "1 మరియు 2 మాత్రమే",
+    "2 మరియు 3 మాత్రమే",
+    "1,2and3/1,2 మరియు 3"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0014",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who among the following Indian nationalists is associated with the famous slogan, “Swaraj is\nmy birthright and I shall have it\"?",
+   "te": "“స్వరాజ్యం నా జన్మహక్కు, దానిని నేను పొంది తీరుతాను” అనే ప్రసిద్ధ నినాదంతో సంబంధం ఉన్న భారత\nజాతీయవాది ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Bipin Chandra Pal",
+    "Bal Gangadhar Tilak",
+    "Lala Lajpat Rai",
+    "Gopal Krishna Gokhale"
+   ],
+   "te": [
+    "బిపిన్ చంద పాల్",
+    "బాల గంగాధర్ తిలక్",
+    "లాలా లజపత్ రాయ్",
+    "గోపాల కృష్ణ గోఖలే"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0015",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which Mughal emperor described the Persian wheel (Rahat) in his autobiography?",
+   "te": "తన ఆత్మకథలో పర్షియన్ వీల్ (రహత్) గురించి వివరించిన మొఘల్ చక్రవర్తి ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Babur",
+    "Humayun",
+    "Akbar",
+    "Jahangir"
+   ],
+   "te": [
+    "బాబర్",
+    "హుమాయూన్",
+    "అక్బర్",
+    "జహంగీర్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0016",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who was the first Director-General of the Archaeological Survey of India (ASI)?",
+   "te": "భారత పురావస్తు సర్వే (ASI) తొలి డైరెక్టర్ జనరల్ ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Alexander Cunningham",
+    "R.E. M. Wheeler",
+    "Rakhal Das Banerji",
+    "S.R.Rao"
+   ],
+   "te": [
+    "అలెగ్జాండర్ కన్నింగ్‌హామ్",
+    "ఆర్. ఈ. do. వీలర్",
+    "రాఖల్ దాస్ బెనర్జీ",
+    "ఎస్. ఆర్. రావు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0017",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "In which year was the “Make in India” initiative launched by the Government of India?",
+   "te": "భారత ప్రభుత్వం “మేక్ ఇన్ ఇండియా” కార్యక్రమాన్ని ఏ సంవత్సరంలో ప్రారంభించింది?"
+  },
+  "o": {
+   "en": [
+    "2010",
+    "2014",
+    "2022"
+   ],
+   "te": [
+    "2010 సంవత్సరం",
+    "2014 సంవత్సరం (0౨) 2018 / 2018 సంవత్సరం",
+    "2022 సంవత్సరం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0018",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Under the Permanent Settlement introduced in the Andhra region in 1802, which of the\nfollowing statements is correct?",
+   "te": "1802లో ఆంధ్ర ప్రాంతంలో ప్రవేశపెట్టిన శాశ్వత భూమిశిస్తు విధానానికి సంబంధించి కింది వాక్యాలలో NB\nసరైనది?"
+  },
+  "o": {
+   "en": [
+    "Zamindars collected land revenue from cultivators and paid the government demand fixed permanently under the settlement.",
+    "The British government directly collected land revenue from every cultivator and abolished the intermediary role of Zamindars.",
+    "Zamindars were required to remit only the surplus revenue remaining after deducting irrigation and local administrative expenses."
+   ],
+   "te": [
+    "The government retained the power to increase the permanently settled land-revenue demand whenever agricultural production increased. వ్యవసాయ ఉత్పత్తి పెరిగినప్పుడల్లా శాశ్వతంగా నిర్ణయించిన భూమిశిస్తును పెంచే అధికారం ప్రభుత్వానికి ఉండేది.",
+    "బ్రిటిష్ ప్రభుత్వం 598 రైతు నుంచి నేరుగా భూమిశిస్తును వసూలు చేసి, జమీందార్ల మధ్యవర్తిత్వ పాత్రను రద్దు చేసింది.",
+    "నీటిపారుదల మరియు స్థానిక పరిపాలనా ఖర్చులను మినహాయించిన తర్వాత మిగిలిన ఆదాయాన్ని మాత్రమే జమీందార్లు ప్రభుత్వానికి చెల్లించాల్సి ఉండేది."
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0019",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who described the Vijayanagara Empire during the reign of Krishnadevaraya?",
+   "te": "కృష్ణదేవరాయల పాలనాకాలంలో విజయనగర సామ్వాజ్యాన్ని వివరించిన పోర్చుగీస్ యాత్రొకుడు ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Nicolo Conti",
+    "Domingo Paes",
+    "Abdur Razzaq"
+   ],
+   "te": [
+    "ఫాహియాన్",
+    "డొమింగో పేస్",
+    "అబ్దుర్ రజ్జాక్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0020",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which Kakatiya ruler is associated with the construction of the Thousand Pillar Temple?",
+   "te": "వేయి స్తంభాల గుడి నిర్మాణంతో సంబంధం ఉన్న కాకతీయ పాలకుడు ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Rudra Deva",
+    "Ganapati Deva",
+    "Rudrama Devi",
+    "Prataparudra II"
+   ],
+   "te": [
+    "రుదుదేవుడు",
+    "గణపతిదేవుడు",
+    "రుద్రమదేవి",
+    "ప్రతాపరుద్రుడు 11"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0021",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who composed Harshacharita, the biography of Harshavardhana?",
+   "te": "హర్షవర్ధనుడి జీవిత చరిత అయిన హర్షచరితం గ్రంథాన్ని రచించినది ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Ashvaghosha",
+    "Banabhatta",
+    "Bhasa"
+   ],
+   "te": [
+    "దండి",
+    "బాణభట్టుడు",
+    "భాసుడు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0022",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Among the four main forms of existence recognized in Jainism, which of the following is NOT\nincluded?",
+   "te": "జైనమతంలో గుర్తించబడిన జీవుల నాలుగు ప్రధాన గతులలో కింది వాటిలో ఏది చేర్చబడలేదు?"
+  },
+  "o": {
+   "en": [
+    "Deva (Gods)",
+    "Yaksha (Demigods)",
+    "Manushya (Humans)",
+    "Tiryanch (Animals and plants)"
+   ],
+   "te": [
+    "దేవులు",
+    "యక్షులు",
+    "మనుష్యులు",
+    "తిర్యంచులు (జంతువులు మరియు వృక్షాలు)"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0023",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which Maratha levy represented one-fourth of the revenue of a territory?",
+   "te": "ఒక ప్రాంత ఆదాయంలో నాలుగో వంతుకు సమానమైన మరాఠా పన్నును ఏమని పిలిచేవారు?"
+  },
+  "o": {
+   "en": [
+    "Zakat",
+    "Kharaj",
+    "Chauth",
+    "Sardeshmukhi"
+   ],
+   "te": [
+    "జకాత్",
+    "ఖరాజ్",
+    "చౌత్",
+    "సర్టేశ్‌ముఖి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0024",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The term Bhukti is particularly associated with which ancient Indian dynasty’s administrative\nstructure?",
+   "te": "భుక్తి అనే పదం ప్రాచీన భారతదేశంలోని ఏ రాజవంశ పరిపాలనా వ్యవస్థతో ప్రత్యేకంగా సంబంధం కలిగి ఉంది?"
+  },
+  "o": {
+   "en": [
+    "Gupta dynasty",
+    "Maurya dynasty",
+    "Chola dynasty",
+    "Kushana dynasty"
+   ],
+   "te": [
+    "గుప్త రాజవంశం",
+    "మౌర్య రాజవంశం",
+    "చోళ రాజవంశం",
+    "కుషాణ రాజవంశం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0025",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "In which Veda are the Sabha and Samiti mentioned as distinct institutions of the Vedic period?",
+   "te": "వేదకాలంలో సభ మరియు *“సమితి*లను ప్రత్యేక సంస్థలుగా పేర్కొన్న వేదం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Rigveda",
+    "Samaveda",
+    "Atharvaveda",
+    "Yajurveda"
+   ],
+   "te": [
+    "బుగ్వేదం",
+    "సామవేదం",
+    "అథర్వవేదం",
+    "యజుర్వేదం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0026",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "At which session of the Indian National Congress did the split between the Moderates and the\nExtremists take place?",
+   "te": "భారత జాతీయ కాంగ్రెస్‌లో మితవాదులు మరియు అతివాదుల మధ్య విభజన ఏ సమావేశంలో జరిగింది?"
+  },
+  "o": {
+   "en": [
+    "Bombay",
+    "Surat",
+    "Calcutta",
+    "Nagpur"
+   ],
+   "te": [
+    "బొంబాయి",
+    "సూరత్",
+    "కలకత్తా",
+    "నాగ్‌పూర్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0027",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which Mughal land-revenue system used prescribed rates for different crops to calculate the\nrevenue payable?",
+   "te": "వివిధ పంటలకు నిర్ణయించిన రేట్ల ఆధారంగా చెల్లించాల్సిన భూమిశిస్తును లెక్కించే మొఘల్ భూమిశిస్తు విధానం\nఏది?"
+  },
+  "o": {
+   "en": [
+    "Zat",
+    "Iqta",
+    "Jagir",
+    "Zabt / 23g"
+   ],
+   "te": [
+    "జాత్",
+    "ఇక్తా",
+    "జాగీర్",
+    "Zabt / 23g"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0028",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who among the following composed the Prayag Prashasti of Samudragupta?\nOptions",
+   "te": "సముద్వుగుప్తుని ప్వయాగ పుశస్తిని రచించినది ఎవరు?\nఎంపికలు:"
+  },
+  "o": {
+   "en": [
+    "Harishena",
+    "Chand Bardai",
+    "Vishakhadatta",
+    "Kalidasa"
+   ],
+   "te": [
+    "హరిషేణుడు",
+    "చంద్ బర్దాయ్",
+    "విశాఖదత్తుడు",
+    "కాళిదాసు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0029",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who raised the Indian National Army (INA) to free India from British control?\nOptions",
+   "te": "బ్రిటిష్ పాలన నుండి భారతదేశానికి విముక్తి కల్పించడానికి ఇండియన్ నేషనల్ ఆర్మీ (1గను స్థాపించినది ఎవరు?\nఎంపికలు:"
+  },
+  "o": {
+   "en": [
+    "Rash Behari Bose",
+    "Bhagat Singh",
+    "Mohan Singh",
+    "Subhas Chandra Bose"
+   ],
+   "te": [
+    "రాన్ బిహారీ బోస్",
+    "భగత్ సింగ్",
+    "మోహన్ సింగ్",
+    "సుభాష్ చందుబోస్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0030",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Alluri Sitarama Raju is primarily associated with which uprising in Andhra Pradesh?",
+   "te": "అల్లూరి సీతారామరాజు ఆంధ్రప్రదేశ్‌లో జరిగిన ఏ తిరుగుబాటుతో ప్రధానంగా సంబంధం కలిగి ఉన్నారు?"
+  },
+  "o": {
+   "en": [
+    "Telangana Rebellion",
+    "Rampa Rebellion",
+    "Paika Rebellion",
+    "Santhal Rebellion"
+   ],
+   "te": [
+    "తెలంగాణ తిరుగుబాటు",
+    "రంప తిరుగుబాటు",
+    "పైకా తిరుగుబాటు",
+    "సంతాల్ తిరుగుబాటు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0031",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following was a major provision of the Rowlatt Act, 1919?",
+   "te": "1919 రౌలట్ చట్టంలోని ప్రధాన నిబంధన ఏది?"
+  },
+  "o": {
+   "en": [
+    "Introduction of dyarchy in provincial administration oy                                                         ey",
+    "Expansion of legislative councils and elected Indian representation",
+    "Detention without trial in certain cases",
+    "Establishment of a federal system of government in India"
+   ],
+   "te": [
+    "ప్య్రావిన్షియల్ పరిపాలనలో ద్వంద్వ పాలన ప్రవేశపెట్టడం",
+    "శాసన మండళ్ల విస్తరణ మరియు ఎన్నికైన భారతీయ ప్రతినిధుల సంఖ్య పెంపు",
+    "కొన్ని సందర్భాల్లో విచారణ లేకుండా నిర్బంధించడం",
+    "భారతదేశంలో సమాఖ్య ప్రభుత్వ వ్యవస్థను ఏర్పాటు చేయడం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0032",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following works was authored by the Sanskrit poet Kalidasa?",
+   "te": "సంస్కృత కవి కాళిదాసు రచించిన గ్రంథం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Mudrarakshasa",
+    "Abhijnanasakuntalam",
+    "Ramcharitmanas",
+    "Natyashastra"
+   ],
+   "te": [
+    "ముద్వారాక్షసం",
+    "అభిజ్ఞాన శాకుంతలం",
+    "రామచరితమానస్",
+    "నాట్యశాస్త్రం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0033",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Under whose rule did Delhi first emerge as a capital?",
+   "te": "ఎవరి పాలనలో ఢిల్లీ మొదటిసారిగా రాజధానిగా అవతరించింది?"
+  },
+  "o": {
+   "en": [
+    "Chauhans of Ajmer",
+    "Tomar Rajputs",
+    "tutmish",
+    "Khalji Dynasty"
+   ],
+   "te": [
+    "అజ్మీర్ చౌహానులు",
+    "తోమర రాజపుత్రులు",
+    "ఇల్లుత్మిష్",
+    "ఖిల్జీ వంశం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0034",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who played a major role in reviving Bharatanatyam in the 20th century?",
+   "te": "205 శతాబ్దంలో భరతనాట్యం పునరుజ్జీవనంలో ముఖ్య పాత పోషించినది ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Rukmini Devi Arundale",
+    "Sitara Devi",
+    "Sonal Mansingh",
+    "Yamini Krishnamurthy"
+   ],
+   "te": [
+    "రుక్మిణీ దేవి అరుండేల్",
+    "సితారాదేవి",
+    "సోనల్ మాన్సింగ్",
+    "యామినీ కృష్ణమూర్తి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0035",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Rottela Panduga (Rotiyaan Ki Eid) is celebrated at which place in Andhra Pradesh?",
+   "te": "రొట్టెల పండుగ (రోటియాన్ కి ఈద్) ఆంధ్రప్రదేశ్‌లో ఎక్కడ జరుపుకుంటారు?"
+  },
+  "o": {
+   "en": [
+    "Kadapa",
+    "Nellore",
+    "Kurnool",
+    "Vijayawada"
+   ],
+   "te": [
+    "కడప",
+    "నెల్లూరు",
+    "కర్నూలు",
+    "విజయవాడ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0036",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The Ramappa Temple, a UNESCO World Heritage Site, was built during the rule of which\ndynasty?",
+   "te": "యునెస్కో ప్రపంచ వారసత్వ ప్రదేశంగా గుర్తింపు పొందిన రామప్ప ఆలయం ఏ రాజవంశ పాలనాకాలంలో\nనిర్మించబడింది?"
+  },
+  "o": {
+   "en": [
+    "Satavahana Dynasty",
+    "Kakatiya Dynasty",
+    "Eastern Chalukya Dynasty",
+    "Vijayanagara Dynasty"
+   ],
+   "te": [
+    "శాతవాహన రాజవంశం",
+    "కాకతీయ రాజవంశం",
+    "తూర్పు చాళుక్య రాజవంశం",
+    "విజయనగర రాజవంశం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0037",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The famous Gatha Saptashati is traditionally attributed to which Satavahana ruler?",
+   "te": "ప్రసిద్ధ గాథా సప్తశతి గ్రంథం సాంప్రదాయకంగా ఏ శాతవాహన రాజుకు ఆపాదించబడింది?"
+  },
+  "o": {
+   "en": [
+    "Gautamiputra Satakarni",
+    "Simuka",
+    "Hala",
+    "Yajna Sri Satakarni"
+   ],
+   "te": [
+    "గౌతమీపుత్ర శాతకర్ణి",
+    "సిముకుడు",
+    "హాలుడు",
+    "యజ్ఞశ్రీ) శాతకర్ణి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0038",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who wrote the book India Wins Freedom, which describes the events surrounding India’s\nstruggle for independence and Partition?",
+   "te": "భారత స్వాతంత్యా పోరాటం మరియు దేశ విభజనకు సంబంధించిన సంఘటనలను వివరించే ఇండియా విన్స్\nఫ్రీడమ్ గ్రంథాన్ని రచించినది ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Jawaharlal Nehru",
+    "Maulana Abul Kalam Azad",
+    "Sardar Vallabhbhai Patel",
+    "Dr. Rajendra Prasad"
+   ],
+   "te": [
+    "జవహర్‌లాల్ నెహూ",
+    "మౌలానా అబుల్ కలాం ఆజాద్",
+    "సర్దార్ వల్లభభాయ్ పటేల్",
+    "డాక్టర్ రాజేందు ప్రాసాద్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
+ },
+ {
+  "id": "pol-0039",
+  "type": "mcq",
+  "subject": "polity",
+  "topic": "TEST-1",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "At which session of the Indian National Congress was ‘Vande Mataram’ sung for the first time?",
+   "te": "భారత జాతీయ కాంగ్రేస్ ఏ సమావేశంలో “వందేమాతరం గీతాన్ని మొదటిసారిగా ఆలపించారు?"
+  },
+  "o": {
+   "en": [
+    "Bombay Session, 1885",
+    "Calcutta Session, 1896",
+    "Madras Session, 1887",
+    "Lahore Session, 1929"
+   ],
+   "te": [
+    "బొంబాయి సమావేశం, 1885",
+    "కలకత్తా సమావేశం, 1896",
+    "మద్వాను సమావేశం, 1887",
+    "లాహోర్ సమావేశం, 1929"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-006"
  }
 ]
