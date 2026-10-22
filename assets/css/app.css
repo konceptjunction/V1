@@ -199,8 +199,20 @@ body.reg main{padding-bottom:40px}
 .xb-edit{margin-left:clamp(8px,8vw,170px)}
 .xb-nav{display:flex;gap:10px;margin-right:clamp(0px,5vw,90px)}
 .xh-bar .btn.sm{padding:8px 14px}
-@media(max-width:760px){.xb-edit{margin-left:0}.xb-nav{margin-right:0;margin-left:auto}}
+/* V12: phone – the 4 buttons as an equal 2 × 2 grid under the question */
+@media(max-width:760px){
+  .xh-main .xh-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))}
+  .xh-bar .sp{display:none}
+  .xb-nav{display:contents}
+  .xb-edit{margin-left:0}
+  .xh-bar .btn.sm{width:100%;min-height:46px;padding:8px 6px;font-size:13.5px;line-height:1.2;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:10px}
+}
 
 /* ===== V10 : already-registered notice on the first page ===== */
 .reg-found{margin-top:8px;padding:10px 12px;border-radius:10px;font-size:13.5px;background:color-mix(in srgb,var(--ok) 12%,var(--card));border:1px solid var(--ok);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .reg-found .btn{margin-left:auto}
+
+/* V12: short highlight when returning with "Back to Test" */
+@keyframes kjflash{from{box-shadow:inset 0 0 0 3px var(--accent)}to{box-shadow:inset 0 0 0 3px transparent}}
+.xh-q.flash{animation:kjflash .9s ease-out}
+@media (prefers-reduced-motion:reduce){.xh-q.flash{animation:none}}

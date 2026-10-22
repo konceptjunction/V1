@@ -36,6 +36,7 @@
     if (!st) { location.hash = "#/home"; return; }
     document.body.classList.add("exam");
     const P = KJ.store.get("profile", {});
+    E._name = P.name || (KJ.store.get("student", {}) || {}).name || "";      // V12: name shows in the palette from the start
     root.innerHTML = `
 <div class="xh">
   <div class="xh-top">
@@ -65,7 +66,12 @@
   </div>
 </div>`;
     $("#xlang").value = KJ.lang();
-    $("#xlang").onchange = (e) => { KJ.store.set("lang", e.target.value); drawQ(); };
+    $("#xlang").onchange = (e) => {                     // V12: also relabel the buttons
+      KJ.store.set("lang", e.target.value);
+      $("#bm").textContent = KJ.t("mark"); $("#bc").textContent = "✏️ " + KJ.t("clear");
+      $("#bp").textContent = "◀ " + KJ.t("prev"); $("#bn").textContent = KJ.t("next") + " ▶";
+      drawQ(); drawPal();
+    };
     $("#xpb").onclick = () => $("#xp").classList.toggle("open");
     $("#bn").onclick = () => { commit(); go(st.cur + 1); };
     $("#bm").onclick = () => { commit(); st.marked[st.cur] = 1; go(st.cur + 1); };
@@ -78,7 +84,6 @@
     window.onbeforeunload = () => "Test in progress";
     drawAll();
     clearInterval(tick); tick = setInterval(timer, 1000); timer();
-    E._name = P.name || "";
   };
 
   function commit() {
@@ -139,8 +144,14 @@ ${q.img ? `<img class="qimg" src="${esc(q.img)}" alt="">` : ""}
 </div>
 <div class="small muted" style="margin-bottom:6px">${esc(sec ? sec.name : "")}</div>
 <div class="pal">${(sec ? sec.idx : st.qs.map((_, i) => i)).map((i) => `<button class="pb ${status(i)} ${i === st.cur ? "cur" : ""}" data-q="${i}">${i + 1}</button>`).join("")}</div>
-<button class="btn bad" id="bs" style="width:100%;margin-top:16px">${KJ.t("submit")}</button>`;
+<button class="btn bad" id="bs" style="width:100%;margin-top:16px">${KJ.t("submit")}</button>
+<button class="btn alt" id="bbk" style="width:100%;margin-top:10px">↩ ${KJ.t("back")}</button>`;
     $("#xp").onclick = (e) => { const b = e.target.closest("[data-q]"); if (b) go(+b.dataset.q); };
+    $("#bbk").onclick = (e) => {                         // V12: Back to Test – close the palette (phone) and return to the question
+      e.stopPropagation();
+      $("#xp").classList.remove("open");
+      const q = $("#xq"); q.scrollTop = 0; q.classList.remove("flash"); void q.offsetWidth; q.classList.add("flash");
+    };
     $("#bs").onclick = () => {
       commit(); const k = counts();
       if (KJ.confirm(`Submit test?\n\nAnswered: ${k.an + k.am}\nNot answered: ${k.na + k.mr}\nNot visited: ${k.nv}`)) finish();

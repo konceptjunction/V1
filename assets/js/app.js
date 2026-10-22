@@ -602,10 +602,8 @@ ${res.map((r) => `<tr><td>${esc(r.title)}</td><td class="small">${new Date(r.dat
 <div class="row" style="margin-bottom:12px"><a class="btn alt sm" href="#/performance">📊 ${KJ.t("perf")}</a><a class="btn alt sm" href="#/home">🏠 ${KJ.t("home")}</a></div>
 <div class="card"><h3 style="margin-top:0">🗂 Data on this phone</h3>
 <p class="small muted">Results, bookmarks and progress are saved only on this device.</p>
-<div class="row"><button class="btn alt sm" id="cr">Clear results</button><button class="btn alt sm" id="cp">Clear saved PDFs</button><button class="btn bad sm" id="ca">Reset everything</button></div></div>
-<div class="card small"><b>${esc(C.APP_NAME)}</b> ${esc(C.VERSION)} · build ${esc(C.BUILD_DATE)}<br>
-Contact: <span style="user-select:all">${esc(C.CONTACT_EMAIL)}</span>${C.CONTACT_PHONE ? " · " + esc(C.CONTACT_PHONE) : ""}<br>
-<a href="teacher.html" class="muted" style="font-size:11px">Teacher login</a></div>`;
+<div class="row"><button class="btn alt sm" id="cr">Clear results</button><button class="btn alt sm" id="cp">Clear saved PDFs</button><button class="btn bad sm" id="ca">Reset everything</button></div></div>`;
+    /* V11: version / contact card removed */
     bindRegFields();
     $("#pf").addEventListener("submit", async (e) => {
       e.preventDefault();
