@@ -23,5 +23,41 @@
   ],
   "subject": "science",
   "topic": "Biology, Physics & Chemistry"
+ },
+ {
+  "id": "KJ-TT-002",
+  "subject": "science",
+  "topic": "",
+  "set": "S",
+  "title": {
+   "en": "GENERAL SCIENCE – Set S",
+   "te": ""
+  },
+  "date": "2026-10-22",
+  "duration_min": 19,
+  "mark": 1,
+  "negative": 0.25,
+  "visible": true,
+  "qids": [
+   "sci-0110",
+   "sci-0111",
+   "sci-0112",
+   "sci-0113",
+   "sci-0114",
+   "sci-0115",
+   "sci-0116",
+   "sci-0117",
+   "sci-0118",
+   "sci-0119",
+   "sci-0120",
+   "sci-0121",
+   "sci-0122",
+   "sci-0123",
+   "sci-0124",
+   "sci-0125",
+   "sci-0126",
+   "sci-0127",
+   "sci-0128"
+  ]
  }
 ]
