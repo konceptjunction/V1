@@ -29,6 +29,7 @@ for e in exams:
     for sct in e["sections"]:
         if sct["subject"] not in sid: err.append(f"exam {e['id']}: unknown subject {sct['subject']}")
 for p in papers:
+    if p.get("subject") and p["subject"] not in sid: warn.append(f"topic test {p['id']}: unknown subject {p['subject']}")
     for q in p["qids"]:
         if q not in ids: err.append(f"paper {p['id']}: missing question {q}")
 for f in ["data/notes.json", "data/current_affairs.json", "data/announcements.json"]:

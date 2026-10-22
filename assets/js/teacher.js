@@ -11,7 +11,8 @@
     return {
       owner: s.owner || C.GITHUB.owner, repo: s.repo || C.GITHUB.repo, branch: s.branch || C.GITHUB.branch,
       prefix: s.prefix != null ? s.prefix : C.GITHUB.path_prefix || "",
-      cloud: s.cloud || C.CLOUDINARY.cloud_name, preset: s.preset || C.CLOUDINARY.upload_preset, folder: s.folder || C.CLOUDINARY.folder
+      cloud: s.cloud || C.CLOUDINARY.cloud_name, preset: s.preset || C.CLOUDINARY.upload_preset, folder: s.folder || C.CLOUDINARY.folder,
+      sheet: s.sheet || (C.SHEET && C.SHEET.webapp_url) || ""
     };
   };
   const pat = () => S.get("t_pat", "");
@@ -64,12 +65,13 @@ ${dev ? `<p class="small"><a href="#" id="lr">Forget this device</a></p>` : ""}
       S.set("t_device_ok", true); sessionStorage.setItem("kj_t_ok", "1"); boot();
     };
     $("#lb").onclick = go;
-    $("#lp").onkeydown = (e) => e.key === "Enter" && go();
+    /* V2 fix: handler must not return false – that blocked every key in the PIN box */
+    ["#lc", "#lp"].forEach((id) => { const f = $(id); if (f) f.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); go(); } }); });
     if ($("#lr")) $("#lr").onclick = (e) => { e.preventDefault(); S.del("t_device_ok"); lock(); };
   }
 
   /* ================= MAIN ================= */
-  const TABS = [["add", "➕ Add / Edit"], ["bank", "📚 Question Bank"], ["import", "📥 Bulk Import"], ["papers", "📄 Model Papers"],
+  const TABS = [["add", "➕ Add / Edit"], ["students", "👥 Students"], ["bank", "📚 Question Bank"], ["import", "📥 Bulk Import"], ["papers", "🎯 Topic Tests"],
     ["notes", "📒 Notes & Concepts"], ["ca", "📰 Current Affairs"], ["ann", "📢 Announcements"], ["exams", "🎯 Exams"],
     ["export", "📤 Export"], ["publish", "🚀 Publish"], ["settings", "⚙️ Settings"]];
   let tab = "add", editing = null;
@@ -254,7 +256,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
 <div class="row"><div style="flex:2"><label>Subject</label><select id="ps">${SUBS.map((s) => `<option value="${s.id}">${esc(s.name.en)}</option>`).join("")}</select></div>
 <div style="flex:2"><label>Topic</label><input id="pto"></div></div>
 <label>Exams</label><div id="pe">${EXAMS.map((x) => `<label class="chk"><input type="checkbox" value="${x.id}">${esc(x.name.en)}</label>`).join("")}</div>
-<div class="row"><label class="chk"><input type="checkbox" id="mkp"> Also create a Model Paper – Set</label><input id="pset" value="A" style="width:60px"><input id="ptitle" placeholder="Paper title" style="flex:1"></div>
+<div class="row"><label class="chk"><input type="checkbox" id="mkp"> Also create a Topic Test – Set</label><input id="pset" value="A" style="width:60px"><input id="ptitle" placeholder="Test title" style="flex:1"></div>
 <div class="row" style="margin-top:10px"><button class="btn alt sm" id="pp">Preview</button><span class="sp"></span><button class="btn ok" id="pi">Import</button></div>
 <div id="pres"></div></div>
 <div class="card"><h3 style="margin-top:0">📊 CSV / JSON import</h3>
@@ -281,8 +283,8 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       });
       markDirty(bankPath(sid));
       if ($("#mkp").checked) {
-        const papers = W["data/papers.json"]; const pid = "KJ-MP-" + String(papers.length + 1).padStart(3, "0");
-        papers.push({ id: pid, set: $("#pset").value.trim() || "A", title: { en: $("#ptitle").value.trim() || "Model Paper " + (papers.length + 1), te: "" },
+        const papers = W["data/papers.json"]; const pid = "KJ-TT-" + String(papers.length + 1).padStart(3, "0");
+        papers.push({ id: pid, subject: sid, topic: $("#pto").value.trim(), set: $("#pset").value.trim() || "A", title: { en: $("#ptitle").value.trim() || $("#pto").value.trim() || "Topic Test " + (papers.length + 1), te: "" },
           date: KJ.today(), duration_min: ids.length, mark: 1, negative: 0.25, visible: false, qids: ids });
         bank(sid).forEach((q) => ids.includes(q.id) && (q.paper = pid));
         markDirty("data/papers.json");
@@ -327,16 +329,18 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
   P.papers = (el) => {
     const papers = W["data/papers.json"];
     const map = new Map(allQs().map((q) => [q.id, q]));
-    el.innerHTML = `<div class="card"><div class="row"><h3 style="margin:0">📄 Model Papers</h3><span class="sp"></span><button class="btn sm" id="np">➕ New paper</button></div>
-<p class="small muted">Students see only papers switched <b>Visible</b>. Printing uses the KONCEPT JUNCTION layout (Set box, watermark logo, contact footer).</p></div>
+    el.innerHTML = `<div class="card"><div class="row"><h3 style="margin:0">🎯 Topic Tests</h3><span class="sp"></span><button class="btn sm" id="np">➕ New topic test</button></div>
+<p class="small muted">Students see these under <b>Topic Tests</b>, grouped by Subject, only when switched <b>Visible</b>. Printing uses the KONCEPT JUNCTION layout (Set box, watermark logo, contact footer).</p></div>
 ${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><span class="sp"></span><label class="chk"><input type="checkbox" data-vis="${k}" ${p.visible !== false ? "checked" : ""}>Visible</label></div>
+<div class="row"><div style="flex:1"><label>Subject</label><select data-k="${k}" data-f="subject">${SUBS.map((s) => `<option value="${s.id}" ${s.id === p.subject ? "selected" : ""}>${esc(s.name.en)}</option>`).join("")}</select></div>
+<div style="flex:1"><label>Topic</label><input data-k="${k}" data-f="topic" value="${esc(p.topic || "")}" placeholder="e.g. Fundamental Rights"></div></div>
 <div class="row"><div style="flex:2"><label>Title (English)</label><input data-k="${k}" data-f="title.en" value="${esc(p.title.en || "")}"></div><div style="flex:2"><label>Title (తెలుగు)</label><input data-k="${k}" data-f="title.te" value="${esc(p.title.te || "")}"></div>
 <div style="flex:.6"><label>Set</label><input data-k="${k}" data-f="set" value="${esc(p.set || "")}"></div></div>
 <div class="row"><div style="flex:1"><label>Minutes</label><input type="number" data-k="${k}" data-f="duration_min" value="${p.duration_min}"></div><div style="flex:1"><label>Mark</label><input type="number" step="0.25" data-k="${k}" data-f="mark" value="${p.mark}"></div>
 <div style="flex:1"><label>Negative fraction</label><input type="number" step="0.01" data-k="${k}" data-f="negative" value="${p.negative}"></div><div style="flex:1"><label>Date</label><input type="date" data-k="${k}" data-f="date" value="${esc(p.date || "")}"></div></div>
 <label>Question IDs in order (comma separated) – ${p.qids.length} Qs, ${p.qids.filter((id) => !map.has(id)).length} missing</label><textarea data-k="${k}" data-f="qids">${esc(p.qids.join(", "))}</textarea>
 <div class="row" style="margin-top:8px"><button class="btn alt sm" data-pr="${k}">🖨 Question paper</button><button class="btn alt sm" data-prk="${k}">🖨 With answer key</button><button class="btn alt sm" data-word="${k}">⬇ Word</button><span class="sp"></span><button class="btn bad sm" data-del="${k}">Delete</button></div></div>`).join("")}`;
-    $("#np").onclick = () => { papers.push({ id: "KJ-MP-" + String(papers.length + 1).padStart(3, "0"), set: "A", title: { en: "New Model Paper", te: "" }, date: KJ.today(), duration_min: 30, mark: 1, negative: 0.25, visible: false, qids: [] }); markDirty("data/papers.json"); draw(); };
+    $("#np").onclick = () => { papers.push({ id: "KJ-TT-" + String(papers.length + 1).padStart(3, "0"), subject: SUBS[0].id, topic: "", set: "A", title: { en: "New Topic Test", te: "" }, date: KJ.today(), duration_min: 30, mark: 1, negative: 0.25, visible: false, qids: [] }); markDirty("data/papers.json"); draw(); };
     el.onchange = (e) => {
       const t = e.target;
       if (t.dataset.vis != null) { papers[+t.dataset.vis].visible = t.checked; markDirty("data/papers.json"); return; }
@@ -351,7 +355,7 @@ ${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><s
       const b = e.target.closest("[data-pr],[data-prk],[data-word],[data-del]"); if (!b) return;
       const k = +(b.dataset.pr ?? b.dataset.prk ?? b.dataset.word ?? b.dataset.del), p = papers[k];
       const qs = p.qids.map((id) => map.get(id)).filter(Boolean);
-      if (b.dataset.del != null) { if (KJ.confirm("Delete paper " + p.id + "? (questions stay in the bank)")) { papers.splice(k, 1); markDirty("data/papers.json"); draw(); } return; }
+      if (b.dataset.del != null) { if (KJ.confirm("Delete topic test " + p.id + "? (questions stay in the bank)")) { papers.splice(k, 1); markDirty("data/papers.json"); draw(); } return; }
       if (b.dataset.word != null) return exportWord(p.title.en + " – Set " + p.set, qs, true);
       KJ.printPaper({ title: p.title.en, set: p.set, questions: qs, showKey: b.dataset.prk != null, lang: "bi" });
     };
@@ -493,6 +497,50 @@ ${sizes.map((s) => `<tr><td class="${dirty.has(s.p) ? "dirty" : ""}">${esc(s.p)}
     $("#disc").onclick = async () => { if (!KJ.confirm("Discard all unpublished changes on this device?")) return; [...dirty].forEach(clearDirty); await boot(); };
   };
 
+  /* ---------- V4: Students (Google Sheet master data) ---------- */
+  let STU = null;
+  P.students = async (el) => {
+    const url = cfg().sheet;
+    if (!/^https:\/\/script\.google\.com\//.test(url)) {
+      el.innerHTML = `<div class="card"><h3 style="margin-top:0">👥 Students</h3><p>Connect the Google Sheet first: <b>⚙️ Settings → Google Sheet</b>. Steps are in README section 0.</p></div>`; return;
+    }
+    const drawList = () => {
+      const q = (S.get("t_sq", "") || "").toLowerCase(), fx = S.get("t_sx", "");
+      const H = STU.head, ix = (n) => H.indexOf(n);
+      const rows = STU.rows.filter((r) => (!fx || r[ix("Exam")] === fx) && (!q || r.join(" ").toLowerCase().includes(q)));
+      const cnt = (col) => { const m = {}; STU.rows.forEach((r) => { const k = String(r[ix(col)] || "—"); m[k] = (m[k] || 0) + 1; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); };
+      const day = 864e5, now = Date.now();
+      const newW = STU.rows.filter((r) => now - new Date(r[ix("Registered On")]) < 7 * day).length;
+      const act7 = STU.rows.filter((r) => now - new Date(r[ix("Last Seen")]) < 7 * day).length;
+      const d = (v) => (v ? new Date(v).toLocaleDateString() : "");
+      el.innerHTML = `<div class="stats">
+<div class="stat"><b>${STU.rows.length}</b><span>Total students</span></div><div class="stat"><b>${newW}</b><span>New this week</span></div>
+<div class="stat"><b>${act7}</b><span>Active last 7 days</span></div><div class="stat"><b>${cnt("College").length}</b><span>Colleges</span></div></div>
+<div class="two" style="margin-top:12px"><div class="card"><h3 style="margin-top:0">By exam</h3><table class="t">${cnt("Exam").map(([k, v]) => `<tr><td>${esc(k)}</td><td><b>${v}</b></td></tr>`).join("")}</table></div>
+<div class="card"><h3 style="margin-top:0">Top colleges</h3><table class="t">${cnt("College").slice(0, 10).map(([k, v]) => `<tr><td>${esc(k)}</td><td><b>${v}</b></td></tr>`).join("")}</table></div></div>
+<div class="card"><div class="row"><input id="sq" placeholder="Search name / mail / college" value="${esc(S.get("t_sq", ""))}" style="max-width:260px">
+<select id="sx" style="max-width:240px"><option value="">All exams</option>${cnt("Exam").map(([k]) => `<option ${k === fx ? "selected" : ""}>${esc(k)}</option>`).join("")}</select>
+<span class="sp"></span><span class="small muted">${rows.length} shown</span><button class="btn alt sm" id="srf">⟳ Refresh</button><button class="btn alt sm" id="scsv">⬇ CSV</button></div>
+<div style="overflow-x:auto;margin-top:8px"><table class="t"><tr><th>#</th><th>Name</th><th>Mail ID</th><th>Exam</th><th>College</th><th>Registered</th><th>Last seen</th><th>Days</th></tr>
+${rows.map((r, n) => `<tr><td>${n + 1}</td><td>${esc(r[ix("Name")])}</td><td>${esc(r[ix("Mail ID")])}</td><td>${esc(r[ix("Exam")])}</td><td>${esc(r[ix("College")])}</td><td class="small">${d(r[ix("Registered On")])}</td><td class="small">${d(r[ix("Last Seen")])}</td><td>${esc(r[ix("Days Active")])}</td></tr>`).join("")}</table></div></div>
+<p class="small muted">Live copy of the Google Sheet "Students" tab. Open the sheet itself for full details.</p>`;
+      $("#sq").onchange = (e) => { S.set("t_sq", e.target.value); drawList(); };
+      $("#sx").onchange = (e) => { S.set("t_sx", e.target.value); drawList(); };
+      $("#srf").onclick = () => { STU = null; P.students(el); };
+      $("#scsv").onclick = () => {
+        const csv = [STU.head, ...rows].map((r) => r.map((x) => '"' + String(x ?? "").replace(/"/g, '""') + '"').join(",")).join("\n");
+        download("kj_students_" + KJ.today() + ".csv", "\ufeff" + csv, "text/csv");
+      };
+    };
+    if (STU) return drawList();
+    el.innerHTML = '<div class="empty">Loading students from Google Sheet…</div>';
+    try {
+      const j = await (await fetch(url + "?action=list&key=" + encodeURIComponent(S.get("t_sheetkey", "")))).json();
+      if (!j.ok) throw new Error(j.error === "wrong key" ? "Read key is wrong – fix it in ⚙️ Settings" : j.error);
+      STU = j; drawList();
+    } catch (err) { el.innerHTML = `<div class="card"><b>Could not load students.</b><div class="small" style="color:var(--bad)">${esc(err.message)}</div></div>`; }
+  };
+
   /* ---------- Settings ---------- */
   P.settings = (el) => {
     const G = cfg();
@@ -506,10 +554,15 @@ ${sizes.map((s) => `<tr><td class="${dirty.has(s.p) ? "dirty" : ""}">${esc(s.p)}
 <label>Cloud name</label><input id="cc" value="${esc(G.cloud)}"><label>Unsigned upload preset</label><input id="cp" value="${esc(G.preset)}"><label>Folder</label><input id="cfo" value="${esc(G.folder)}">
 <p class="small muted">Cloudinary → Settings → Upload → Add upload preset → Signing mode <b>Unsigned</b>. For PDFs also enable <b>Allow delivery of PDF and ZIP files</b> (Settings → Security).</p>
 <div class="row"><label class="btn alt sm" style="margin:0">Test upload (small image)<input type="file" id="ct" accept="image/*" hidden></label><span class="small" id="cr"></span></div></div></div>
+<div class="card"><h3 style="margin-top:0">📋 Google Sheet – student register</h3>
+<label>Apps Script Web app URL (…/exec)</label><input id="gu" value="${esc(G.sheet.startsWith("YOUR_") ? "" : G.sheet)}" placeholder="https://script.google.com/macros/s/…/exec">
+<label>Read key (same as READ_KEY in the script)</label><input id="gk" type="password" value="${esc(S.get("t_sheetkey", ""))}">
+<p class="small muted">Setup steps: README → section 0 → "Google Sheet setup". Students' app uses the URL from config.js.</p>
+<div class="row"><button class="btn alt sm" id="gt">Test sheet</button><span class="small" id="gr"></span></div></div>
 <div class="row"><span class="sp"></span><button class="btn ok" id="ss">Save settings</button></div>
 <div class="card small" style="margin-top:12px"><b>Lock</b>: to change Setup Code / PIN, open <code>tools/hash_tool.html</code>, make new hashes and paste into <code>config.js → TEACHER_LOCK</code>, then upload config.js.
 <div class="row" style="margin-top:6px"><button class="btn alt sm" id="lo">🔒 Lock now</button></div></div>`;
-    const saveS = () => { S.set("t_settings", { owner: $("#so").value.trim(), repo: $("#sr").value.trim(), branch: $("#sb").value.trim() || "main", prefix: $("#sp").value.trim(), cloud: $("#cc").value.trim(), preset: $("#cp").value.trim(), folder: $("#cfo").value.trim() }); S.set("t_pat", $("#st").value.trim()); };
+    const saveS = () => { S.set("t_settings", { owner: $("#so").value.trim(), repo: $("#sr").value.trim(), branch: $("#sb").value.trim() || "main", prefix: $("#sp").value.trim(), cloud: $("#cc").value.trim(), preset: $("#cp").value.trim(), folder: $("#cfo").value.trim(), sheet: $("#gu").value.trim() }); S.set("t_pat", $("#st").value.trim()); S.set("t_sheetkey", $("#gk").value.trim()); };
     $("#ss").onclick = () => { saveS(); KJ.toast("Settings saved on this device"); };
     $("#tt").onclick = async () => {
       saveS(); $("#tr").textContent = "Checking…";
@@ -519,6 +572,14 @@ ${sizes.map((s) => `<tr><td class="${dirty.has(s.p) ? "dirty" : ""}">${esc(s.p)}
     $("#ct").onchange = async (e) => { saveS(); const f = e.target.files[0]; if (!f) return; $("#cr").textContent = "Uploading…";
       try { const u = await cloudUpload(f, "test"); $("#cr").innerHTML = '✔ <a target="_blank" href="' + esc(u) + '">uploaded</a>'; } catch (err) { $("#cr").textContent = "✖ " + err.message; } };
     $("#lo").onclick = () => { sessionStorage.removeItem("kj_t_ok"); lock(); };
+    $("#gt").onclick = async () => {
+      saveS(); $("#gr").textContent = "Checking…";
+      try {
+        const c = await (await fetch(cfg().sheet + "?action=count")).json();
+        const l = await (await fetch(cfg().sheet + "?action=list&key=" + encodeURIComponent(S.get("t_sheetkey", "")))).json();
+        $("#gr").textContent = "✔ Connected – " + c.count + " students" + (l.ok ? " · key OK" : " · ✖ key wrong (list hidden)");
+      } catch (err) { $("#gr").textContent = "✖ " + err.message + " – check the URL and that access is 'Anyone'"; }
+    };
   };
 
   /* ---------------- utilities ---------------- */

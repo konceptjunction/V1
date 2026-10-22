@@ -1,6 +1,6 @@
 /* KONCEPT JUNCTION — service worker (V1)
    Bump VERSION in every new upload pack so phones pick up new files. */
-const VERSION = "kj-v1";
+const VERSION = "kj-v4";
 const SHELL = [
   "./", "home.html", "index.html", "manifest.json",
   "assets/css/app.css",
@@ -14,7 +14,7 @@ const SHELL = [
   "data/questions/eee.json", "data/questions/current.json"
 ];
 const CDN = /(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com|cdnjs\.cloudflare\.com|unpkg\.com)/;
-const BYPASS = /(api\.github\.com|api\.cloudinary\.com)/;
+const BYPASS = /(api\.github\.com|api\.cloudinary\.com|script\.google\.com|script\.googleusercontent\.com)/;
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => null)))).then(() => self.skipWaiting()));

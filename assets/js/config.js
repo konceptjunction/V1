@@ -10,8 +10,8 @@ window.KJ_CONFIG = {
   TAGLINE_TE: "రాష్ట్ర స్థాయి పోటీ పరీక్షలు",
   NOTES_BRAND: "Notes by BALAJI SIR",
   CONCEPTS_BRAND: "Quick Revision Concepts by BALAJI SIR",
-  VERSION: "V1",
-  BUILD_DATE: "2026-10-21",
+  VERSION: "V4",
+  BUILD_DATE: "2026-10-22",
 
   CONTACT_EMAIL: "YOUR_NEW_MAIL@gmail.com",          // <<< CHANGE (new Gmail)
   CONTACT_PHONE: "9494780174",                      // printed on question papers (from your model paper)
@@ -43,6 +43,11 @@ window.KJ_CONFIG = {
   TEACHER_LOCK: {
     setup_code_sha256: "0ec1d7b4ccd5fe266b3875f02a09dd967b99acb6ffd2aa705a889d35c13eaf67",
     pin_sha256: "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+  },
+
+  /* V4: Google Sheet student register (Apps Script web app – see tools/google_apps_script_students.gs) */
+  SHEET: {
+    webapp_url: "YOUR_APPS_SCRIPT_WEB_APP_URL"        // <<< CHANGE  (https://script.google.com/macros/s/…/exec)
   },
 
   DEFAULT_LANG: "bi",          // "en" | "te" | "bi" (bilingual English + Telugu)

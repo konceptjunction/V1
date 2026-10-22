@@ -154,3 +154,40 @@ table.t th{color:var(--muted);font-weight:600}
 .topbar select{max-width:118px;flex:0 0 auto}
 .xh-top select{max-width:96px}
 @media(max-width:420px){.topbar .ttl b{font-size:14px;letter-spacing:.5px}}
+
+/* ===== V3 : profile button, performance ===== */
+.tb-prof{flex:0 0 auto;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;text-decoration:none;
+  background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:16px;border:2px solid rgba(255,255,255,.7)}
+.tb-prof.on{outline:3px solid #fff;outline-offset:1px}
+@media(max-width:420px){.topbar{gap:7px;padding:9px 10px}.topbar select{max-width:92px;font-size:12px}.topbar .ttl small{display:none}}
+.bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden;min-width:60px}
+.bar i{display:block;height:100%;border-radius:99px}
+.pct{font-variant-numeric:tabular-nums;font-weight:700;min-width:40px;text-align:right;display:inline-block}
+.trend{display:flex;align-items:flex-end;gap:6px;height:130px;padding-top:16px;border-bottom:1px solid var(--line)}
+.trend .tb{flex:1;max-width:44px;border-radius:6px 6px 0 0;position:relative;min-height:3px}
+.trend .tb span{position:absolute;top:-17px;left:0;right:0;text-align:center;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.trend-x{display:flex;gap:6px}.trend-x span{flex:1;max-width:44px;text-align:center;font-size:10px;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chips a{text-decoration:none}
+.tbl-wrap{overflow-x:auto}
+
+/* ===== V4 : first-page registration (plain & clean) ===== */
+body.reg .topbar,body.reg .bnav{display:none}
+body.reg main{padding-bottom:40px}
+.reg-wrap{max-width:440px;margin:28px auto 20px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.reg-logo{width:116px;height:116px;border-radius:50%;background:#fff;box-shadow:var(--shadow)}
+.reg-name{font-size:23px;letter-spacing:2.5px;color:var(--brand);margin:16px 0 2px;text-wrap:balance}
+.reg-motto{font-size:11px;letter-spacing:3.5px;color:var(--muted)}
+.reg-intro{margin:16px 0 4px;font-size:14px;color:var(--muted)}
+.reg-intro .t-te,.reg-form label .t-te{display:inline;margin:0}
+.reg-form{width:100%;text-align:left;display:flex;flex-direction:column;margin-top:10px}
+.reg-form label{color:var(--ink);font-weight:600;font-size:13.5px;margin:14px 0 6px}
+.reg-form label .t-te{font-weight:400;color:var(--muted)}
+.reg-form input,.reg-form select{padding:12px;font-size:15px;border-radius:10px}
+.reg-form input:focus,.reg-form select:focus{outline:2px solid var(--brand2);outline-offset:1px;border-color:var(--brand2)}
+.reg-form #rxo{margin-top:8px}
+.reg-err{color:var(--bad);font-size:13px;min-height:18px;margin-top:10px}
+.reg-btn{width:100%;margin-top:8px;padding:13px;font-size:16px;border-radius:12px}
+.reg-note{margin-top:14px;text-align:center}
+.sync{font-size:12.5px;padding:6px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--line);display:inline-block}
+.sync.ok{color:var(--ok)}.sync.wait{color:var(--warn)}

@@ -157,6 +157,7 @@ ${q.img ? `<img class="qimg" src="${esc(q.img)}" alt="">` : ""}
     const wrong = new Set(KJ.store.get("wrong", []));
     rec.qs.forEach((q, i) => { if (rec.ans[i] != null && rec.ans[i] !== q.a) wrong.add(q.id); else if (rec.ans[i] === q.a) wrong.delete(q.id); });
     KJ.store.set("wrong", [...wrong]);
+    KJ.addStats && KJ.addStats("tstat_sub", rec.qs.map((q, i) => [q, rec.ans[i] === q.a, rec.ans[i] != null]).filter((x) => x[2]));  // V3
     if (rec.kind === "daily") KJ.markDaily && KJ.markDaily();
     KJ.store.del("live"); st = null;
     document.body.classList.remove("exam");

@@ -3,8 +3,8 @@
   "id": "KJ-MP-001",
   "set": "S",
   "title": {
-   "en": "Model Paper 1 – General Science",
-   "te": "మోడల్ పేపర్ 1 – సాధారణ శాస్త్రం"
+   "en": "General Science – Topic Test 1",
+   "te": "సాధారణ శాస్త్రం – టాపిక్ టెస్ట్ 1"
   },
   "date": "2026-10-21",
   "duration_min": 10,
@@ -20,6 +20,8 @@
    "sci-0107",
    "sci-0108",
    "sci-0109"
-  ]
+  ],
+  "subject": "science",
+  "topic": "Biology, Physics & Chemistry"
  }
 ]
