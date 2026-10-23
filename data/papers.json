@@ -1,34 +1,5 @@
 [
  {
-  "id": "KJ-TT-001",
-  "subject": "quant",
-  "topic": "",
-  "set": "A",
-  "title": {
-   "en": "SAMPLE APTITUDE AND REASONING",
-   "te": ""
-  },
-  "date": "2026-10-23",
-  "duration_min": 9,
-  "mark": 1,
-  "negative": 0.25,
-  "visible": true,
-  "exams": [
-   "police_si"
-  ],
-  "qids": [
-   "qua-0001",
-   "qua-0002",
-   "qua-0003",
-   "qua-0004",
-   "qua-0005",
-   "qua-0006",
-   "qua-0007",
-   "qua-0008",
-   "qua-0009"
-  ]
- },
- {
   "id": "KJ-TT-002",
   "subject": "science",
   "topic": "",
@@ -76,6 +47,35 @@
    "sci-0028",
    "sci-0029",
    "sci-0030"
+  ]
+ },
+ {
+  "id": "KJ-TT-003",
+  "subject": "economy",
+  "topic": "",
+  "set": "A",
+  "title": {
+   "en": "SAMPLE APTITUDE AND REASONING",
+   "te": ""
+  },
+  "date": "2026-10-24",
+  "duration_min": 9,
+  "mark": 1,
+  "negative": 0.25,
+  "visible": true,
+  "exams": [
+   "police_si"
+  ],
+  "qids": [
+   "eco-0001",
+   "eco-0002",
+   "eco-0003",
+   "eco-0004",
+   "eco-0005",
+   "eco-0006",
+   "eco-0007",
+   "eco-0008",
+   "eco-0009"
   ]
  }
 ]
