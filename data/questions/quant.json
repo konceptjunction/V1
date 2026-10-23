@@ -112,5 +112,151 @@
   },
   "img": "",
   "video": ""
+ },
+ {
+  "id": "qua-0004",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Simplify the following expression using the BODMAS rule.\nBODMAS 000000000 000000000 0000000 0000 000000000000 ooooooooooaoa.",
+   "te": ""
+  },
+  "o": {
+   "en": [
+    "63           (B)57",
+    "58",
+    "64"
+   ],
+   "te": [
+    "63           (B)57",
+    "58",
+    "64"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0005",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Find the greatest number among the following.\n0000000 00000000 0000000000 0000000 00oooooaon.",
+   "te": ""
+  },
+  "o": {
+   "en": [
+    "260",
+    "3%",
+    "436",
+    "52"
+   ],
+   "te": [
+    "260",
+    "3%",
+    "436",
+    "52"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0006",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A shopkeeper charges his customer 14% more than the cost price. If a customer paid ₹18,240 for\na mobile phone, then the cost price of the mobile phone was:",
+   "te": "00 00000000000 కక 000000 000000 00000000 00 0000 14% 000000 0000 o0oo0\n00000000. కక 0000000000000 0 000000 000000 %18,240 000000000000000004, 0\nకక కక కక 0000 కక కక కక క క కక ooo?"
+  },
+  "o": {
+   "en": [
+    "₹20,794",
+    "₹15,687",
+    "₹16,600"
+   ],
+   "te": [
+    "₹16,000",
+    "₹15,687",
+    "₹16,600"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0007",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which option will replace the question mark (?) in the following series?\n1210, 648, 294, 100, ?",
+   "te": "0000000 00000000 000000000000 (7) 00000000 క 00000 0ooooooa?"
+  },
+  "o": {
+   "en": [
+    "17          (B) 18          (©) 19          (D) 13 ne emp ne pene S",
+    "Parallel distinct lines",
+    "Intersecting lines",
+    "Coincident lines / 000000000 OOO0OO",
+    "Perpendicular lines / 000 OO0OO00 6. For what value of k do the equations 3x+ky+4=0 and 6x+4y+8=0 have infinitely many solutions? ooo?"
+   ],
+   "te": [
+    "200 marks / 200 OOOOO0OO0O",
+    "225 marks / 225 00000000",
+    "250 marks / 250 00000000",
+    "275 marks / 275 00000000",
+    "Perpendicular lines / 000 OO0OO00 6. For what value of k do the equations 3x+ky+4=0 and 6x+4y+8=0 have infinitely many solutions? ooo?"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
  }
 ]

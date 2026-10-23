@@ -40,5 +40,29 @@
    "geo-0031",
    "geo-0032"
   ]
+ },
+ {
+  "id": "KJ-TT-002",
+  "subject": "quant",
+  "topic": "",
+  "set": "S",
+  "title": {
+   "en": "SAMPLE APTITUDE AND REASONING – Set S",
+   "te": ""
+  },
+  "date": "2026-10-23",
+  "duration_min": 4,
+  "mark": 1,
+  "negative": 0.25,
+  "visible": true,
+  "exams": [
+   "police_si"
+  ],
+  "qids": [
+   "qua-0004",
+   "qua-0005",
+   "qua-0006",
+   "qua-0007"
+  ]
  }
 ]
