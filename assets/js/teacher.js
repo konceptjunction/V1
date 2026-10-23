@@ -290,7 +290,22 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         if (m[2]) { const p = splitEnTe(m[2]); p.en && cur.q.en.push(p.en); p.te && cur.q.te.push(p.te); }
         continue;
       }
+      const imL = l.match(/^\[\[IMG:([^\]]+)\]\]$/);          // V21: picture from a Word file
+      if (imL) { if (cur) cur.img = cur.img || imL[1]; continue; }
       if (!cur) continue;
+      if (!cur.inOpt && l.includes("\t")) {                  // V21: 2-column Word table row
+        const c2 = l.split("\t").map((x) => x.trim()).filter(Boolean);
+        if (c2.length === 2) {
+          const a = splitEnTe(c2[0]), b = splitEnTe(c2[1]);
+          const teC = (x) => {                               // Telugu cell keeps the a) / i) label (and జాబితా-I for the heading)
+            const en = x.en || x.te, te = x.te || x.en, mk = en.match(/^\(?\s*(?:[a-hA-H]|[ivxIVX]{1,4}|\d{1,2})\s*[.)]\s*/), li = en.match(/^List\s*[-–]\s*([IVX]+)/i);
+            if (mk && !te.startsWith(mk[0].trim())) return mk[0] + te;
+            if (li && !/జాబితా/.test(te)) return "జాబితా-" + li[1].toUpperCase() + ": " + te;
+            return te;
+          };
+          cur.q.en.push((a.en || a.te) + "   |   " + (b.en || b.te)); cur.q.te.push(teC(a) + "   |   " + teC(b)); continue;
+        }
+      }
       let om = l.match(OPT) || l.match(NOPT);
       const nOpt = cur.o.en.length, exp = "ABCD"[cur.blk2 != null ? cur.blk2 : nOpt];
       if (om && cur.inOpt && exp) {                                       // letter read wrongly but in the option sequence
@@ -323,7 +338,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       if (p.en) cur.q.en.push(p.en); if (p.te) cur.q.te.push(p.te);
     }
     return out.map((x) => {
-      const q = { no: x.no, q: { en: x.q.en.join("\n"), te: x.q.te.join("\n") }, o: { en: x.o.en, te: x.o.te.map((t, i) => t || x.o.en[i]) }, a: key[x.no] != null ? key[x.no] : null };
+      const q = { no: x.no, img: x.img || "", q: { en: x.q.en.join("\n"), te: x.q.te.join("\n") }, o: { en: x.o.en, te: x.o.te.map((t, i) => t || x.o.en[i]) }, a: key[x.no] != null ? key[x.no] : null };
       q.warn = KJ.cleanQ(q).warn;                           // V20: repair match codes, junk, Telugu read as numbers
       return q;
     });
@@ -383,6 +398,140 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     await worker.terminate();
     const sm = all.match(/^\s*([A-Z])\s*$/m); if (sm && !set) set = sm[1];
     return { text: cleanPaperText(all), set, pages: n, mode: "ocr" };
+  };
+
+  /* ---------- V21: read a Word (.docx) question paper ----------
+     Word keeps the real Unicode text, so this is exact (no OCR):
+       • Word automatic numbering (1. 2. 3. / A) B) C) D) / (a) / i.) is written out
+       • tables → match-the-following rows ( List-I | List-II )
+       • pictures in a question (diagrams) → attached to that question
+       • header / footer / watermark are not read */
+  const JSZIP_URL = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
+  const docxImgs = {};                                  // rId → data URL (filled by the last Word file read)
+  KJ.readDocxPaper = async function (file, onProg) {
+    if (/\.doc$/i.test(file.name)) throw new Error("This is an old Word file (.doc). In Word use File → Save As → Word Document (.docx), then choose it again.");
+    await loadScript(JSZIP_URL);
+    onProg && onProg("Opening " + file.name + "…");
+    const zip = await window.JSZip.loadAsync(await file.arrayBuffer());
+    const xml = async (n) => { const f = zip.file(n); return f ? new DOMParser().parseFromString(await f.async("string"), "application/xml") : null; };
+    const doc = await xml("word/document.xml"); if (!doc) throw new Error("Not a Word .docx file");
+    const kids = (el, name) => Array.from(el ? el.children : []).filter((c) => c.localName === name);
+    const kid = (el, name) => kids(el, name)[0];
+    const att = (el, name) => (el ? el.getAttribute("w:" + name) || el.getAttribute(name) : null);
+    /* numbering.xml – formats of Word automatic numbering */
+    const absFmt = {}, numAbs = {}, numCount = {};
+    const nx = await xml("word/numbering.xml");
+    if (nx) {
+      kids(nx.documentElement, "abstractNum").forEach((a) => {
+        const id = att(a, "abstractNumId"); absFmt[id] = {};
+        kids(a, "lvl").forEach((l) => { absFmt[id][att(l, "ilvl")] = { fmt: att(kid(l, "numFmt"), "val") || "decimal", text: att(kid(l, "lvlText"), "val") || "%1.", start: +(att(kid(l, "start"), "val") || 1) }; });
+      });
+      kids(nx.documentElement, "num").forEach((n) => { numAbs[att(n, "numId")] = att(kid(n, "abstractNumId"), "val"); });
+    }
+    /* styles.xml – numbering that comes from a paragraph style ("List Number" …) */
+    const styleNum = {}, sx = await xml("word/styles.xml");
+    if (sx) kids(sx.documentElement, "style").forEach((st) => { const np = kid(kid(st, "pPr"), "numPr"); if (np) styleNum[att(st, "styleId")] = { numId: att(kid(np, "numId"), "val"), ilvl: att(kid(np, "ilvl"), "val") || "0" }; });
+    /* relationships – picture files */
+    const rel = {}, rx = await xml("word/_rels/document.xml.rels");
+    if (rx) kids(rx.documentElement, "Relationship").forEach((r) => { rel[r.getAttribute("Id")] = r.getAttribute("Target"); });
+    const roman = (n) => { const v = [[1000, "m"], [900, "cm"], [500, "d"], [400, "cd"], [100, "c"], [90, "xc"], [50, "l"], [40, "xl"], [10, "x"], [9, "ix"], [5, "v"], [4, "iv"], [1, "i"]]; let o = ""; v.forEach(([k, r]) => { while (n >= k) { o += r; n -= k; } }); return o; };
+    const fmtN = (n, f) => f === "upperLetter" ? String.fromCharCode(64 + ((n - 1) % 26) + 1) : f === "lowerLetter" ? String.fromCharCode(96 + ((n - 1) % 26) + 1)
+      : f === "upperRoman" ? roman(n).toUpperCase() : f === "lowerRoman" ? roman(n) : f === "bullet" || f === "none" ? "" : String(n);
+    function numPrefix(p) {
+      const pPr = kid(p, "pPr"); let np = kid(pPr, "numPr"), numId, ilvl;
+      if (np) { numId = att(kid(np, "numId"), "val"); ilvl = att(kid(np, "ilvl"), "val") || "0"; }
+      else { const sid = att(kid(pPr, "pStyle"), "val"); if (sid && styleNum[sid]) ({ numId, ilvl } = styleNum[sid]); }
+      if (!numId || numId === "0") return "";
+      const A = absFmt[numAbs[numId]]; if (!A || !A[ilvl]) return "";
+      const L = +ilvl, c = (numCount[numId] = numCount[numId] || []);
+      for (let k = 0; k <= L; k++) if (c[k] == null) c[k] = (A[k] ? A[k].start : 1) - 1;
+      c[L]++; c.length = L + 1;
+      if (A[ilvl].fmt === "bullet") return "• ";
+      return A[ilvl].text.replace(/%(\d)/g, (_, d) => fmtN(c[+d - 1] || 1, (A[+d - 1] || A[ilvl]).fmt)) + " ";
+    }
+    const lines = [], imgIds = [];
+    function runText(p) {
+      let t = "";
+      p.querySelectorAll("*").forEach((n) => {
+        const ln = n.localName;
+        if (ln === "t") t += n.textContent;
+        else if (ln === "tab" && n.parentNode.localName === "r") t += "\t";
+        else if ((ln === "br" || ln === "cr") && n.parentNode.localName === "r") t += "\n";
+        else if (ln === "blip") {
+          const an = n.closest ? n.closest("anchor") : null;
+          if (an && an.getAttribute("behindDoc") === "1") return;   // watermark picture behind the text
+          const id = n.getAttribute("r:embed"); if (id) { t += "\n[[IMG:" + id + "]]\n"; imgIds.push(id); }
+        }
+      });
+      return t;
+    }
+    function para(p) {
+      let t = numPrefix(p) + runText(p);
+      t.split("\n").forEach((ln) => {
+        const seg = ln.split("\t").map((x) => x.trim()).filter(Boolean);
+        if (seg.length > 1 && seg.every((x) => /^\(?[A-Da-d1-4][).]/.test(x))) seg.forEach((x) => lines.push(x));   // A) x ⇥ B) y on one line
+        else lines.push(ln.replace(/\t+/g, " ").replace(/\s{2,}/g, " ").trim());
+      });
+    }
+    function walk(el) {
+      Array.from(el.children).forEach((c) => {
+        if (c.localName === "p") para(c);
+        else if (c.localName === "tbl") {
+          kids(c, "tr").forEach((tr) => {
+            const cells = kids(tr, "tc").map((tc) => kids(tc, "p").map((p) => (numPrefix(p) + runText(p)).replace(/\s+/g, " ").trim()).filter(Boolean).join(" ").trim());
+            const full = cells.filter(Boolean);
+            if (full.length === 2) lines.push(full.join("\t"));            // 2 columns → table row (List-I | List-II)
+            else full.forEach((x) => lines.push(x));
+          });
+        } else if (c.localName === "sdt") walk(kid(c, "sdtContent") || c);
+      });
+    }
+    walk(kid(doc.documentElement, "body"));
+    /* pictures → small data images */
+    for (const id of imgIds) {
+      const tgt = rel[id]; if (!tgt) continue;
+      const f = zip.file("word/" + tgt.replace(/^\.?\//, "")) || zip.file(tgt.replace(/^\//, ""));
+      if (!f) continue;
+      const ext = (tgt.split(".").pop() || "png").toLowerCase();
+      if (!/png|jpe?g|gif|bmp|webp/.test(ext)) continue;
+      const blob = new Blob([await f.async("uint8array")], { type: "image/" + (ext === "jpg" ? "jpeg" : ext) });
+      docxImgs[id] = await shrinkImg(blob);
+    }
+    const text = lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+    const setM = text.match(/^\s*(?:SET|Set)?\s*[-:]?\s*([A-Z])\s*$/m);
+    return { text: cleanPaperText(text), set: setM ? setM[1] : "", pages: 1, mode: "docx", images: imgIds.filter((i) => docxImgs[i]).length };
+  };
+  function shrinkImg(blob, max = 1000) {
+    return new Promise((res) => {
+      const u = URL.createObjectURL(blob), im = new Image();
+      im.onload = () => {
+        const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement("canvas");
+        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+        const png = c.toDataURL("image/png"), jpg = c.toDataURL("image/jpeg", 0.85);
+        URL.revokeObjectURL(u); res(png.length < jpg.length * 1.3 ? png : jpg);
+      };
+      im.onerror = () => { URL.revokeObjectURL(u); res(""); };
+      im.src = u;
+    });
+  }
+
+  /* ---------- V21: Word (.docx) notes → a page students read inside the app ---------- */
+  const MAMMOTH_URL = "https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js";
+  KJ.docxToNotePage = async function (file, title) {
+    if (/\.doc$/i.test(file.name)) throw new Error("Old Word file (.doc) – save it as .docx first");
+    await loadScript(MAMMOTH_URL);
+    const r = await window.mammoth.convertToHtml({ arrayBuffer: await file.arrayBuffer() });
+    const t = esc(title || file.name.replace(/\.docx$/i, ""));
+    return `<!doctype html><html lang="te"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${t}</title>
+<style>:root{color-scheme:light dark}body{margin:0;font:16px/1.65 "Noto Sans Telugu","Nirmala UI",system-ui,sans-serif;background:#f4f6fb;color:#16213a}
+header{background:#1b3a6b;color:#fff;padding:14px 16px;position:sticky;top:0}header b{letter-spacing:1px;font-size:18px}header small{display:block;color:#f0a30a;letter-spacing:2px;font-size:11px}
+main{max-width:860px;margin:0 auto;padding:16px;background:#fff;min-height:80vh}h1.t{font-size:21px;color:#1b3a6b;margin:4px 0 14px}
+img{max-width:100%;height:auto}table{border-collapse:collapse;width:100%;margin:10px 0;display:block;overflow-x:auto}td,th{border:1.5px solid #333;padding:6px 8px;vertical-align:top}
+h1,h2,h3{color:#1b3a6b;line-height:1.3}footer{text-align:center;font-size:12px;color:#777;padding:16px}
+@media(prefers-color-scheme:dark){body{background:#0f1626;color:#e6ebf5}main{background:#151e33}td,th{border-color:#9aa}h1,h2,h3,h1.t{color:#9cc0ff}}</style></head>
+<body><header><b>${esc(C.APP_NAME || "KONCEPT JUNCTION")}</b><small>DREAM TO ACHIEVE</small></header>
+<main>${/^\s*<h[12][^>]*>/.test(r.value) ? "" : `<h1 class="t">${t}</h1>`}${r.value}</main><footer>${esc(C.APP_NAME || "KONCEPT JUNCTION")} · ${esc(C.NOTES_BRAND || "")}</footer></body></html>`;
   };
 
   function parseCSV(text) {
@@ -447,13 +596,14 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     /* V16: ① Subject + Exam Type first (right card) → ② upload paper → ③ Import */
     const selSub = S.get("t_imp_sub", ""), selEx = S.get("t_imp_ex", []);
     el.innerHTML = `<div class="two imp-two">
-<div class="card" id="impL"><h3 style="margin-top:0">② Question paper – PDF, file or pasted text</h3>
+<div class="card" id="impL"><h3 style="margin-top:0">② Question paper – Word, PDF, file or pasted text</h3>
 <div class="lock-note" id="lockNote">🔒 First select <b>Subject</b> and <b>Exam Type</b> in <b>① Select Subject &amp; Exam Type</b> <span class="arrow-r">→</span><span class="arrow-d">↑</span></div>
 <div class="row"><label class="btn acc sm" style="margin:0">📄 Read PDF question paper<input type="file" id="pdfin" accept="application/pdf,.pdf" hidden></label>
+<label class="btn acc sm" style="margin:0" title="Word file: exact English + Telugu text, numbering, tables and pictures">📝 Read Word (.docx) paper<input type="file" id="docin" accept=".docx,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label>
 <button class="btn alt sm" id="tpl">⬇ CSV template</button>
 <label class="btn acc sm" style="margin:0" title="Topic Test file (.json) adds the questions and creates the test in one step">📂 CSV / JSON / Topic Test file<input type="file" id="cf" accept=".csv,.json" hidden></label></div>
 <div class="small" id="pdfst" style="margin-top:6px"></div><div id="cres" class="small" style="margin-top:4px"></div>
-<p class="small muted">The PDF is read into the box below (Telugu pages are read with OCR, about 10–30 s per page – use a laptop). <b>Check the text</b>, type the <b>answer key</b>, then Preview → Import. Diagrams are not read – add them later in ➕ Add / Edit. You can also paste text from a Word file here.</p>
+<p class="small muted"><b>📝 Word (.docx) is best:</b> exact English + Telugu, numbering, tables and pictures are read, and an "Answer Key" at the end fills the key box. The PDF is read into the box below (Telugu pages are read with OCR, about 10–30 s per page – use a laptop). <b>Check the text</b>, type the <b>answer key</b>, then Preview → Import. Diagrams are not read – add them later in ➕ Add / Edit. You can also paste text from a Word file here.</p>
 <textarea id="pt" style="min-height:260px" placeholder="1. Ginger and turmeric propagate naturally through:&#10;అల్లం మరియు పసుపు …?&#10;A) Tubers / దుంపలు&#10;B) Rhizomes / భూగర్భ కాండాలు&#10;C) Bulbs / కాండాలు&#10;D) Runners / నేలపై పాకే కాండాలు">${esc(S.get("t_import_text", ""))}</textarea>
 <label>Answer key (e.g. 1-B 2-C 3-D 4-B)</label><input id="pk">
 <div class="row" style="margin-top:10px"><button class="btn alt sm" id="pp">Preview</button><span class="sp"></span><button class="btn ok" id="pi">③ Import</button></div>
@@ -470,7 +620,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       const r = KJ.parsePaperText($("#pt").value, $("#pk").value);
       const noKey = r.filter((x) => x.a == null).length, bad4 = r.filter((x) => x.o.en.length !== 4), wq = r.filter((x) => x.warn && x.warn.length);
       $("#pres").innerHTML = `<p class="small"><b>${r.length}</b> questions found · <span style="${noKey ? "color:var(--bad);font-weight:700" : ""}">${noKey} without answer key</span> · <span style="${bad4.length ? "color:var(--warn);font-weight:700" : ""}">${bad4.length} not having 4 options${bad4.length ? " (Q" + bad4.map((x) => x.no).join(", Q") + ")" : ""}</span>${wq.length ? `<br><b style="color:var(--warn)">⚠ Check after import (➕ Add / Edit):</b> ` + wq.map((x) => "Q" + x.no + " – " + x.warn.map(esc).join("; ")).join(" · ") : ""}</p>` +
-        r.slice(0, 200).map((x) => `<div class="small" style="border-top:1px solid var(--line);padding:4px 0"><b>${x.no}.</b> ${esc(x.q.en)} <span class="t-te" style="display:inline">${esc(x.q.te)}</span><br>${x.o.en.map((o, i) => `<span class="${i === x.a ? "pill acc" : "pill"}">${KJ.LETTERS[i]}) ${esc(o)}${x.o.te[i] && x.o.te[i] !== o ? " / " + esc(x.o.te[i]) : ""}</span>`).join(" ")}</div>`).join("");
+        r.slice(0, 200).map((x) => `<div class="small" style="border-top:1px solid var(--line);padding:4px 0"><b>${x.no}.</b>${x.img ? " 🖼" : ""} ${esc(x.q.en)} <span class="t-te" style="display:inline">${esc(x.q.te)}</span><br>${x.o.en.map((o, i) => `<span class="${i === x.a ? "pill acc" : "pill"}">${KJ.LETTERS[i]}) ${esc(o)}${x.o.te[i] && x.o.te[i] !== o ? " / " + esc(x.o.te[i]) : ""}</span>`).join(" ")}</div>`).join("");
       return r;
     };
     /* V16: Subject + Exam Type must be chosen before a paper can be uploaded */
@@ -496,7 +646,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     };
     $("#ps").onchange = () => { S.set("t_imp_sub", $("#ps").value); updLock(); };
     $("#pe").onchange = () => { S.set("t_imp_ex", $$("#pe input:checked").map((x) => x.value)); updLock(); };
-    $$("#pdfin,#cf").forEach((inp) => inp.closest("label").addEventListener("click", (e) => { if (needSel()) e.preventDefault(); }));
+    $$("#pdfin,#cf,#docin").forEach((inp) => inp.closest("label").addEventListener("click", (e) => { if (needSel()) e.preventDefault(); }));
     $("#pt").addEventListener("focus", () => { if (!$("#pt").value.trim()) needSel(); });
     updLock();
     let staged = null;                                   // V16: chosen file waits for ③ Import
@@ -510,7 +660,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         const r = await KJ.readPdfPaper(f, (m) => (st.textContent = m));
         $("#pt").value = r.text; S.set("t_import_text", r.text);
         if (r.set) $("#pset").value = r.set;
-        if (!$("#ptitle").value) $("#ptitle").value = f.name.replace(/\.pdf$/i, "").replace(/^KJ[_ ]*/i, "").replace(/_/g, " ").trim() + (r.set ? " – Set " + r.set : "");
+        if (!$("#ptitle").value) $("#ptitle").value = f.name.replace(/\.pdf$/i, "").replace(/^KJ[_ ]*/i, "").replace(/_/g, " ").replace(/\s*[-–]?\s*Set\s*[A-Z]?\s*$/i, "").trim() + (r.set ? " – Set " + r.set : "");
         $("#mkp").checked = true;
         const q = prev();
         const ex0 = findExisting(q, $("#ptitle").value, $("#pset").value, "");                           // V13
@@ -520,6 +670,29 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
           () => { $("#pt").value = ""; S.del("t_import_text"); $("#pres").innerHTML = ""; st.innerHTML = "✋ No need of upload – the old paper is kept."; });
         st.innerHTML = `✔ ${r.pages} page(s) read ${r.mode === "ocr" ? "with OCR" : "as text"} → <b>${q.length}</b> questions. ${r.mode === "ocr" ? "Please check spellings, " : ""}type the answer key, then press <b>③ Import</b>.`;
       } catch (err) { st.innerHTML = '<span style="color:var(--bad)">✖ Could not read the PDF: ' + esc(err.message) + "</span>"; }
+      e.target.value = "";
+    };
+    $("#docin").onchange = async (e) => {                 // V21: Word paper
+      const f = e.target.files[0]; if (!f) return;
+      if (needSel()) { e.target.value = ""; return; }
+      staged = null; $("#cres").innerHTML = "";
+      const st = $("#pdfst");
+      try {
+        const r = await KJ.readDocxPaper(f, (m) => (st.textContent = m));
+        const km = r.text.match(/^\s*(?:answer\s*key|answers|key|జవాబులు|సమాధానాలు|కీ)\b[^\n]*\n?([\s\S]*)$/im);   // answer key at the end of the file
+        if (km) { r.text = r.text.slice(0, km.index).trim(); if (!$("#pk").value.trim()) $("#pk").value = km[1].replace(/\s+/g, " ").trim(); }
+        $("#pt").value = r.text; S.set("t_import_text", r.text);
+        if (r.set) $("#pset").value = r.set;
+        if (!$("#ptitle").value) $("#ptitle").value = f.name.replace(/\.docx?$/i, "").replace(/^KJ[_ ]*/i, "").replace(/_/g, " ").replace(/\s*[-–]?\s*Set\s*[A-Z]?\s*$/i, "").trim() + (r.set ? " – Set " + r.set : "");
+        $("#mkp").checked = true;
+        const q = prev();
+        const ex0 = findExisting(q, $("#ptitle").value, $("#pset").value, "");
+        reupOK = false;
+        if (ex0.blocked) alreadyPopup(ex0, q.length,
+          () => { reupOK = true; KJ.toast("🔁 Reupload: check the text + answer key, then press Import – the old copy will be replaced"); },
+          () => { $("#pt").value = ""; S.del("t_import_text"); $("#pres").innerHTML = ""; st.innerHTML = "✋ No need of upload – the old paper is kept."; });
+        st.innerHTML = `✔ Word file read (exact text) → <b>${q.length}</b> questions${r.images ? ", " + r.images + " picture(s)" : ""}. Check the text, type the answer key (if not in the file), then press <b>③ Import</b>.`;
+      } catch (err) { st.innerHTML = '<span style="color:var(--bad)">✖ Could not read the Word file: ' + esc(err.message) + "</span>"; }
       e.target.value = "";
     };
     let reupOK = false;                                  // V15: Reupload already chosen after Read PDF
@@ -540,7 +713,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       r.forEach((x) => {
         const id = nextId(sid);
         bank(sid).push({ id, type: "mcq", subject: sid, topic: $("#pto").value.trim(), exams: ex, year: "", level: "easy", q: x.q,
-          o: { en: x.o.en, te: x.o.te }, a: x.a == null ? 0 : x.a, e: { en: "", te: "" }, img: "", video: "" });
+          o: { en: x.o.en, te: x.o.te }, a: x.a == null ? 0 : x.a, e: { en: "", te: "" }, img: x.img ? docxImgs[x.img] || "" : "", video: "" });   // V21: Word pictures
         ids.push(id);
       });
       markDirty(bankPath(sid));
@@ -549,7 +722,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         papers.push({ id: pid, subject: sid, topic: $("#pto").value.trim(), set: $("#pset").value.trim() || "A", title: { en: $("#ptitle").value.trim() || $("#pto").value.trim() || "Topic Test " + (papers.length + 1), te: "" },
           date: KJ.today(), duration_min: ids.length, mark: 1, negative: 0.25, visible: $("#pvis").checked, exams: ex, qids: ids });
         bank(sid).forEach((q) => ids.includes(q.id) && (q.paper = pid));
-        markDirty("data/papers.json");
+        markDirty("data/papers.json"); markDirty(bankPath(sid));
       }
       S.del("t_import_text");
       KJ.toast("Imported " + ids.length + " questions"); tab = "bank"; S.set("t_bsub", sid); draw();
@@ -713,25 +886,38 @@ ${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><s
   /* ---------- Notes & concepts ---------- */
   P.notes = (el) => {
     const notes = W["data/notes.json"];
-    el.innerHTML = `<div class="two3"><div class="card"><h3 style="margin-top:0">📒 Notes / 💡 Concepts PDFs</h3>
+    el.innerHTML = `<div class="two3"><div class="card"><h3 style="margin-top:0">📒 Notes / 💡 Concepts (PDF / Word)</h3>
 ${notes.length ? `<table class="t"><tr><th>Title</th><th>Subject</th><th>Type</th><th>Visible</th><th></th></tr>${notes.map((n, k) => `<tr><td>${esc(n.title.en || n.title.te)}<div class="tag">${esc(n.date || "")}</div></td><td>${esc(subName(n.subject))}</td><td>${esc(n.type)}</td>
 <td><input type="checkbox" style="width:auto" data-vis="${k}" ${n.visible !== false ? "checked" : ""}></td><td><a href="${esc(n.url)}" target="_blank">open</a> <button class="btn alt sm" data-del="${k}">🗑</button></td></tr>`).join("")}</table>` : '<div class="empty">No PDFs yet</div>'}</div>
-<div class="card"><h3 style="margin-top:0">➕ Add PDF</h3>
+<div class="card"><h3 style="margin-top:0">➕ Add PDF or Word notes</h3>
 <label>Type</label><select id="nt"><option value="notes">${esc(C.NOTES_BRAND)}</option><option value="concepts">${esc(C.CONCEPTS_BRAND)}</option></select>
 <label>Subject</label><select id="ns">${SUBS.map((s) => `<option value="${s.id}">${esc(s.name.en)}</option>`).join("")}</select>
 <label>Title (English)</label><input id="ne"><label>Title (తెలుగు)</label><input id="nte">
-<label>PDF URL (or upload)</label><input id="nu"><div class="row" style="margin-top:6px"><label class="btn alt sm" style="margin:0">⬆ Upload PDF to Cloudinary<input type="file" id="nf" accept="application/pdf" hidden></label>
+<label>PDF / page URL (or upload)</label><input id="nu">
+<div class="row" style="margin-top:6px"><label class="btn ok sm" style="margin:0" title="The Word file is turned into a page that opens inside the app (exact Telugu, tables, pictures)">📝 Upload Word (.docx) notes<input type="file" id="ndoc" accept=".docx,.doc" hidden></label></div><div class="row" style="margin-top:6px"><label class="btn alt sm" style="margin:0">⬆ Upload PDF to Cloudinary<input type="file" id="nf" accept="application/pdf" hidden></label>
 <label class="btn acc sm" style="margin:0">⬆ Upload PDF to GitHub (≤ ${GH_MAX_MB} MB)<input type="file" id="nfg" accept="application/pdf" hidden></label></div>
 <div class="small muted" id="nst"></div>
 <div class="row" style="margin-top:10px"><span class="sp"></span><button class="btn ok" id="na">Add</button></div></div></div>`;
     $("#nfg").onchange = async (e) => { const f = e.target.files[0]; if (!f) return;          // V13
       try { $("#nst").textContent = "Uploading " + (f.size / 1048576).toFixed(2) + " MB to GitHub…"; $("#nu").value = await ghUploadFile(f, "notes"); $("#nst").textContent = "✔ Uploaded to GitHub – students can open it after 1–3 min"; if (!$("#ne").value) $("#ne").value = f.name.replace(/\.pdf$/i, ""); }
       catch (err) { $("#nst").textContent = "✖ " + err.message; } e.target.value = ""; };
+    $("#ndoc").onchange = async (e) => { const f = e.target.files[0]; if (!f) return;        // V21: Word notes → page
+      try {
+        if (!$("#ne").value) $("#ne").value = f.name.replace(/\.docx?$/i, "").replace(/_/g, " ");
+        $("#nst").textContent = "Converting the Word file…";
+        const html = await KJ.docxToNotePage(f, $("#ne").value.trim() + ($("#nte").value.trim() ? " / " + $("#nte").value.trim() : ""));
+        const page = new File([html], f.name.replace(/\.docx?$/i, "") + ".html", { type: "text/html" });
+        $("#nst").textContent = "Uploading the page (" + (page.size / 1048576).toFixed(2) + " MB) to GitHub…";
+        $("#nu").value = await ghUploadFile(page, "notes");
+        $("#nst").innerHTML = "✔ Word notes uploaded as a page – press <b>Add</b>. Students can open it after 1–3 min.";
+      } catch (err) { $("#nst").textContent = "✖ " + err.message; }
+      e.target.value = "";
+    };
     $("#nf").onchange = async (e) => { const f = e.target.files[0]; if (!f) return;
       try { $("#nu").value = await cloudUpload(f, "pdfs", (p) => ($("#nst").textContent = "Uploading " + p + "%")); $("#nst").textContent = "✔ Uploaded"; if (!$("#ne").value) $("#ne").value = f.name.replace(/\.pdf$/i, ""); }
       catch (err) { $("#nst").textContent = "✖ " + err.message; } };
     $("#na").onclick = () => {
-      if (!$("#nu").value.trim()) return KJ.toast("PDF URL needed");
+      if (!$("#nu").value.trim()) return KJ.toast("Upload a PDF / Word file or paste a URL first");
       notes.push({ id: KJ.uid("n"), type: $("#nt").value, subject: $("#ns").value, title: { en: $("#ne").value.trim(), te: $("#nte").value.trim() }, url: $("#nu").value.trim(), date: KJ.today(), visible: true });
       markDirty("data/notes.json"); draw();
     };

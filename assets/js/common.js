@@ -122,47 +122,14 @@
     const toks = t.split(/\s+/), short = toks.filter((x) => x.replace(/[^\wఀ-౿]/g, "").length <= 2).length;
     return sym >= 3 || letters / ns.length < 0.75 || short / toks.length > 0.4;
   };
-  const noiseTok = (x) => JUNK1.test(x) || x.replace(/[^\wఀ-౿]/g, "").length <= 2 || /^[A-Z]{2,5}$/.test(x) || /\d/.test(x) && /[A-Za-zఀ-౿]/.test(x);
   const cutJunkTail = (txt) => {                       // "Quo Warranto nr an sr "1, ANAL EE = hid … | | …"  →  "Quo Warranto"
-    const toks = String(txt || "").split(/\s+/).filter(Boolean);
-    for (let j = 1; j < toks.length; j++) {               // V21: start at the first symbol-junk word, then step back over short / caps noise
-      if (!JUNK1.test(toks[j])) continue;
-      const tail = toks.slice(j), sym = (tail.join(" ").match(JUNKCH) || []).length;
-      if (!(sym >= 2 && tail.filter(tokJunk).length / tail.length >= 0.6)) continue;
-      let i = j; while (i > 1 && noiseTok(toks[i - 1]) && !/^\d+[.)]?$/.test(toks[i - 1])) i--;
-      return toks.slice(0, i).join(" ").replace(/[\s,;]+$/, "");
+    const toks = String(txt || "").split(/\s+/);
+    for (let i = 1; i < toks.length - 2; i++) {
+      if (!tokJunk(toks[i])) continue;
+      const tail = toks.slice(i), sym = (tail.join(" ").match(JUNKCH) || []).length;
+      if (sym >= 2 && tail.filter(tokJunk).length / tail.length >= 0.6) return toks.slice(0, i).join(" ").replace(/[\s,;]+$/, "");
     }
     return txt;
-  };
-  /* V21: OCR noise that REPEATS (watermark read again and again on one line)
-     "Punchhi Commission EY UJ PREY UP PN ow J (| PRY " FEY PRS U PREY EY UJ PREY …"  →  "Punchhi Commission"
-     "పుంఛీ కమిషన్ ar ఇ 1 ఏ2 EY oh TERRA EA ar rr ఇ ~r <0 \ 0 \ 16 గా \ ar ఇ 1 …"     →  "పుంఛీ కమిషన్"
-     A block of 2–40 words seen 3 or more times in a row is cut away, then leftover junk words at the end. */
-  KJ.cutRepeat = function (txt) {
-    const s = String(txt || ""), toks = s.split(/\s+/).filter(Boolean), n = toks.length;
-    if (n < 9) return s;
-    for (let i = 0; i < n; i++) {
-      for (let p = 2; p <= 40 && i + 3 * p <= n + 1; p++) {
-        let run = 0; while (i + p + run < n && toks[i + run] === toks[i + p + run]) run++;
-        if (run + p >= 3 * p - 1 && run >= Math.max(6, 2 * p - 1) && toks.slice(i, i + p).filter((x) => /[A-Za-zఀ-౿]/.test(x)).length >= 2) {   // block seen ≥ 3 times, has words
-          const keep = toks.slice(0, i);
-          while (keep.length > 1 && noiseTok(keep[keep.length - 1]) && !/^[ivx]+[.)]?$|^\d+[.)]?$/i.test(keep[keep.length - 1])) keep.pop();
-          return keep.join(" ").replace(/[\s,;:|\\"(]+$/, "");
-        }
-      }
-    }
-    return s;
-  };
-  KJ.isRepeatJunk = (t) => KJ.cutRepeat(t) !== String(t || "");
-  /* V21: student side – clean repeated noise in options / question lines before showing (data file is not changed) */
-  KJ.tidyQ = function (q) {
-    if (!q || q._tidy) return q; q._tidy = 1;
-    ["en", "te"].forEach((k) => {
-      if (q.q && typeof q.q[k] === "string" && q.q[k].length > 60) q.q[k] = q.q[k].split("\n").map((l) => (l.length > 60 ? KJ.cutRepeat(l) : l)).filter((l, i, a) => l || !a[i]).join("\n");
-      if (q.o && Array.isArray(q.o[k])) q.o[k] = q.o[k].map((x) => (typeof x === "string" && x.length > 40 ? cutJunkTail(KJ.cutRepeat(x)) : x));
-    });
-    if (q.o && Array.isArray(q.o.te) && Array.isArray(q.o.en)) q.o.te = q.o.te.map((t, i) => (t && t !== q.o.en[i] && !/[ఀ-౿]/.test(t) && String(t).replace(/[^A-Za-z0-9]/g, "").length <= 4 && String(q.o.en[i] || "").length > 4 ? q.o.en[i] : t));
-    return q;
   };
   const teJunk = (t) => String(t || "").replace(/(?:\s+[ఀ-౿][ా-్ౕౖ]?(?:\.{2,}|…)?){2,}\s*\.*\s*$/, "").replace(/\s*(?:\.{2,}|…)\s*$/, "");
   const romanOf = (r) => { const x = String(r).replace(/[1lI|!ıі\]]/g, "i").replace(/V/g, "v").replace(/X/g, "x").toLowerCase(); return /^(i{1,3}|iv|vi{0,3}|ix|x)$/.test(x) ? x : null; };
@@ -192,7 +159,7 @@
     if (!q || !q.o || !Array.isArray(q.o.en)) return { changed: false, warn };
     const te0 = q.o.te; q.o.te = q.o.te || [];
     // question text: junk lines / Telugu junk tails
-    ["en", "te"].forEach((k) => { if (q.q && q.q[k]) q.q[k] = q.q[k].split("\n").map((l) => KJ.cutRepeat(l)).filter((l) => !KJ.isJunk(l)).map((l) => (k === "te" ? teJunk(l) : l)).join("\n"); });
+    ["en", "te"].forEach((k) => { if (q.q && q.q[k]) q.q[k] = q.q[k].split("\n").filter((l) => !KJ.isJunk(l)).map((l) => (k === "te" ? teJunk(l) : l)).join("\n"); });
     // match codes
     const T = KJ.splitTable(q.q || {});
     let lefts = null, rights = null;
@@ -204,11 +171,6 @@
     }
     q.o.en.forEach((en, i) => {
       let te = q.o.te[i] || "";
-      { const e2 = KJ.cutRepeat(en), t2 = KJ.cutRepeat(te);              // V21: repeated watermark noise
-        if (e2 !== en || t2 !== te) { en = e2; te = t2; q.o.en[i] = en; q.o.te[i] = te; warn.push("option " + "ABCD"[i] + ": repeated junk text removed – check"); } }
-      if (lefts && /[-–—]/.test(en) && (en.match(/(?:^|[\s,;])[a-hA-H0-9౦-౯]\s?[-–—]?\s?[ivxIl1|]{1,4}(?=$|[\s,;])/g) || []).length > lefts.length) {   // V21: table lost a row – never drop a code
-        warn.push("option " + "ABCD"[i] + ": table has fewer rows than the match code – check the table"); en = cutJunkTail(en); q.o.en[i] = en; if (!te || /[-–—]/.test(te)) q.o.te[i] = te = cutJunkTail(te); return;
-      }
       if (lefts && /[-–—]/.test(en) && (en.match(/[-–—]/g) || []).length >= Math.max(1, lefts.length - 2)) {
         const f = fixCode(en, lefts, rights) || fixCode(cutJunkTail(en), lefts, rights);
         if (f) {
@@ -223,7 +185,6 @@
       const dm = en.match(/^(.*[A-Za-z].*?)\s*\/\s*(\d[\d\s.,]{2,})$/);          // "Certiorari / 288558" in the English part
       if (dm) { en = dm[1].trim(); if (!te || te === q.o.en[i]) te = dm[2]; }
       if (te && /^[\d\s.,:;\-–()]+$/.test(te) && /[A-Za-z]{3}/.test(en)) { te = en; warn.push("option " + "ABCD"[i] + ": Telugu not readable – type it"); }
-      if (te && te !== en && !/[ఀ-౿]/.test(te) && te.replace(/[^A-Za-z0-9]/g, "").length <= 4 && en.length > 4) { te = en; warn.push("option " + "ABCD"[i] + ": Telugu not readable – type it"); }   // V21: "nr", "“Fr"
       q.o.en[i] = en; q.o.te[i] = te;
     });
     if (te0 == null && q.o.te.every((x) => !x)) q.o.te = te0;       // keep questions that never had Telugu options as they were
@@ -258,7 +219,7 @@
   KJ.bank = async function (sid) {
     const s = await KJ.subject(sid);
     if (!s) return [];
-    try { const b = await KJ.load(s.file); if (Array.isArray(b)) b.forEach(KJ.tidyQ); return b; } catch (e) { console.warn(e); return []; }   // V21: tidyQ
+    try { return await KJ.load(s.file); } catch (e) { console.warn(e); return []; }
   };
   KJ.allQuestions = async function (sids) {
     const subs = await KJ.subjects();

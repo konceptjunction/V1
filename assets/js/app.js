@@ -481,7 +481,7 @@ ${d.last === KJ.today() ? '<p class="small" style="color:var(--ok)">✔ You alre
         const items = list.map((n, i) => ({ n, i })).filter(({ n }) => n.subject === s.id);
         if (!items.length) return "";
         return `<h3>${s.icon || ""} ${esc(KJ.nm(s.name))}</h3>` + items.map(({ n, i }) => `<div class="card"><div class="row"><b>${KJ.txt(n.title)}</b><span class="sp"></span><span class="tag">${esc(n.date || "")}</span></div>
-<div class="row" style="margin-top:8px"><button class="btn sm" data-open="${i}">Open PDF</button><button class="btn alt sm" data-save="${i}">${saved[i] ? "✔ Offline" : "⬇ Save offline"}</button></div></div>`).join("");
+<div class="row" style="margin-top:8px"><button class="btn sm" data-open="${i}">${/\.html?$/i.test(n.url) ? "📄 Open notes" : "Open PDF"}</button><button class="btn alt sm" data-save="${i}">${saved[i] ? "✔ Offline" : "⬇ Save offline"}</button></div></div>`).join("");
       }).join("") : `<div class="empty">No ${type} uploaded yet.</div>`);
     el.onclick = async (e) => {
       const o = e.target.closest("[data-open]"), sv = e.target.closest("[data-save]");
