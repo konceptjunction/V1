@@ -155,45 +155,6 @@
   ]
  },
  {
-  "id": "KJ-TT-005",
-  "subject": "geography",
-  "topic": "",
-  "set": "S",
-  "title": {
-   "en": "GENERAL SCIENCE – Set S",
-   "te": ""
-  },
-  "date": "2026-10-23",
-  "duration_min": 22,
-  "mark": 1,
-  "negative": 0.25,
-  "visible": true,
-  "qids": [
-   "geo-0004",
-   "geo-0005",
-   "geo-0006",
-   "geo-0007",
-   "geo-0008",
-   "geo-0009",
-   "geo-0010",
-   "geo-0011",
-   "geo-0012",
-   "geo-0013",
-   "geo-0014",
-   "geo-0015",
-   "geo-0016",
-   "geo-0017",
-   "geo-0018",
-   "geo-0019",
-   "geo-0020",
-   "geo-0021",
-   "geo-0022",
-   "geo-0023",
-   "geo-0024",
-   "geo-0025"
-  ]
- },
- {
   "id": "KJ-TT-006",
   "subject": "polity",
   "topic": "TEST-1",
@@ -243,6 +204,48 @@
    "pol-0037",
    "pol-0038",
    "pol-0039"
+  ]
+ },
+ {
+  "id": "KJ-TT-007",
+  "subject": "geography",
+  "topic": "T-1",
+  "set": "S",
+  "title": {
+   "en": "GEOGRAPHY SET1 – Set S",
+   "te": ""
+  },
+  "date": "2026-10-23",
+  "duration_min": 22,
+  "mark": 1,
+  "negative": 0.25,
+  "visible": true,
+  "exams": [
+   "police_si"
+  ],
+  "qids": [
+   "geo-0004",
+   "geo-0005",
+   "geo-0006",
+   "geo-0007",
+   "geo-0008",
+   "geo-0009",
+   "geo-0010",
+   "geo-0011",
+   "geo-0012",
+   "geo-0013",
+   "geo-0014",
+   "geo-0015",
+   "geo-0016",
+   "geo-0017",
+   "geo-0018",
+   "geo-0019",
+   "geo-0020",
+   "geo-0021",
+   "geo-0022",
+   "geo-0023",
+   "geo-0024",
+   "geo-0025"
   ]
  }
 ]
