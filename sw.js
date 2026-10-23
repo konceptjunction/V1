@@ -1,10 +1,10 @@
 /* KONCEPT JUNCTION — service worker (V1)
    Bump VERSION in every new upload pack so phones pick up new files. */
-const VERSION = "kj-v14";
+const VERSION = "kj-v18";
 const SHELL = [
   "./", "home.html", "index.html", "manifest.json",
   "assets/css/app.css",
-  "assets/js/config.js", "assets/js/common.js", "assets/js/exam.js", "assets/js/app.js",
+  "assets/js/config.js", "assets/js/common.js", "assets/js/exam.js", "assets/js/app.js", "assets/js/share.js", "assets/js/vendor/qrcode.js",
   "assets/icons/logo.png", "assets/icons/watermark.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
   "data/subjects.json", "data/exams.json", "data/papers.json", "data/notes.json",
   "data/current_affairs.json", "data/announcements.json",

@@ -333,11 +333,10 @@ ${x.note ? `<div class="tag">${esc(x.note)}</div>` : ""}
  <li>Duration: <b>${ex.duration_min} min</b> for full paper${have < need ? ` → <b>${dur} min</b> scaled for the ${have} questions available now` : ""}</li>
  <li>Marks: +${ex.mark} per correct${ex.negative ? `, <b>−${+(ex.mark * ex.negative).toFixed(2)}</b> per wrong answer` : ", no negative marking"}</li>
  <li>Use <b>Save &amp; Next</b> to save an answer. Answers marked for review are also evaluated.</li>
- <li>The test auto-submits when time runs out. You can close the app and resume later (timer keeps running).</li>
+ <li>The test auto-submits when time runs out. Every test starts with a <b>fresh full timer</b>. If you leave the test, the timer pauses and continues from the same time when you Resume.</li>
 </ul>
 <div class="row"><span class="sp"></span><button class="btn acc" id="go" ${have ? "" : "disabled"}>${KJ.t("start")}</button></div></div>`;
     $("#go").onclick = async () => {
-      if (S.get("live", null) && !KJ.confirm("Another test is in progress. Discard it?")) return;
       KJ.Exam.start({ title: KJ.nm(ex.name) + " – Mock", kind: "mock", meta: { exam: ex.id }, questions: await buildMock(ex),
         durationMin: dur, mark: ex.mark, negative: ex.negative, sectionOf: await sectionOfFactory() });
     };

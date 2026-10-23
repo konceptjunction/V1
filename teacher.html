@@ -32,6 +32,15 @@
   .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .two3{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
   @media(max-width:860px){.two,.two3{grid-template-columns:1fr}}
+  /* V16: Subject + Exam Type first */
+  .lock-note{display:none;margin:0 0 10px;padding:8px 10px;border-radius:8px;background:color-mix(in srgb,var(--bad) 10%,var(--card));border:1px solid color-mix(in srgb,var(--bad) 40%,transparent);font-size:14px}
+  #impL.locked .lock-note{display:block}
+  #impL.locked > :not(.lock-note):not(h3){opacity:.5}
+  #impR.need{border:2px dashed var(--bad)}
+  #impR.flash{animation:kjflash .5s 3}
+  @keyframes kjflash{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--bad) 35%,transparent)}}
+  .arrow-d{display:none}
+  @media(max-width:860px){#impR{order:-1}.arrow-r{display:none}.arrow-d{display:inline}}
   textarea{min-height:64px}
   .optrow{display:grid;grid-template-columns:30px 1fr 1fr;gap:6px;align-items:center;margin-bottom:6px}
   .qlist .qi{display:flex;gap:8px;align-items:flex-start;border-bottom:1px solid var(--line);padding:8px 2px;font-size:13.5px}

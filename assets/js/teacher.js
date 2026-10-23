@@ -398,20 +398,44 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       paper = n ? best : null;
     }
     const ratio = list.length ? dupIds.length / list.length : 0;
-    return { paper, dups: dupIds.length, ratio, blocked: !!(key && papers.some((p) => p.key === key)) || !!(tl && papers.some((p) => String(p.title?.en || "").trim().toLowerCase() === tl && String(p.set || "").trim().toLowerCase() === st)) || ratio >= 0.6, have };
+    return { paper, dupIds, dups: dupIds.length, ratio, blocked: !!(key && papers.some((p) => p.key === key)) || !!(tl && papers.some((p) => String(p.title?.en || "").trim().toLowerCase() === tl && String(p.set || "").trim().toLowerCase() === st)) || ratio >= 0.6, have };
   }
-  function alreadyPopup(info, total) {
+  /* V15: "Already Uploaded" pop-up with a choice: 🔁 Reupload  or  ✋ No need of upload */
+  function alreadyPopup(info, total, onReupload, onNoNeed) {
     const p = info.paper;
-    KJ.modal(`<h3 style="margin-top:0;color:var(--bad)">⚠ Already Uploaded</h3>
+    const m = document.createElement("div"); m.className = "modal"; m.id = "dupModal";
+    m.innerHTML = `<div class="box" style="max-width:520px"><h3 style="margin-top:0;color:var(--bad)">⚠ Already Uploaded</h3>
 <p>${p ? `This paper is already in the app as <b>${esc(p.title.en)}</b> (Set ${esc(p.set || "-")}, ${p.qids.length} Qs).` : "These questions are already in the question bank."}</p>
-<p class="small">${info.dups} of ${total} questions are already in the bank. Nothing was imported.</p>
-<p class="small muted">To upload it again, first open 🎯 Topic Tests and use <b>🗑 Delete test + its questions</b> on the old test, then Publish.</p>`);
+<p class="small">${info.dups} of ${total} questions are already in the bank.</p>
+<p class="small muted"><b>🔁 Reupload</b> – the old ${p ? "test and its questions are" : "copies of these questions are"} removed and this paper is uploaded once again (fresh copy).<br><b>✋ No need of upload</b> – keep the old one, nothing is added.</p>
+<div class="row dup-btns" style="margin-top:12px;gap:10px;align-items:stretch;flex-wrap:nowrap"><button class="btn alt" id="dupNo" style="flex:1">✋ No need of upload</button><button class="btn ok" id="dupRe" style="flex:1">🔁 Reupload</button></div></div>`;
+    const close = () => m.remove();
+    m.addEventListener("click", (e) => { if (e.target === m) { close(); onNoNeed && onNoNeed(); } });
+    document.body.appendChild(m);
+    m.querySelector("#dupNo").onclick = () => { close(); onNoNeed && onNoNeed(); KJ.toast("No upload – the old paper is kept"); };
+    m.querySelector("#dupRe").onclick = () => { close(); onReupload && onReupload(); };
+  }
+  /* V15: remove the old copy (test + its questions + repeated questions) before a Reupload */
+  function removeOld(info, title, set, key) {
+    const papers = W["data/papers.json"] || [];
+    const tl = String(title || "").trim().toLowerCase(), st = String(set || "").trim().toLowerCase();
+    const old = papers.filter((p) => p === info.paper || (key && p.key === key) || (tl && String(p.title?.en || "").trim().toLowerCase() === tl && String(p.set || "").trim().toLowerCase() === st));
+    const keepUsed = new Set(papers.filter((p) => !old.includes(p)).flatMap((p) => p.qids));
+    const del = new Set([...old.flatMap((p) => p.qids), ...(info.dupIds || [])].filter((id) => !keepUsed.has(id)));
+    let n = 0;
+    SUBS.forEach((s) => { const bk = bank(s.id), n0 = bk.length; for (let i = bk.length - 1; i >= 0; i--) if (del.has(bk[i].id)) bk.splice(i, 1); if (bk.length !== n0) { n += n0 - bk.length; markDirty(bankPath(s.id)); } });
+    old.forEach((p) => papers.splice(papers.indexOf(p), 1));
+    if (old.length) markDirty("data/papers.json");
+    return { tests: old.length, qs: n };
   }
 
   P.import = (el) => {
     /* V9: left = paper (PDF / file / text) · right = subject & Topic Test details */
-    el.innerHTML = `<div class="two">
-<div class="card"><h3 style="margin-top:0">📄 Question paper – PDF or pasted text</h3>
+    /* V16: ① Subject + Exam Type first (right card) → ② upload paper → ③ Import */
+    const selSub = S.get("t_imp_sub", ""), selEx = S.get("t_imp_ex", []);
+    el.innerHTML = `<div class="two imp-two">
+<div class="card" id="impL"><h3 style="margin-top:0">② Question paper – PDF, file or pasted text</h3>
+<div class="lock-note" id="lockNote">🔒 First select <b>Subject</b> and <b>Exam Type</b> in <b>① Select Subject &amp; Exam Type</b> <span class="arrow-r">→</span><span class="arrow-d">↑</span></div>
 <div class="row"><label class="btn acc sm" style="margin:0">📄 Read PDF question paper<input type="file" id="pdfin" accept="application/pdf,.pdf" hidden></label>
 <button class="btn alt sm" id="tpl">⬇ CSV template</button>
 <label class="btn acc sm" style="margin:0" title="Topic Test file (.json) adds the questions and creates the test in one step">📂 CSV / JSON / Topic Test file<input type="file" id="cf" accept=".csv,.json" hidden></label></div>
@@ -419,12 +443,13 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
 <p class="small muted">The PDF is read into the box below (Telugu pages are read with OCR, about 10–30 s per page – use a laptop). <b>Check the text</b>, type the <b>answer key</b>, then Preview → Import. Diagrams are not read – add them later in ➕ Add / Edit. You can also paste text from a Word file here.</p>
 <textarea id="pt" style="min-height:260px" placeholder="1. Ginger and turmeric propagate naturally through:&#10;అల్లం మరియు పసుపు …?&#10;A) Tubers / దుంపలు&#10;B) Rhizomes / భూగర్భ కాండాలు&#10;C) Bulbs / కాండాలు&#10;D) Runners / నేలపై పాకే కాండాలు">${esc(S.get("t_import_text", ""))}</textarea>
 <label>Answer key (e.g. 1-B 2-C 3-D 4-B)</label><input id="pk">
-<div class="row" style="margin-top:10px"><button class="btn alt sm" id="pp">Preview</button><span class="sp"></span><button class="btn ok" id="pi">Import</button></div>
+<div class="row" style="margin-top:10px"><button class="btn alt sm" id="pp">Preview</button><span class="sp"></span><button class="btn ok" id="pi">③ Import</button></div>
 <div id="pres"></div></div>
-<div class="card" style="align-self:start"><h3 style="margin-top:0">🎯 Subject & Topic Test</h3>
-<div class="row"><div style="flex:2;min-width:180px"><label>Subject</label><select id="ps">${SUBS.map((s) => `<option value="${s.id}">${esc(s.name.en)}</option>`).join("")}</select></div>
+<div class="card" id="impR" style="align-self:start"><h3 style="margin-top:0">① Select Subject &amp; Exam Type</h3>
+<div class="row"><div style="flex:2;min-width:180px"><label>Subject <span style="color:var(--bad)">*</span></label><select id="ps"><option value="">— Select subject —</option>${SUBS.map((s) => `<option value="${s.id}" ${s.id === selSub ? "selected" : ""}>${esc(s.name.en)}</option>`).join("")}</select></div>
 <div style="flex:2;min-width:180px"><label>Topic</label><input id="pto"></div></div>
-<label>Exams</label><div id="pe">${EXAMS.map((x) => `<label class="chk"><input type="checkbox" value="${x.id}">${esc(x.name.en)}</label>`).join("")}</div>
+<label>Exam Type <span style="color:var(--bad)">*</span> <span class="small muted">(tick one or more)</span></label><div id="pe">${EXAMS.map((x) => `<label class="chk"><input type="checkbox" value="${x.id}" ${selEx.includes(x.id) ? "checked" : ""}>${esc(x.name.en)}</label>`).join("")}</div>
+<div class="small" id="selSt" style="margin-top:6px"></div>
 <div class="row" style="margin-top:10px"><label class="chk"><input type="checkbox" id="mkp"> Also create a Topic Test – Set</label><label class="chk"><input type="checkbox" id="pvis" checked> Visible to students</label></div>
 <div class="row"><div style="width:80px"><label>Set</label><input id="pset" value="A"></div><div style="flex:1"><label>Test title</label><input id="ptitle" placeholder="Test title"></div></div>
 </div></div>`;
@@ -435,9 +460,38 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         r.slice(0, 200).map((x) => `<div class="small" style="border-top:1px solid var(--line);padding:4px 0"><b>${x.no}.</b> ${esc(x.q.en)} <span class="t-te" style="display:inline">${esc(x.q.te)}</span><br>${x.o.en.map((o, i) => `<span class="${i === x.a ? "pill acc" : "pill"}">${KJ.LETTERS[i]}) ${esc(o)}${x.o.te[i] ? " / " + esc(x.o.te[i]) : ""}</span>`).join(" ")}</div>`).join("");
       return r;
     };
-    $("#pp").onclick = prev;
+    /* V16: Subject + Exam Type must be chosen before a paper can be uploaded */
+    const selReady = () => !!$("#ps").value && $$("#pe input:checked").length > 0;
+    const updLock = () => {
+      const ok = selReady(), sn = $("#ps").value, en = $$("#pe input:checked").length;
+      $("#impL").classList.toggle("locked", !ok); $("#impR").classList.toggle("need", !ok);
+      $("#selSt").innerHTML = ok ? `<span style="color:var(--ok)">✔ ${esc(subName(sn))} · ${en} exam type(s) – now upload the paper in ②</span>`
+        : `<span style="color:var(--bad)">${!sn ? "Select the subject. " : ""}${!en ? "Tick the exam type." : ""}</span>`;
+    };
+    const needSel = () => {
+      if (selReady()) return false;
+      const m = document.createElement("div"); m.className = "modal"; m.id = "selModal";
+      m.innerHTML = `<div class="box" style="max-width:460px"><h3 style="margin-top:0;color:var(--bad)">⚠ Select the subject name and Exam type</h3>
+<p>Before uploading the paper, choose in <b>① Select Subject &amp; Exam Type</b>:</p>
+<p style="margin:4px 0">${$("#ps").value ? "✔" : "✖"} <b>Subject</b> &nbsp; ${$$("#pe input:checked").length ? "✔" : "✖"} <b>Exam Type</b></p>
+<p class="small muted">Then upload the paper (📄 PDF / 📂 file / paste text) and press <b>③ Import</b>.</p>
+<div class="row" style="margin-top:12px"><span class="sp"></span><button class="btn ok" id="selGo">OK – select now</button></div></div>`;
+      const go = () => { m.remove(); $("#impR").scrollIntoView({ behavior: "smooth", block: "center" }); $("#impR").classList.add("flash"); setTimeout(() => $("#impR").classList.remove("flash"), 1600); ($("#ps").value ? $("#pe input") : $("#ps")).focus(); };
+      m.addEventListener("click", (e) => { if (e.target === m) go(); });
+      document.body.appendChild(m); m.querySelector("#selGo").onclick = go;
+      return true;
+    };
+    $("#ps").onchange = () => { S.set("t_imp_sub", $("#ps").value); updLock(); };
+    $("#pe").onchange = () => { S.set("t_imp_ex", $$("#pe input:checked").map((x) => x.value)); updLock(); };
+    $$("#pdfin,#cf").forEach((inp) => inp.closest("label").addEventListener("click", (e) => { if (needSel()) e.preventDefault(); }));
+    $("#pt").addEventListener("focus", () => { if (!$("#pt").value.trim()) needSel(); });
+    updLock();
+    let staged = null;                                   // V16: chosen file waits for ③ Import
+    $("#pp").onclick = () => { if (staged) return showStaged(); prev(); };
     $("#pdfin").onchange = async (e) => {                 // V7
       const f = e.target.files[0]; if (!f) return;
+      if (needSel()) { e.target.value = ""; return; }
+      staged = null; $("#cres").innerHTML = "";
       const st = $("#pdfst"); st.textContent = "Opening " + f.name + "…";
       try {
         const r = await KJ.readPdfPaper(f, (m) => (st.textContent = m));
@@ -447,16 +501,27 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         $("#mkp").checked = true;
         const q = prev();
         const ex0 = findExisting(q, $("#ptitle").value, $("#pset").value, "");                           // V13
-        if (ex0.blocked) alreadyPopup(ex0, q.length);
-        st.innerHTML = `✔ ${r.pages} page(s) read ${r.mode === "ocr" ? "with OCR" : "as text"} → <b>${q.length}</b> questions. ${r.mode === "ocr" ? "Please check spellings, " : ""}type the answer key, choose Subject, then Import.`;
+        reupOK = false;
+        if (ex0.blocked) alreadyPopup(ex0, q.length,
+          () => { reupOK = true; KJ.toast("🔁 Reupload: check the text + answer key, then press Import – the old copy will be replaced"); },
+          () => { $("#pt").value = ""; S.del("t_import_text"); $("#pres").innerHTML = ""; st.innerHTML = "✋ No need of upload – the old paper is kept."; });
+        st.innerHTML = `✔ ${r.pages} page(s) read ${r.mode === "ocr" ? "with OCR" : "as text"} → <b>${q.length}</b> questions. ${r.mode === "ocr" ? "Please check spellings, " : ""}type the answer key, then press <b>③ Import</b>.`;
       } catch (err) { st.innerHTML = '<span style="color:var(--bad)">✖ Could not read the PDF: ' + esc(err.message) + "</span>"; }
       e.target.value = "";
     };
+    let reupOK = false;                                  // V15: Reupload already chosen after Read PDF
     $("#pt").oninput = () => S.set("t_import_text", $("#pt").value);
     $("#pi").onclick = () => {
-      const r = prev(); if (!r.length) return KJ.toast("Nothing to import");
-      const dupInfo = findExisting(r, $("#mkp").checked ? $("#ptitle").value : "", $("#pset").value, "");      // V13
-      if (dupInfo.blocked) return alreadyPopup(dupInfo, r.length);
+      if (needSel()) return;                               // V16
+      if (staged) { const st0 = staged; return importItems(st0.items, st0.TT, st0.fname, () => { staged = null; }); }
+      const r = prev(); if (!r.length) return KJ.toast("Nothing to import – upload a paper first");
+      const tt0 = $("#mkp").checked ? $("#ptitle").value : "";
+      const dupInfo = findExisting(r, tt0, $("#pset").value, "");      // V13
+      if (dupInfo.blocked) {                                         // V15: ask Reupload / No need of upload
+        const re = () => { const g = removeOld(dupInfo, tt0, $("#pset").value, ""); KJ.toast("Old copy removed (" + g.tests + " test, " + g.qs + " Qs) – uploading again"); reupOK = false; $("#pi").onclick(); };
+        if (reupOK) return re();
+        return alreadyPopup(dupInfo, r.length, re, () => { $("#pres").innerHTML = '<p class="small">✋ No need of upload – nothing imported.</p>'; });
+      }
       if (r.some((x) => x.a == null) && !KJ.confirm("Some questions have no answer in the key – they will default to A. Continue?")) return;
       const sid = $("#ps").value, ex = $$("#pe input:checked").map((x) => x.value), ids = [];
       r.forEach((x) => {
@@ -469,7 +534,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       if ($("#mkp").checked) {
         const papers = W["data/papers.json"]; let pn = papers.length + 1, pid; do { pid = "KJ-TT-" + String(pn++).padStart(3, "0"); } while (papers.some((p) => p.id === pid));
         papers.push({ id: pid, subject: sid, topic: $("#pto").value.trim(), set: $("#pset").value.trim() || "A", title: { en: $("#ptitle").value.trim() || $("#pto").value.trim() || "Topic Test " + (papers.length + 1), te: "" },
-          date: KJ.today(), duration_min: ids.length, mark: 1, negative: 0.25, visible: $("#pvis").checked, qids: ids });
+          date: KJ.today(), duration_min: ids.length, mark: 1, negative: 0.25, visible: $("#pvis").checked, exams: ex, qids: ids });
         bank(sid).forEach((q) => ids.includes(q.id) && (q.paper = pid));
         markDirty("data/papers.json");
       }
@@ -479,6 +544,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     $("#tpl").onclick = () => download("kj_questions_template.csv", "\ufeff" + CSV_HEAD.join(",") + "\npolity,Fundamental Rights,appsc_g2;group4,,easy,\"Article 21 deals with:\",\"ఆర్టికల్ 21 దేనికి సంబంధించినది?\",Equality,Life and personal liberty,Religion,Remedies,సమానత్వం,ప్రాణం & వ్యక్తిగత స్వేచ్ఛ,మతం,పరిహారాలు,B,,,,\n", "text/csv");
     $("#cf").onchange = async (e) => {
       const f = e.target.files[0]; if (!f) return;
+      if (needSel()) { e.target.value = ""; return; }
       const text = (await f.text()).replace(/^\ufeff/, "");
       let items = [], TT = null;
       try {
@@ -502,8 +568,27 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
           });
         }
       } catch (err) { $("#cres").textContent = "✖ " + err.message; return; }
+      e.target.value = "";
+      staged = { items, TT, fname: f.name }; showStaged();        // V16: wait for ③ Import
+    };
+    const showStaged = () => {
+      const { items, TT, fname } = staged;
+      $("#cres").innerHTML = `📂 <b>${esc(fname)}</b> is ready: <b>${items.length}</b> questions${TT ? ` + Topic Test <b>${esc(TT.title?.en || "")}</b> (Set ${esc(TT.set || "-")})` : ""}.<br>Subject: <b>${esc(subName($("#ps").value))}</b> · Exam Type: <b>${$$("#pe input:checked").length}</b> selected → now press <b>③ Import</b>. <a href="#" id="unst">cancel</a>`;
+      $("#unst").onclick = (ev) => { ev.preventDefault(); staged = null; $("#cres").innerHTML = "File removed."; };
+    };
+    /* V15: import step on its own, so 🔁 Reupload can run it again after removing the old copy */
+    const importItems = (items, TT, fname, done) => {
       const ex = findExisting(items, TT && TT.title && TT.title.en, TT && TT.set, TT && TT.key);   // V13
-      if (ex.blocked) { alreadyPopup(ex, items.length); $("#cres").innerHTML = '<span style="color:var(--bad)">⚠ Already Uploaded – nothing imported.</span>'; e.target.value = ""; return; }
+      if (ex.blocked) {
+        $("#cres").innerHTML = '<span style="color:var(--bad)">⚠ Already Uploaded – choose Reupload or No need of upload.</span>';
+        return alreadyPopup(ex, items.length,
+          () => { const g = removeOld(ex, TT && TT.title && TT.title.en, TT && TT.set, TT && TT.key); KJ.toast("Old copy removed (" + g.tests + " test, " + g.qs + " Qs) – uploading again"); importItems(items, TT, fname, done); },
+          () => { done && done(); $("#cres").innerHTML = '✋ No need of upload – nothing imported, the old paper is kept.'; });
+      }
+      done && done();
+      /* V16: the chosen Subject + Exam Type are applied to the imported questions and the Topic Test */
+      const selS = $("#ps").value, selE = $$("#pe input:checked").map((x) => x.value);
+      items.forEach((it) => { if (!SUBS.find((s) => s.id === it.subject)) it.subject = selS; it.exams = Array.from(new Set([...(it.exams || []), ...selE])); });
       let skipped = 0;
       items = items.filter((x) => { if (ex.have.has(normQ(x))) { skipped++; return false; } return true; });
       let ok = 0, bad = []; const newIds = [];
@@ -527,7 +612,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       if (TT && newIds.length) {                         // V6: create the Topic Test from the imported questions
         const papers = W["data/papers.json"];
         let n = papers.length + 1, pid; do { pid = "KJ-TT-" + String(n++).padStart(3, "0"); } while (papers.some((p) => p.id === pid));
-        const p = { id: pid, key: TT.key || "", subject: SUBS.some((u) => u.id === TT.subject) ? TT.subject : items[0].subject, topic: TT.topic || "",
+        const p = { id: pid, key: TT.key || "", subject: selS, exams: selE, topic: TT.topic || "",
           set: TT.set || "A", title: { en: TT.title?.en || "Topic Test", te: TT.title?.te || "" }, date: TT.date || KJ.today(),
           duration_min: +TT.duration_min || newIds.length, mark: +TT.mark || 1, negative: TT.negative != null ? +TT.negative : 0.25,
           visible: TT.visible !== false, qids: newIds };
@@ -536,16 +621,43 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         ttMsg = `<br>✔ Topic Test created: <b>${esc(p.title.en)}</b> (Set ${esc(p.set)}, ${newIds.length} Qs, ${p.duration_min} min, ${p.visible ? "Visible" : "Hidden"}) – check it in 🎯 Topic Tests, then 🚀 Publish.`;
       }
       $("#cres").innerHTML = `✔ Imported ${ok} questions` + (skipped ? ` · skipped ${skipped} already in the bank` : "") + ttMsg + (bad.length ? `<br>✖ Skipped ${bad.length}:<br>${bad.map(esc).join("<br>")}` : "");
-      e.target.value = "";
       pill();
     };
   };
 
   /* ---------- Model papers ---------- */
+  /* V17: 🧹 Clear all – every Topic Test and its questions (optionally the whole question bank) */
+  function clearAllPopup(after) {
+    const papers = W["data/papers.json"] || [];
+    const inTests = new Set(papers.flatMap((p) => p.qids));
+    const total = allQs().length, nT = papers.length, nQ = allQs().filter((q) => inTests.has(q.id)).length;
+    const m = document.createElement("div"); m.className = "modal"; m.id = "clrModal";
+    m.innerHTML = `<div class="box" style="max-width:500px"><h3 style="margin-top:0;color:var(--bad)">🧹 Clear all tests</h3>
+<p>This deletes <b>all ${nT} Topic Test(s)</b> and <b>their ${nQ} question(s)</b> from the app.</p>
+<label class="chk"><input type="checkbox" id="clrBank"> Also clear the <b>whole Question Bank</b> (all ${total} questions in all subjects)</label>
+<p class="small muted" style="margin:8px 0 4px">Notes, Current Affairs, Announcements, Exam Patterns and Settings are <b>not</b> touched. After clearing, press 🚀 <b>Publish</b> so students see the change.</p>
+<label>Type <b>CLEAR</b> to confirm</label><input id="clrTxt" autocomplete="off" placeholder="CLEAR">
+<div class="row" style="margin-top:12px;gap:10px;align-items:stretch;flex-wrap:nowrap"><button class="btn alt" id="clrNo" style="flex:1">Cancel</button><button class="btn bad" id="clrGo" style="flex:1" disabled>🧹 Clear all</button></div></div>`;
+    document.body.appendChild(m);
+    const go = m.querySelector("#clrGo");
+    m.querySelector("#clrTxt").oninput = (e) => (go.disabled = e.target.value.trim().toUpperCase() !== "CLEAR");
+    m.querySelector("#clrNo").onclick = () => m.remove();
+    m.addEventListener("click", (e) => { if (e.target === m) m.remove(); });
+    m.querySelector("#clrTxt").focus();
+    go.onclick = () => {
+      const whole = m.querySelector("#clrBank").checked; let nq = 0;
+      SUBS.forEach((sb) => { const bk = bank(sb.id), n0 = bk.length;
+        for (let i = bk.length - 1; i >= 0; i--) if (whole || inTests.has(bk[i].id) || bk[i].paper) bk.splice(i, 1);
+        if (bk.length !== n0) { nq += n0 - bk.length; markDirty(bankPath(sb.id)); } });
+      papers.splice(0, papers.length); markDirty("data/papers.json");
+      m.remove(); KJ.toast(`Cleared ${nT} test(s) and ${nq} question(s) – press 🚀 Publish`); after && after();
+    };
+  }
+
   P.papers = (el) => {
     const papers = W["data/papers.json"];
     const map = new Map(allQs().map((q) => [q.id, q]));
-    el.innerHTML = `<div class="card"><div class="row"><h3 style="margin:0">🎯 Topic Tests</h3><span class="sp"></span><button class="btn sm" id="np">➕ New topic test</button></div>
+    el.innerHTML = `<div class="card"><div class="row"><h3 style="margin:0">🎯 Topic Tests</h3><span class="sp"></span><button class="btn bad sm" id="clrAll" title="Delete every Topic Test and its questions">🧹 Clear all tests</button><button class="btn sm" id="np">➕ New topic test</button></div>
 <p class="small muted">Students see these under <b>Topic Tests</b>, grouped by Subject, only when switched <b>Visible</b>. Printing uses the KONCEPT JUNCTION layout (Set box, watermark logo, contact footer).</p></div>
 ${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><span class="sp"></span><label class="chk"><input type="checkbox" data-vis="${k}" ${p.visible !== false ? "checked" : ""}>Visible</label></div>
 <div class="row"><div style="flex:1"><label>Subject</label><select data-k="${k}" data-f="subject">${SUBS.map((s) => `<option value="${s.id}" ${s.id === p.subject ? "selected" : ""}>${esc(s.name.en)}</option>`).join("")}</select></div>
@@ -556,6 +668,7 @@ ${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><s
 <div style="flex:1"><label>Negative fraction</label><input type="number" step="0.01" data-k="${k}" data-f="negative" value="${p.negative}"></div><div style="flex:1"><label>Date</label><input type="date" data-k="${k}" data-f="date" value="${esc(p.date || "")}"></div></div>
 <label>Question IDs in order (comma separated) – ${p.qids.length} Qs, ${p.qids.filter((id) => !map.has(id)).length} missing</label><textarea data-k="${k}" data-f="qids">${esc(p.qids.join(", "))}</textarea>
 <div class="row" style="margin-top:8px"><button class="btn alt sm" data-pr="${k}">🖨 Question paper</button><button class="btn alt sm" data-prk="${k}">🖨 With answer key</button><button class="btn alt sm" data-word="${k}">⬇ Word</button><span class="sp"></span><button class="btn bad sm" data-del="${k}">Delete test</button><button class="btn bad sm" data-delall="${k}" title="Delete the test and its questions from the bank">🗑 Delete test + its questions</button></div></div>`).join("")}`;
+    $("#clrAll").onclick = () => clearAllPopup(draw);                     // V17
     $("#np").onclick = () => { papers.push({ id: "KJ-TT-" + String(papers.length + 1).padStart(3, "0"), subject: SUBS[0].id, topic: "", set: "A", title: { en: "New Topic Test", te: "" }, date: KJ.today(), duration_min: 30, mark: 1, negative: 0.25, visible: false, qids: [] }); markDirty("data/papers.json"); draw(); };
     el.onchange = (e) => {
       const t = e.target;

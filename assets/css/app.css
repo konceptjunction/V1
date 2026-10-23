@@ -224,3 +224,17 @@ body.reg main{padding-bottom:40px}
 .mt th{font-weight:700;background:color-mix(in srgb,var(--brand2) 8%,var(--card))}
 .mt .t-te{display:inline;margin:0;color:inherit}
 @media(max-width:520px){.mt{font-size:13.5px}.mt th,.mt td{padding:6px 7px}}
+
+/* ===== V18 : Share + QR ===== */
+.tb-share{flex:0 0 auto;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:16px;
+  background:rgba(255,255,255,.14);color:#fff;border:2px solid rgba(255,255,255,.7);padding:0}
+.tb-share:active{transform:scale(.94)}
+.share-box{max-width:440px}
+.qr-wrap{display:grid;place-items:center;padding:10px;background:#fff;border-radius:14px;border:2px solid var(--brand);width:max-content;margin:0 auto}
+.qr-wrap svg{display:block;width:min(230px,60vw);height:auto}
+.share-main{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.share-main .btn{justify-content:center;text-align:center;font-size:16px;padding:12px 8px;text-decoration:none}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.share-grid .btn{justify-content:center;text-align:center;text-decoration:none}
+.btn.wa{background:#25d366;color:#08331a;border-color:#1fb757}
+.btn.ml{background:#ea4335;color:#fff;border-color:#c5372b}

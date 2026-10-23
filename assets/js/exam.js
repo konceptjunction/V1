@@ -14,6 +14,10 @@
   E.start = function (cfg) {
     const qs = cfg.questions.filter((q) => q.type !== "conv");
     if (!qs.length) { KJ.toast(KJ.t("noq")); return; }
+    /* V17: a test left unfinished is discarded – every new test gets a fresh, full timer */
+    const old = E.live();
+    if (old && !cfg._noAsk && !KJ.confirm("\"" + old.title + "\" is not submitted yet.\nDiscard it and start this test with a fresh timer?")) return;
+    KJ.store.del("live");
     const secMap = new Map();
     qs.forEach((q, i) => {
       const name = cfg.sectionOf ? cfg.sectionOf(q) : "All";
@@ -24,7 +28,7 @@
       id: KJ.uid("r"), title: cfg.title, kind: cfg.kind || "mock", meta: cfg.meta || {},
       qs, secs: Array.from(secMap, ([name, idx]) => ({ name, idx })),
       dur: Math.max(1, Math.round(cfg.durationMin || qs.length)), mark: +cfg.mark || 1, neg: +cfg.negative || 0,
-      startAt: Date.now(), endAt: Date.now() + Math.max(1, Math.round(cfg.durationMin || qs.length)) * 60000,
+      startAt: Date.now(), left: Math.max(1, Math.round(cfg.durationMin || qs.length)) * 60, endAt: 0,   // V17: full time, counted from the first question
       ans: {}, marked: {}, visited: { 0: 1 }, cur: 0, sec: 0, pending: null
     };
     save();
@@ -83,7 +87,14 @@
     $("#bp").onclick = () => go(st.cur - 1);
     window.onbeforeunload = () => "Test in progress";
     drawAll();
+    /* V17: the clock starts (or continues) only while the test is on screen; leaving pauses it */
+    st.endAt = Date.now() + (st.left != null ? st.left : st.dur * 60) * 1000; save();
     clearInterval(tick); tick = setInterval(timer, 1000); timer();
+    const pause = () => { if (!st || !st.endAt) return; st.left = Math.max(0, Math.round((st.endAt - Date.now()) / 1000)); st.endAt = 0; save(); clearInterval(tick); };
+    const resume = () => { if (!st || st.endAt || !$("#xt")) return; st.endAt = Date.now() + st.left * 1000; save(); clearInterval(tick); tick = setInterval(timer, 1000); timer(); };
+    document.onvisibilitychange = () => (document.hidden ? pause() : resume());
+    window.onpagehide = pause;
+    window.addEventListener("hashchange", function h() { window.removeEventListener("hashchange", h); if (location.hash !== "#/exam") pause(); });
   };
 
   function commit() {
@@ -160,8 +171,10 @@ ${q.img ? `<img class="qimg" src="${esc(q.img)}" alt="">` : ""}
 
   function timer() {
     if (!st) return;
+    if (!st.endAt) return;                                           // V17: paused
     const left = Math.max(0, Math.round((st.endAt - Date.now()) / 1000));
     const el = $("#xt"); if (!el) { clearInterval(tick); return; }
+    st.left = left; if (left % 5 === 0) save();
     const h = Math.floor(left / 3600), m = Math.floor((left % 3600) / 60), s = left % 60;
     el.textContent = (h ? h + ":" : "") + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
     el.classList.toggle("low", left <= 300);
@@ -169,7 +182,7 @@ ${q.img ? `<img class="qimg" src="${esc(q.img)}" alt="">` : ""}
   }
 
   function finish() {
-    clearInterval(tick); window.onbeforeunload = null;
+    clearInterval(tick); window.onbeforeunload = null; document.onvisibilitychange = null; window.onpagehide = null;
     const rec = E.evaluate(st);
     const hist = KJ.store.get("results", []);
     hist.unshift(rec); KJ.store.set("results", hist.slice(0, 30));
@@ -195,7 +208,7 @@ ${q.img ? `<img class="qimg" src="${esc(q.img)}" alt="">` : ""}
     per.forEach((p) => (p.score = sc(p.c, p.w)));
     return {
       id: s.id, title: s.title, kind: s.kind, meta: s.meta, date: new Date().toISOString(),
-      used: Math.min(s.dur * 60, Math.round((Date.now() - s.startAt) / 1000)), dur: s.dur,
+      used: Math.min(s.dur * 60, s.dur * 60 - (s.endAt ? Math.max(0, Math.round((s.endAt - Date.now()) / 1000)) : (s.left || 0))), dur: s.dur,      // V17: time actually used (pauses not counted)
       mark: s.mark, neg: s.neg, qs: s.qs, ans: s.ans, secs: s.secs,
       c, w, u, score: sc(c, w), max: s.qs.length * s.mark, per
     };
