@@ -1,30 +1,5 @@
 [
  {
-  "id": "KJ-MP-001",
-  "set": "S",
-  "title": {
-   "en": "General Science – Topic Test 1",
-   "te": "సాధారణ శాస్త్రం – టాపిక్ టెస్ట్ 1"
-  },
-  "date": "2026-10-21",
-  "duration_min": 10,
-  "mark": 1,
-  "negative": 0.25,
-  "visible": true,
-  "qids": [
-   "sci-0101",
-   "sci-0102",
-   "sci-0103",
-   "sci-0104",
-   "sci-0106",
-   "sci-0107",
-   "sci-0108",
-   "sci-0109"
-  ],
-  "subject": "science",
-  "topic": "Biology, Physics & Chemistry"
- },
- {
   "id": "KJ-TT-002",
   "subject": "science",
   "topic": "",
@@ -36,7 +11,7 @@
   "date": "2026-10-22",
   "duration_min": 19,
   "mark": 1,
-  "negative": 0.25,
+  "negative": 0,
   "visible": true,
   "qids": [
    "sci-0110",
@@ -105,53 +80,6 @@
    "eng-0031",
    "eng-0032",
    "eng-0033"
-  ]
- },
- {
-  "id": "KJ-TT-004",
-  "subject": "english",
-  "topic": "",
-  "set": "S",
-  "title": {
-   "en": "ENGLISH – Set S",
-   "te": ""
-  },
-  "date": "2026-10-23",
-  "duration_min": 30,
-  "mark": 1,
-  "negative": 0.25,
-  "visible": true,
-  "qids": [
-   "eng-0034",
-   "eng-0035",
-   "eng-0036",
-   "eng-0037",
-   "eng-0038",
-   "eng-0039",
-   "eng-0040",
-   "eng-0041",
-   "eng-0042",
-   "eng-0043",
-   "eng-0044",
-   "eng-0045",
-   "eng-0046",
-   "eng-0047",
-   "eng-0048",
-   "eng-0049",
-   "eng-0050",
-   "eng-0051",
-   "eng-0052",
-   "eng-0053",
-   "eng-0054",
-   "eng-0055",
-   "eng-0056",
-   "eng-0057",
-   "eng-0058",
-   "eng-0059",
-   "eng-0060",
-   "eng-0061",
-   "eng-0062",
-   "eng-0063"
   ]
  },
  {
