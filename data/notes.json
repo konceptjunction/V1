@@ -10,5 +10,17 @@
   "url": "https://res.cloudinary.com/ejs9dddu/image/upload/v1792758152/konceptjunction/pdfs/fpnjyvsinw8apo9cqdzh.pdf",
   "date": "2026-10-23",
   "visible": true
+ },
+ {
+  "id": "n-mvlcdtf0djts",
+  "type": "notes",
+  "subject": "current",
+  "title": {
+   "en": "SAMPLE MATERIAL",
+   "te": ""
+  },
+  "url": "media/notes/2026-10-24_mvlcdlpc_sample_material.pdf",
+  "date": "2026-10-24",
+  "visible": true
  }
 ]
