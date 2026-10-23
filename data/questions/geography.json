@@ -135,16 +135,16 @@
   },
   "o": {
    "en": [
-    "a-iii, b-i c-ii",
-    "2-i, b-ii, c-iii",
-    "a-1, b-ii, c- iii",
+    "a-iii, b-i, c-ii",
+    "a-i, b-ii, c-iii",
+    "a-i, b-ii, c-iii",
     "a-iii, b-ii, c-i"
    ],
    "te": [
-    "a-iii, 0-1 c-ii",
-    "2-1, 0-౪, c-iii",
-    "1-1, 0-11, 61",
-    "a-iii, b-ii, ౮1"
+    "a-iii, b-i, c-ii",
+    "a-i, b-ii, c-iii",
+    "a-i, b-ii, c-iii",
+    "a-iii, b-ii, c-i"
    ]
   },
   "a": 0,
@@ -168,7 +168,7 @@
   "level": "easy",
   "q": {
    "en": "Match the following revolutions with their associated products.\nList-1: Revolution\na) Green Revolution\na) Blue Revolution   |   i) Fertilizer production\nb) Yellow Revolution   |   ii) Oilseed production\nc) Grey Revolution   |   iii) Food-grain production\nOptions",
-   "te": "క్రింది విప్లవాలను వాటికి సంబంధించిన ఉత్పత్తులతో జతపరచండి.\nవిప్లవం          115౯11: Associated product / సంబంధిత ఉత్పత్తి\nహరిత విప్లవం ) Fish production / చేపల ఉత్పత్తి\na) నీలి విప్లవం   |   i) ఎరువుల ఉత్పత్తి\nb) పసుపు విప్లవం   |   ii) నూనెగింజల ఉత్పత్తి\nc) బూడిద విప్లవం   |   iii) ఆహార ధాన్యాల ఉత్పత్తి\nఎంపికలు           క                                   క...            క"
+   "te": "క్రింది విప్లవాలను వాటికి సంబంధించిన ఉత్పత్తులతో జతపరచండి.\nవిప్లవం          115౯11: Associated product / సంబంధిత ఉత్పత్తి\nహరిత విప్లవం ) Fish production / చేపల ఉత్పత్తి\na) నీలి విప్లవం   |   i) ఎరువుల ఉత్పత్తి\nb) పసుపు విప్లవం   |   ii) నూనెగింజల ఉత్పత్తి\nc) బూడిద విప్లవం   |   iii) ఆహార ధాన్యాల ఉత్పత్తి\nఎంపికలు"
   },
   "o": {
    "en": [
@@ -209,16 +209,16 @@
   },
   "o": {
    "en": [
-    "a-iii, 0-1 c-ii",
-    "2-1 0-౪, c-iii",
-    "1-1, b-iii, c-i",
-    "a-iii, b-ii, ౮1"
+    "a-iii, b-i, c-ii",
+    "a-i, b-ii, c-iii",
+    "a-i, b-iii, c-i",
+    "a-iii, b-ii, c-i"
    ],
    "te": [
-    "a-iii, 0-1 c-ii",
-    "2-1 0-౪, c-iii",
-    "1-1, b-iii, c-i",
-    "a-iii, b-ii, ౮1"
+    "a-iii, b-i, c-ii",
+    "a-i, b-ii, c-iii",
+    "a-i, b-iii, c-i",
+    "a-iii, b-ii, c-i"
    ]
   },
   "a": 0,
@@ -323,13 +323,13 @@
     "GMT + 4 hours 30 minutes",
     "GMT — 5 hours 30 minutes",
     "GMT — 4 hours 30 minutes",
-    "GMT + 5 hours 30 minutes ONC <2        \\N CTT ON"
+    "GMT + 5 hours 30 minutes"
    ],
    "te": [
     "GMT + 4 hours 30 minutes",
     "GMT — 5 hours 30 minutes",
     "GMT — 4 hours 30 minutes",
-    "“Fr     ఇ  1\" Fy\" ve r= 1 6 1 ద NPN  ఇగ   r=r    -  wr an  \"   1. బం  య  J  ld ah   \\u dn LN"
+    "GMT + 5 hours 30 minutes"
    ]
   },
   "a": 0,
@@ -427,14 +427,14 @@
   "level": "easy",
   "q": {
    "en": "Match the following revolutions with their associated products.\nList-1: Revolution\na) Green Revolution   |   i) Fish production\nb) Blue Revolution   |   ii) Fertilizer production\nc) Grey Revolution   |   iii) Food-grain production\nOptions",
-   "te": "క్రింది విప్లవాలను వాటికి సంబంధించిన ఉత్పత్తులతో జతపరచండి.\nవిప్లవం          115౯11: Associated product / సంబంధిత ఉత్పత్తి\na) హరిత విప్లవం   |   i) చేపల ఉత్పత్తి\nb) నీలి విప్లవం   |   ii) ఎరువుల ఉత్పత్తి\n౦) Yellow Revolution / పసుపు Ho 11) Oilseed production / నూనెగింజల ఉత్పత్తి\nc) బూడిద విప్లవం   |   iii) ఆహార ధాన్యాల ఉత్పత్తి\nఎంపికలు            క                                      క...             ఆ"
+   "te": "క్రింది విప్లవాలను వాటికి సంబంధించిన ఉత్పత్తులతో జతపరచండి.\nవిప్లవం          115౯11: Associated product / సంబంధిత ఉత్పత్తి\na) హరిత విప్లవం   |   i) చేపల ఉత్పత్తి\nb) నీలి విప్లవం   |   ii) ఎరువుల ఉత్పత్తి\n౦) Yellow Revolution / పసుపు Ho 11) Oilseed production / నూనెగింజల ఉత్పత్తి\nc) బూడిద విప్లవం   |   iii) ఆహార ధాన్యాల ఉత్పత్తి\nఎంపికలు"
   },
   "o": {
    "en": [
     "a-iii, b-i, c-iv, d-ii",
     "a-iv, b-iii, 6-1 d-ii",
     "a-iv, bi, c-iii, d-ii",
-    "a-ii, bi, c-iii, d-iv ONC “rar NCTUON ab  Uo.   \\d. 4.  PH  J  dd ah   \\u a YIN"
+    "a-ii, bi, c-iii, d-iv ONC “rar NCTUON"
    ],
    "te": [
     "a-iii, b-i, c-iv, d-ii",
@@ -689,13 +689,13 @@
     "Magnesium oxide",
     "Humus",
     "Ferric oxide",
-    "Calcium phosphate “wr     hl  1\" Fy 5. 73 r= 1 BL {ONC          orn"
+    "Calcium phosphate"
    ],
    "te": [
     "మెగ్నీషియం ఆక్సైడ్",
     "హ్యూమస్",
     "205 ఆక్సైడ్",
-    "కాల్షియం ఫాస్ఫేట్ న ఏ  wr   r=u'r    hl  “rr ab     PRY   \\d.4..  య  J  ld ah   \\u dn LN"
+    "కాల్షియం ఫాస్ఫేట్"
    ]
   },
   "a": 0,
@@ -843,7 +843,7 @@
     "అధికరణం 2",
     "అధికరణం 3",
     "అధికరణం 14",
-    "అధికరణం 368 LON ఏ “Far \\NCTTUON అలో జ  \"   1. బం  య  J  ld ah   \\u dn LN"
+    "అధికరణం 368 LON ఏ “Far"
    ]
   },
   "a": 0,
@@ -985,13 +985,13 @@
     "Mandal Commission",
     "Rajiv Ranjan Mishra Commission",
     "Sarkaria Commission",
-    "Punchhi Commission EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY EY  UJ PREY   UP PN  ow  J  (| PRY   \" FEY PRS U PREY"
+    "Punchhi Commission"
    ],
    "te": [
     "మండల్ కమిషన్",
     "రాజీవ్ రంజన్ మిశ్రా కమిషన్",
     "సర్కారియా కమిషన్",
-    "పుంఛీ కమిషన్ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\ ar     ఇ 1   ఏ2 EY oh TERRA EA ar   rr   ఇ ~r <0 \\ 0        \\ 16    గా \\"
+    "పుంఛీ కమిషన్"
    ]
   },
   "a": 0,
