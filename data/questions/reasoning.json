@@ -10,7 +10,7 @@
   "year": "",
   "level": "easy",
   "q": {
-   "en": "Simplify the following expression using the BODMAS rule.",
+   "en": "Simplify the following expression using the BODMAS rule.\n[7+7×(7+7÷7)]+7÷7",
    "te": "BODMAS నియమాన్ని ఉపయోగించి క్రింది గణిత వ్యక్తీకరణను సరళీకరించండి."
   },
   "o": {
@@ -52,10 +52,10 @@
   },
   "o": {
    "en": [
-    "260",
-    "348",
-    "436",
-    "524"
+    "2^60",
+    "3^48",
+    "4^36",
+    "5^24"
    ],
    "te": [
     "260",
