@@ -35,16 +35,41 @@
   KJ.nm = (o) => (typeof o === "string" ? o : (KJ.lang() === "te" ? o?.te || o?.en : o?.en || o?.te) || "");
 
   /* bilingual body text → HTML (keeps $…$ for KaTeX, \n → line break) */
-  const fmt = (s) => KJ.esc(s).replace(/\n/g, "<br>");
+  /* V22: powers and subscripts – shown the same everywhere (Word, PDF, typed):
+       2^60 · 2^{60} · x^2 · a^n  → 2⁶⁰ · x² · aⁿ        H_{2}O → H₂O        ($…$ LaTeX is left for KaTeX) */
+  const SUP = { 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹", "+": "⁺", "-": "⁻", "−": "⁻", "=": "⁼", "(": "⁽", ")": "⁾", " ": "",
+    a: "ᵃ", b: "ᵇ", c: "ᶜ", d: "ᵈ", e: "ᵉ", f: "ᶠ", g: "ᵍ", h: "ʰ", i: "ⁱ", j: "ʲ", k: "ᵏ", l: "ˡ", m: "ᵐ", n: "ⁿ", o: "ᵒ", p: "ᵖ", r: "ʳ", s: "ˢ", t: "ᵗ", u: "ᵘ", v: "ᵛ", w: "ʷ", x: "ˣ", y: "ʸ", z: "ᶻ", "°": "°" };
+  const SUB = { 0: "₀", 1: "₁", 2: "₂", 3: "₃", 4: "₄", 5: "₅", 6: "₆", 7: "₇", 8: "₈", 9: "₉", "+": "₊", "-": "₋", "−": "₋", "=": "₌", "(": "₍", ")": "₎", " ": "",
+    a: "ₐ", e: "ₑ", h: "ₕ", i: "ᵢ", j: "ⱼ", k: "ₖ", l: "ₗ", m: "ₘ", n: "ₙ", o: "ₒ", p: "ₚ", r: "ᵣ", s: "ₛ", t: "ₜ", u: "ᵤ", v: "ᵥ", x: "ₓ" };
+  KJ.supText = function (t, kind) {
+    const M = kind === "sub" ? SUB : SUP, str = String(t);
+    if ([...str].every((ch) => M[ch] != null)) return [...str].map((ch) => M[ch]).join("");
+    return (kind === "sub" ? "_(" : "^(") + str + ")";             // a letter with no small form: 2^(xy)
+  };
+  KJ.supify = function (s) {
+    return String(s == null ? "" : s).split(/(\$[^$]+\$)/).map((part, k) => (k % 2 ? part
+      : part.replace(/\^\{([^{}]*)\}/g, (_, x) => KJ.supText(x, "sup")).replace(/\^([+\-−]?\d+|[a-zA-Z](?![a-zA-Z]))/g, (_, x) => KJ.supText(x, "sup"))
+        .replace(/_\{([^{}]*)\}/g, (_, x) => KJ.supText(x, "sub")))).join("");
+  };
+  const fmt = (s) => KJ.esc(KJ.supify(s)).replace(/\n/g, "<br>");
+  /* V22: lines with no words – a maths expression "[7+7×(7+7÷7)]+7÷7", a series "1210, 648, 294, 100, ?" – belong to both languages */
+  const neutral = (l) => !!l.trim() && !/[\u0C00-\u0C7F]/.test(l) && !/[A-Za-z]{3,}/.test(l);
+  KJ.teFull = (en, te) => {                    // Telugu view: add the expression lines that were only in the English box
+    if (!te) return en;
+    const T = te.split("\n"), have = new Set(T.map((x) => x.trim()));
+    const add = en.split("\n").filter((l) => neutral(l) && !have.has(l.trim()));
+    return add.length ? T.concat(add).join("\n") : te;
+  };
+  KJ.enOnly = (en, te) => { const T = new Set(String(te).split("\n").map((x) => x.trim())); return String(en).split("\n").filter((l) => !(neutral(l) && T.has(l.trim()))).join("\n").trim(); };   // EN+తె: shown once, after the Telugu line (as in the paper)
   KJ.txt = function (o, lang) {
     lang = lang || KJ.lang();
     if (o == null) return "";
     if (typeof o === "string") return fmt(o);
     const en = o.en || "", te = o.te || "";
     if (lang === "en") return fmt(en || te);
-    if (lang === "te") return '<div class="t-te" style="color:inherit;margin:0">' + fmt(te || en) + "</div>";
-    if (!te || te === en) return fmt(en);
-    return '<div class="t-en">' + fmt(en) + '</div><div class="t-te">' + fmt(te) + "</div>";
+    if (lang === "te") return '<div class="t-te" style="color:inherit;margin:0">' + fmt(KJ.teFull(en, te) || en) + "</div>";
+    if (!te || te === en) return fmt(en || te);
+    return '<div class="t-en">' + fmt(KJ.enOnly(en, te)) + '</div><div class="t-te">' + fmt(te) + "</div>";
   };
   /* ================= V14: Match-the-following tables =================
      A question line with " | " in the middle is a table row:
@@ -113,7 +138,7 @@
         (letters are taken from the table, i/ii/iii read as 1/11/111 are corrected, one unreadable value is filled in)
      2. Junk read from the watermark / page edge after an option or question line is removed
      3. Telugu read as numbers ("Certiorari / 288558") is dropped – English is shown – and reported */
-  const JUNKCH = /[|\\"=~^<>{}\[\]#@$%&*¬¦]/g, JUNK1 = /[|\\"=~^<>{}\[\]#@$%&*¬¦]/;   // "_" (blanks) is NOT junk
+  const JUNKCH = /[|\\"~#@¬¦]/g, JUNK1 = /[|\\"~#@¬¦]/;   // V22: maths signs = < > [ ] { } ^ % * $ and "_" (blanks) are NOT junk
   const tokJunk = (x) => JUNK1.test(x) || x.replace(/[^\wఀ-౿]/g, "").length <= 2;
   KJ.isJunk = function (l) {
     const t = String(l || "").trim(); if (!t) return false;
@@ -304,7 +329,7 @@
   KJ.printPaper = function (opts) {
     const { title, set, questions, showKey, lang = "bi", subtitle = "" } = opts;
     const base = location.href.replace(/[^/]*([?#].*)?$/, "");
-    const e = KJ.esc;
+    const e = (x) => KJ.esc(KJ.supify(x)).replace(/\n/g, "<br>");       // V22: powers in the printed paper too
     const qHtml = questions.map((q, n) => {
       const qe = q.q?.en || "", qt = q.q?.te || "";
       const TB = KJ.splitTable(q.q || {});                    // V14: match-the-following table
@@ -318,8 +343,9 @@
         if (lang !== "te" && ea) s += '<div class="qe">' + ea + "</div>";
         if (lang !== "en" && ta) s += '<div class="qt">' + ta + "</div>";
       } else {
-        s = '<div class="pq"><div class="qe">' + (n + 1) + ". " + (lang === "te" ? e(qt || qe) : e(qe)) + "</div>";
-        if (lang === "bi" && qt && qt !== qe) s += '<div class="qt">' + e(qt) + "</div>";
+        const bi2 = lang === "bi" && qt && qt !== qe;
+        s = '<div class="pq"><div class="qe">' + (n + 1) + ". " + (lang === "te" ? e(KJ.teFull(qe, qt) || qe) : e(bi2 ? KJ.enOnly(qe, qt) : qe)) + "</div>";
+        if (bi2) s += '<div class="qt">' + e(qt) + "</div>";
       }
       if (q.img) s += '<img class="qi" src="' + e(q.img) + '">';
       if (q.type === "conv") {

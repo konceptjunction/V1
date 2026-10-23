@@ -39,7 +39,31 @@
     }));
     if (dirty.has("data/subjects.json")) SUBS = W["data/subjects.json"];
     EXAMS = W["data/exams.json"];
+    /* V23: tests kept back as drafts live in data/drafts.json – bring them back into Teacher Mode */
+    let D = null; try { D = await KJ.load("data/drafts.json", true); } catch (e) {}
+    serverDrafts = !!(D && ((D.papers || []).length || (D.questions || []).length));
+    if (serverDrafts && !dirty.has("data/papers.json")) {
+      const P0 = W["data/papers.json"], ids = new Set(P0.map((x) => x.id)), have = new Set(allQs().map((q) => q.id));
+      (D.questions || []).forEach((q) => { if (!have.has(q.id) && SUBS.find((x) => x.id === q.subject)) bank(q.subject).push(q); });
+      (D.papers || []).forEach((x) => { if (!ids.has(x.id)) P0.push({ ...x, draft: true }); });
+    }
     pill();
+  }
+  let serverDrafts = false;
+  /* V23: what is actually sent to GitHub – draft tests (and questions used only by them) are held back */
+  function pubPlan() {
+    const papers = W["data/papers.json"] || [], drafts = papers.filter((x) => x.draft);
+    const keep = new Set(papers.filter((x) => !x.draft).flatMap((x) => x.qids));
+    const held = new Set(drafts.flatMap((x) => x.qids).filter((id) => !keep.has(id)));
+    const files = new Set(dirty);
+    if (drafts.length || serverDrafts) { files.add("data/papers.json"); files.add("data/drafts.json"); SUBS.forEach((x) => files.add(bankPath(x.id))); }
+    const data = (path) => {
+      if (path === "data/papers.json") return papers.filter((x) => !x.draft).map(({ draft, ...x }) => x);
+      if (path === "data/drafts.json") return { note: "Topic Tests kept back in Teacher Mode (not shown to students)", papers: drafts.map(({ draft, ...x }) => x), questions: allQs().filter((q) => held.has(q.id)) };
+      if (/^data\/questions\//.test(path) || SUBS.some((x) => bankPath(x.id) === path)) return (W[path] || []).filter((q) => !held.has(q.id));
+      return W[path];
+    };
+    return { files: [...files], data, drafts: drafts.length, live: papers.length - drafts.length, held: held.size };
   }
   const bankPath = (sid) => (SUBS.find((s) => s.id === sid) || {}).file || "data/questions/" + sid + ".json";
   const bank = (sid) => (W[bankPath(sid)] = W[bankPath(sid)] || []);
@@ -125,7 +149,7 @@ ${[0, 1, 2, 3].map((i) => `<div class="optrow"><label class="chk" style="margin:
 <div class="row" style="margin-top:12px"><label class="btn alt sm" style="margin:0">🔍 OCR from image<input type="file" id="ocr" accept="image/*" hidden></label>
 <span class="sp"></span>${editing ? '<button class="btn alt sm" id="cancel">Cancel</button>' : ""}<button class="btn ok" id="save">${editing ? "Update" : "Save question"}</button></div>
 <div id="ocrOut"></div>
-<p class="small muted">Maths: write LaTeX between $…$ e.g. <code>$R=\\dfrac{V^2}{P}$</code>. Saved questions stay on this device until you Publish.</p>
+<p class="small muted">Maths: powers <code>2^60</code> → 2⁶⁰, <code>x^2</code> → x², <code>a^{n+1}</code> → aⁿ⁺¹, subscript <code>H_{2}O</code> → H₂O. Bigger formulas: LaTeX between $…$ e.g. <code>$R=\\dfrac{V^2}{P}$</code>. Saved questions stay on this device until you Publish.</p>
 </div>
 <div><div class="card"><h3 style="margin-top:0">👁 Student preview</h3><div id="pv"></div></div>
 <div class="card small"><b>Last 5 in this subject</b><div id="recent" class="qlist"></div></div></div></div>`;
@@ -336,6 +360,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       if (row) { cur.q.en.push(row.en); cur.q.te.push(row.te); continue; }
       const p = splitEnTe(l);
       if (p.en) cur.q.en.push(p.en); if (p.te) cur.q.te.push(p.te);
+      if (p.en && !p.te && !/[\u0C00-\u0C7F]/.test(l) && !/[A-Za-z]{3,}/.test(l) && cur.q.te.length) cur.q.te.push(p.en);   // V22: expression / series line → both languages
     }
     return out.map((x) => {
       const q = { no: x.no, img: x.img || "", q: { en: x.q.en.join("\n"), te: x.q.te.join("\n") }, o: { en: x.o.en, te: x.o.te.map((t, i) => t || x.o.en[i]) }, a: key[x.no] != null ? key[x.no] : null };
@@ -450,18 +475,75 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       return A[ilvl].text.replace(/%(\d)/g, (_, d) => fmtN(c[+d - 1] || 1, (A[+d - 1] || A[ilvl]).fmt)) + " ";
     }
     const lines = [], imgIds = [];
-    function runText(p) {
+    /* V22: text of a paragraph in reading order – powers (superscript), subscripts, Word equations, symbols */
+    const W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+    const symMap = { F0B4: "×", F0B8: "÷", F0B1: "±", F0A3: "≤", F0B3: "≥", F0B9: "≠", F0BB: "≈", F0D6: "√", F0B0: "°", F070: "π", F0E5: "∑", F0F2: "∫", F0A5: "∞", F0AE: "→", F0DE: "⇒", F0DB: "⇔", F0CE: "∈", F0C8: "∪", F0C7: "∩", F0B6: "∂", F071: "θ", F061: "α", F062: "β", F067: "γ", F064: "δ", F06C: "λ", F06D: "μ", F073: "σ", F077: "ω", F044: "Δ", F057: "Ω" };
+    function runOf(r) {                                  // one Word run
+      const rPr = kid(r, "rPr"), va = att(kid(rPr, "vertAlign"), "val");
       let t = "";
-      p.querySelectorAll("*").forEach((n) => {
+      Array.from(r.children).forEach((c) => {
+        const ln = c.localName;
+        if (ln === "t" || ln === "delInstrText") t += ln === "t" ? c.textContent : "";
+        else if (ln === "tab") t += "\t";
+        else if (ln === "br" || ln === "cr") t += "\n";
+        else if (ln === "sym") { const ch = (att(c, "char") || "").toUpperCase(); t += symMap[ch] || symMap["F0" + ch.slice(-2)] || String.fromCharCode(parseInt(ch, 16) - (parseInt(ch, 16) >= 0xF000 ? 0xF000 : 0)); }
+        else if (ln === "drawing" || ln === "pict" || ln === "object") t += pics(c);
+      });
+      if (va === "superscript" || va === "subscript") {
+        if (!/[0-9A-Za-z+\-−=()]/.test(t)) return t;          // a raised "." or space stays as it is
+        return KJ.supText(t.trim(), va === "subscript" ? "sub" : "sup");
+      }
+      return t;
+    }
+    function pics(el) {
+      let t = "";
+      el.querySelectorAll("*").forEach((n) => {
         const ln = n.localName;
-        if (ln === "t") t += n.textContent;
-        else if (ln === "tab" && n.parentNode.localName === "r") t += "\t";
-        else if ((ln === "br" || ln === "cr") && n.parentNode.localName === "r") t += "\n";
-        else if (ln === "blip") {
-          const an = n.closest ? n.closest("anchor") : null;
-          if (an && an.getAttribute("behindDoc") === "1") return;   // watermark picture behind the text
-          const id = n.getAttribute("r:embed"); if (id) { t += "\n[[IMG:" + id + "]]\n"; imgIds.push(id); }
+        if (ln !== "blip" && ln !== "imagedata") return;
+        const an = n.closest ? n.closest("anchor") : null;
+        if (an && an.getAttribute("behindDoc") === "1") return;       // watermark picture behind the text
+        const id = n.getAttribute("r:embed") || n.getAttribute("r:id"); if (id) { t += "\n[[IMG:" + id + "]]\n"; imgIds.push(id); }
+      });
+      return t;
+    }
+    /* Word equation (OMML) → readable text:  x², x₁, (a+b)/(c), √(x), ∑, |x| … */
+    function omml(el) {
+      const c = (n) => (n ? Array.from(n.children).map(omml).join("") : ""), k1 = (n, name) => kid(n, name);
+      const wrap = (x) => (/^[\w.²³⁰¹⁴-⁹]+$/u.test(x) ? x : "(" + x + ")");
+      switch (el.localName) {
+        case "t": return el.textContent;
+        case "r": return Array.from(el.children).map((x) => (x.localName === "t" ? x.textContent : x.namespaceURI === W_NS ? runOf({ children: [x] }) : "")).join("");
+        case "sSup": return c(k1(el, "e")) + KJ.supText(c(k1(el, "sup")), "sup");
+        case "sSub": return c(k1(el, "e")) + KJ.supText(c(k1(el, "sub")), "sub");
+        case "sSubSup": return c(k1(el, "e")) + KJ.supText(c(k1(el, "sub")), "sub") + KJ.supText(c(k1(el, "sup")), "sup");
+        case "f": { const n = c(k1(el, "num")), d = c(k1(el, "den")); return wrap(n) + "/" + wrap(d); }
+        case "rad": { const dg = c(k1(el, "deg")), e = c(k1(el, "e")); return (dg ? KJ.supText(dg, "sup") : "") + "√" + wrap(e); }
+        case "d": {
+          const pr = k1(el, "dPr"), beg = att(k1(pr, "begChr"), "val"), end = att(k1(pr, "endChr"), "val"), sep = att(k1(pr, "sepChr"), "val");
+          return (beg != null ? beg : "(") + kids(el, "e").map(c).join(sep != null ? sep : ", ") + (end != null ? end : ")");
         }
+        case "nary": {
+          const ch = att(k1(k1(el, "naryPr"), "chr"), "val") || "∫";
+          const lo = c(k1(el, "sub")), hi = c(k1(el, "sup"));
+          return ch + (lo ? KJ.supText(lo, "sub") : "") + (hi ? KJ.supText(hi, "sup") : "") + " " + c(k1(el, "e"));
+        }
+        case "func": return c(k1(el, "fName")) + " " + c(k1(el, "e"));
+        case "bar": case "acc": case "box": case "borderBox": case "groupChr": return c(k1(el, "e"));
+        case "limLow": case "limUpp": return c(k1(el, "e")) + " " + c(k1(el, "lim"));
+        case "eqArr": return kids(el, "e").map(c).join("; ");
+        case "m": return kids(el, "mr").map((mr) => kids(mr, "e").map(c).join("  ")).join("; ");
+        case "rPr": case "ctrlPr": case "naryPr": case "fPr": case "radPr": case "dPr": case "sSupPr": case "sSubPr": case "funcPr": case "oMathParaPr": case "deg": return "";
+        default: return c(el);
+      }
+    }
+    function runText(p) {                                // walk the paragraph in order
+      let t = "";
+      Array.from(p.children).forEach((n) => {
+        const ln = n.localName;
+        if (ln === "r" && n.namespaceURI === W_NS) t += runOf(n);
+        else if (ln === "oMath" || ln === "oMathPara") t += " " + omml(n) + " ";
+        else if (ln === "pPr" || ln === "del" || ln === "moveFrom" || ln === "proofErr" || ln === "bookmarkStart" || ln === "bookmarkEnd") {}
+        else t += runText(n);                            // hyperlink, ins, smartTag, fldSimple, sdt …
       });
       return t;
     }
@@ -845,7 +927,7 @@ h1,h2,h3{color:#1b3a6b;line-height:1.3}footer{text-align:center;font-size:12px;c
     const map = new Map(allQs().map((q) => [q.id, q]));
     el.innerHTML = `<div class="card"><div class="row"><h3 style="margin:0">🎯 Topic Tests</h3><span class="sp"></span><button class="btn bad sm" id="clrAll" title="Delete every Topic Test and its questions">🧹 Clear all tests</button><button class="btn sm" id="np">➕ New topic test</button></div>
 <p class="small muted">Students see these under <b>Topic Tests</b>, grouped by Subject, only when switched <b>Visible</b>. Printing uses the KONCEPT JUNCTION layout (Set box, watermark logo, contact footer).</p></div>
-${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><span class="sp"></span><label class="chk"><input type="checkbox" data-vis="${k}" ${p.visible !== false ? "checked" : ""}>Visible</label></div>
+${papers.map((p, k) => `<div class="card"${p.draft ? ' style="border-style:dashed"' : ""}><div class="row"><b>${esc(p.id)}</b>${p.draft ? ' <span class="pill" title="Not published – tick it in 🚀 Publish → Choose what to publish">📝 Draft – not published</span>' : ""}<span class="sp"></span><label class="chk"><input type="checkbox" data-vis="${k}" ${p.visible !== false ? "checked" : ""}>Visible</label></div>
 <div class="row"><div style="flex:1"><label>Subject</label><select data-k="${k}" data-f="subject">${SUBS.map((s) => `<option value="${s.id}" ${s.id === p.subject ? "selected" : ""}>${esc(s.name.en)}</option>`).join("")}</select></div>
 <div style="flex:1"><label>Topic</label><input data-k="${k}" data-f="topic" value="${esc(p.topic || "")}" placeholder="e.g. Fundamental Rights"></div></div>
 <div class="row"><div style="flex:2"><label>Title (English)</label><input data-k="${k}" data-f="title.en" value="${esc(p.title.en || "")}"></div><div style="flex:2"><label>Title (తెలుగు)</label><input data-k="${k}" data-f="title.te" value="${esc(p.title.te || "")}"></div>
@@ -1118,37 +1200,74 @@ ${XD.map(card).join("")}
   P.publish = (el) => {
     const G = cfg();
     const sizes = Object.keys(W).map((p) => ({ p, n: Array.isArray(W[p]) ? W[p].length : 0, kb: (new Blob([JSON.stringify(W[p])]).size / 1024).toFixed(1) }));
+    /* V23: choose what to publish */
+    const papers = W["data/papers.json"] || [], selOn = S.get("t_pubsel", false) || papers.some((x) => x.draft);
+    const plan = pubPlan(), nFiles = plan.files.length;
+    const bySub = SUBS.map((sb) => ({ sb, list: papers.map((x, k) => ({ x, k })).filter(({ x }) => x.subject === sb.id) })).filter((g) => g.list.length);
+    const other = papers.map((x, k) => ({ x, k })).filter(({ x }) => !SUBS.some((sb) => sb.id === x.subject));
+    if (other.length) bySub.push({ sb: { id: "_", name: { en: "Other" } }, list: other });
+    const selCard = `<div class="card" id="selCard" style="border-color:${selOn ? "var(--accent)" : "var(--line)"}"><div class="row" style="align-items:center"><h3 style="margin:0">🎯 Choose what to publish</h3><span class="sp"></span>
+<label class="sw" title="On = publish only the ticked tests"><input type="checkbox" id="psel" ${selOn ? "checked" : ""}><span></span><b>${selOn ? "ON" : "OFF"}</b></label></div>
+${!selOn ? `<p class="small muted" style="margin:8px 0 0">OFF – <b>all ${papers.length} Topic Test(s)</b> are published. Switch ON to tick only the tests (or whole subjects / topics) students should see now; the rest stay here as <b>drafts</b>.</p>`
+  : !papers.length ? '<p class="small muted">No Topic Tests yet – add them in 📥 Bulk Import.</p>'
+  : `<p class="small" style="margin:8px 0">✔ <b>${plan.live}</b> test(s) will be published · 📝 <b>${plan.drafts}</b> kept as draft${plan.held ? ` (${plan.held} question(s) hidden from students)` : ""}.</p>
+<div class="row" style="gap:6px;margin-bottom:6px"><button class="btn alt sm" id="selAll">Tick all</button><button class="btn alt sm" id="selNone">Untick all</button></div>
+<div class="pubsel">${bySub.map(({ sb, list }) => {
+    const topics = [...new Set(list.map(({ x }) => x.topic || "—"))];
+    const allOn = list.every(({ x }) => !x.draft);
+    return `<div class="ps-sub"><label class="chk ps-h"><input type="checkbox" data-sub="${esc(sb.id)}" ${allOn ? "checked" : ""}> <b>${esc(sb.name.en)}</b> <span class="small muted">(${list.filter(({ x }) => !x.draft).length}/${list.length})</span></label>
+${topics.map((tp) => { const tl = list.filter(({ x }) => (x.topic || "—") === tp); return `<div class="ps-top">${topics.length > 1 || tp !== "—" ? `<label class="chk small"><input type="checkbox" data-top="${esc(sb.id)}|${esc(tp)}" ${tl.every(({ x }) => !x.draft) ? "checked" : ""}> Topic: ${esc(tp)}</label>` : ""}
+${tl.map(({ x, k }) => `<label class="chk ps-t"><input type="checkbox" data-pk="${k}" ${x.draft ? "" : "checked"}> ${esc(x.title.en || x.id)} <span class="tag">Set ${esc(x.set || "-")} · ${x.qids.length} Qs${x.draft ? " · 📝 draft" : ""}</span></label>`).join("")}</div>`; }).join("")}</div>`;
+  }).join("")}</div>`}</div>`;
     el.innerHTML = `<div class="two"><div class="card"><h3 style="margin-top:0">🚀 Publish to GitHub</h3>
 <p class="small">Repo: <b>${esc(G.owner)}/${esc(G.repo)}</b> · branch <b>${esc(G.branch)}</b>${G.prefix ? " · folder <b>" + esc(G.prefix) + "</b>" : ""} · token ${pat() ? "✔ set" : '<b style="color:var(--bad)">missing – add in Settings</b>'}</p>
 ${dirty.size ? `<ul>${[...dirty].map((p) => `<li class="dirty">${esc(p)}</li>`).join("")}</ul>` : '<p class="muted">No unpublished changes.</p>'}
-<div class="row"><button class="btn acc" id="pub" ${dirty.size ? "" : "disabled"}>Publish ${dirty.size} file(s)</button><button class="btn alt sm" id="zip" ${dirty.size ? "" : "disabled"}>⬇ Download as ZIP (manual upload)</button>
+<div class="row"><button class="btn acc" id="pub" ${dirty.size ? "" : "disabled"}>Publish ${nFiles} file(s)${plan.drafts ? ` – ${plan.live} test(s) live, ${plan.drafts} draft` : ""}</button><button class="btn alt sm" id="zip" ${dirty.size ? "" : "disabled"}>⬇ Download as ZIP (manual upload)</button>
 <span class="sp"></span><button class="btn alt sm" id="disc" ${dirty.size ? "" : "disabled"}>Discard changes</button></div>
 <div class="log" id="plog" style="margin-top:10px">Ready.</div>
 <p class="small muted">Students see updates after GitHub Pages rebuilds (usually 1–3 minutes) and they reopen the app.</p></div>
+${selCard}
 <div class="card"><h3 style="margin-top:0">🗄 Storage report</h3><table class="t"><tr><th>File</th><th>Items</th><th>KB</th></tr>
 ${sizes.map((s) => `<tr><td class="${dirty.has(s.p) ? "dirty" : ""}">${esc(s.p)}</td><td>${s.n}</td><td>${s.kb}</td></tr>`).join("")}</table>
 <p class="small muted">Limit per file: <b>${GH_MAX_MB} MB</b> (largest data file now: ${Math.max(0, ...sizes.map((x) => +x.kb)).toFixed(1)} KB). Media go to Cloudinary, or to the repo's <code>media/</code> folder (up to ${GH_MAX_MB} MB each).</p></div></div>`;
+    const setDraft = (ks, on) => { ks.forEach((k) => { if (papers[k]) papers[k].draft = !on; }); markDirty("data/papers.json"); draw(); };
+    $("#psel").onchange = (e) => {
+      S.set("t_pubsel", e.target.checked);
+      if (!e.target.checked && papers.some((x) => x.draft)) { papers.forEach((x) => delete x.draft); markDirty("data/papers.json"); KJ.toast("OFF – all Topic Tests will be published"); }
+      draw();
+    };
+    if ($("#selCard .pubsel")) {
+      $("#selCard").onchange = (e) => {
+        const t = e.target;
+        if (t.dataset.pk != null) setDraft([+t.dataset.pk], t.checked);
+        else if (t.dataset.sub != null) setDraft(papers.map((x, k) => (x.subject === t.dataset.sub || (t.dataset.sub === "_" && !SUBS.some((sb) => sb.id === x.subject)) ? k : -1)).filter((k) => k >= 0), t.checked);
+        else if (t.dataset.top != null) { const [sid, tp] = t.dataset.top.split("|"); setDraft(papers.map((x, k) => (x.subject === sid && (x.topic || "—") === tp ? k : -1)).filter((k) => k >= 0), t.checked); }
+      };
+      $("#selAll").onclick = () => setDraft(papers.map((_, k) => k), true);
+      $("#selNone").onclick = () => setDraft(papers.map((_, k) => k), false);
+    }
     const log = (m) => { $("#plog").textContent += "\n" + m; $("#plog").scrollTop = 1e9; };
     $("#pub").onclick = async () => {
       if (!pat()) return KJ.toast("Add your GitHub token in Settings first");
       $("#pub").disabled = true;
       /* V13: one commit with all changed files (handles large files) */
       try {
-        const list = [...dirty], files = list.map((p) => { const txt = JSON.stringify(W[p], null, 1), bb = b64(txt); return { path: p, b64: bb, size: new Blob([txt]).size }; });
-        log("→ " + list.length + " file(s) in one commit");
+        const PL = pubPlan(), list = PL.files, files = list.map((p) => { const txt = JSON.stringify(PL.data(p), null, 1), bb = b64(txt); return { path: p, b64: bb, size: new Blob([txt]).size }; });   // V23: drafts held back
+        log("→ " + list.length + " file(s) in one commit" + (PL.drafts ? ` · ${PL.live} test(s) live, ${PL.drafts} kept as draft` : ""));
         await ghCommit(files, "KJ Teacher Upload: " + list.length + " file(s) (" + new Date().toLocaleString() + ")", log);
-        list.forEach(clearDirty); log("  ✔ published"); log("All done ✔"); setTimeout(draw, 1500); return;
+        list.forEach(clearDirty); serverDrafts = PL.drafts > 0 || PL.held > 0;
+        log("  ✔ published"); log("All done ✔"); setTimeout(draw, 1500); return;
       } catch (err) {
         log("  ✖ " + err.message + (/401|Bad credentials/.test(err.message) ? "  → token wrong/expired (Settings)" : /403|404/.test(err.message) ? "  → check repo name & token permission: Contents = Read and write" : ""));
         if (/limit is/.test(err.message)) { $("#pub").disabled = false; return; }
         log("Trying file-by-file (older method)…");
       }
-      for (const p of [...dirty]) {
+      for (const p of pubPlan().files) {
         try {
           log("→ " + p);
           const cur = await gh(p);
           if (!cur.ok && cur.status !== 404) throw new Error(cur.status + " " + (cur.j.message || ""));
-          const put = await gh(p, "PUT", { message: "KJ Teacher Upload: " + p + " (" + new Date().toLocaleString() + ")", content: b64(JSON.stringify(W[p], null, 1)), branch: G.branch, ...(cur.ok ? { sha: cur.j.sha } : {}) });
+          const put = await gh(p, "PUT", { message: "KJ Teacher Upload: " + p + " (" + new Date().toLocaleString() + ")", content: b64(JSON.stringify(pubPlan().data(p), null, 1)), branch: G.branch, ...(cur.ok ? { sha: cur.j.sha } : {}) });
           if (!put.ok) throw new Error(put.status + " " + (put.j.message || ""));
           clearDirty(p); log("  ✔ published");
         } catch (err) {
@@ -1160,7 +1279,7 @@ ${sizes.map((s) => `<tr><td class="${dirty.has(s.p) ? "dirty" : ""}">${esc(s.p)}
     };
     $("#zip").onclick = async () => {
       await loadScript("https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js");
-      const z = new window.JSZip(); [...dirty].forEach((p) => z.file(p, JSON.stringify(W[p], null, 1)));
+      const PL = pubPlan(), z = new window.JSZip(); PL.files.forEach((p) => z.file(p, JSON.stringify(PL.data(p), null, 1)));   // V23
       const blob = await z.generateAsync({ type: "blob" });
       download("kj_changed_files_" + KJ.today() + ".zip", blob);
     };

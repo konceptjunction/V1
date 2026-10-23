@@ -105,6 +105,22 @@
 
   /* ================= V4: student register ================= */
   KJ.student = () => S.get("student", null);
+  /* V23: Logout – one student's results, bookmarks and progress are kept aside under their Mail ID and come back when they log in again */
+  const ACCT_KEYS = ["results", "tstat_sub", "pstat_sub", "pstat", "wrong", "bm", "daily", "live", "target", "seen_day", "sync_pending"];
+  const acctKey = (email) => "acct_" + String(email || "").trim().toLowerCase();
+  KJ.logout = function () {
+    const st = KJ.student(); if (!st) return;
+    const box = {}; ACCT_KEYS.forEach((k) => { const v = S.get(k, undefined); if (v !== undefined) box[k] = v; });
+    box.student = st; box.profile = S.get("profile", {}); box.savedAt = new Date().toISOString();
+    if (st.email) S.set(acctKey(st.email), box);
+    ACCT_KEYS.concat(["student", "profile"]).forEach((k) => S.del(k));
+    try { window.onbeforeunload = null; } catch (e) {}
+  };
+  KJ.restoreAcct = function (email) {               // called at login with the same Mail ID
+    const box = S.get(acctKey(email), null); if (!box) return false;
+    ACCT_KEYS.forEach((k) => { if (box[k] !== undefined && S.get(k, undefined) === undefined) S.set(k, box[k]); });
+    S.del(acctKey(email)); return true;
+  };
   /* Sends the student's details to the teacher's Google Sheet (Apps Script web app).
      Uses no-cors + text/plain so it works from GitHub Pages without CORS setup.
      If offline or not configured, it is retried on the next open / when back online. */
@@ -359,8 +375,10 @@ ${x.note ? `<div class="tag">${esc(x.note)}</div>` : ""}
     const enter = async (rec) => {                     // already registered → log in with the existing record
       const st = { id: rec.id, name: rec.name, email: rec.email, examId: rec.examId || "", exam: rec.exam || "", college: rec.college || "", mobile: rec.mobile || old.mobile || "", regAt: rec.registeredOn || new Date().toISOString() };
       S.set("student", st); S.set("profile", { name: st.name, mobile: st.mobile });
+      const back = KJ.restoreAcct(st.email);            // V23: results from before Logout
       if (st.examId && st.examId !== "other" && exams.some((x) => x.id === st.examId)) S.set("target", st.examId);
       KJ.sync("seen");
+      if (back) setTimeout(() => KJ.toast("Your earlier results are back ✔"), 1600);
       KJ.toast("Welcome back, " + st.name.split(" ")[0] + "!");
       if (location.hash === "#/home" || !location.hash) render(); else location.hash = "#/home";
     };
@@ -393,6 +411,7 @@ ${x.note ? `<div class="tag">${esc(x.note)}</div>` : ""}
       const st = { id: KJ.uid("st"), ...r.data, mobile: old.mobile || "", regAt: new Date().toISOString() };
       S.set("student", st);
       S.set("profile", { name: st.name, mobile: st.mobile });
+      KJ.restoreAcct(st.email);                         // V23: same Mail ID logged in again while offline
       if (st.examId !== "other") S.set("target", st.examId);
       $("#rgo").disabled = true; $("#rgo").textContent = "Saving…";
       await KJ.sync("register");
@@ -598,7 +617,7 @@ ${res.map((r) => `<tr><td>${esc(r.title)}</td><td class="small">${new Date(r.dat
 <form class="reg-form" id="pf" novalidate style="margin-top:0">${regFields(exams, st, true)}
 <div class="reg-err" id="rerr" role="alert"></div>
 <div class="row"><span id="sst">${status()}</span><span class="sp"></span><button class="btn sm" type="submit">Save</button></div></form></div>
-<div class="row" style="margin-bottom:12px"><a class="btn alt sm" href="#/performance">📊 ${KJ.t("perf")}</a><a class="btn alt sm" href="#/home">🏠 ${KJ.t("home")}</a></div>
+<div class="row" style="margin-bottom:12px"><a class="btn alt sm" href="#/performance">📊 ${KJ.t("perf")}</a><a class="btn alt sm" href="#/home">🏠 ${KJ.t("home")}</a><span class="sp"></span><button class="btn bad sm" id="lgo">🚪 Logout</button></div>
 <div class="card"><h3 style="margin-top:0">🗂 Data on this phone</h3>
 <p class="small muted">Results, bookmarks and progress are saved only on this device.</p>
 <div class="row"><button class="btn alt sm" id="cr">Clear results</button><button class="btn alt sm" id="cp">Clear saved PDFs</button><button class="btn bad sm" id="ca">Reset everything</button></div></div>`;
@@ -615,6 +634,20 @@ ${res.map((r) => `<tr><td>${esc(r.title)}</td><td class="small">${new Date(r.dat
       await KJ.sync("update");
       $("#sst").innerHTML = status(); KJ.toast("Saved"); shell();
     });
+    $("#lgo").onclick = () => {                         // V23
+      const live = S.get("live", null), first = (st.name || "").split(" ")[0] || "you";
+      const m = document.createElement("div"); m.className = "modal"; m.id = "lgoModal";
+      m.innerHTML = `<div class="box" style="max-width:440px"><h3 style="margin-top:0">🚪 Logout ${esc(first)}?</h3>
+<p class="small">Your results, bookmarks and progress stay saved on this phone and <b>come back when you log in again</b> with <b>${esc(st.email || "your Mail ID")}</b>.</p>
+${live ? `<p class="small" style="color:var(--warn)">⏳ "${esc(live.title)}" is not submitted – it will be kept for you (timer paused).</p>` : ""}
+${S.get("sync_pending", false) ? '<p class="small" style="color:var(--warn)">Your details are not yet sent to the teacher – they will be sent after you log in again while online.</p>' : ""}
+<p class="small muted">Another student can then register / log in on this phone.</p>
+<div class="row" style="margin-top:12px;gap:10px;align-items:stretch;flex-wrap:nowrap"><button class="btn alt" id="lgoNo" style="flex:1">Cancel</button><button class="btn bad" id="lgoYes" style="flex:1">🚪 Logout</button></div></div>`;
+      document.body.appendChild(m);
+      m.addEventListener("click", (e) => { if (e.target === m) m.remove(); });
+      m.querySelector("#lgoNo").onclick = () => m.remove();
+      m.querySelector("#lgoYes").onclick = () => { m.remove(); KJ.logout(); KJ.toast("Logged out"); location.hash = "#/home"; render(); shell(); };
+    };
     $("#cr").onclick = () => { if (KJ.confirm("Delete all results and performance data?")) { ["results", "tstat_sub", "pstat_sub", "pstat"].forEach((k) => S.del(k)); KJ.toast("Cleared"); render(); } };
     $("#cp").onclick = async () => { try { await caches.delete("kj-pdf"); } catch (e) {} KJ.toast("Saved PDFs removed"); };
     $("#ca").onclick = () => { if (KJ.confirm("Reset all app data on this phone? You will need to register again.")) { Object.keys(localStorage).filter((k) => k.startsWith("kj_")).forEach((k) => localStorage.removeItem(k)); render(); } };
