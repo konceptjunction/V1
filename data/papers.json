@@ -27,5 +27,55 @@
    "qua-0008",
    "qua-0009"
   ]
+ },
+ {
+  "id": "KJ-TT-002",
+  "subject": "quant",
+  "topic": "",
+  "set": "A",
+  "title": {
+   "en": "GENERAL SCIENCE SAMPLE PAPER",
+   "te": ""
+  },
+  "date": "2026-10-23",
+  "duration_min": 30,
+  "mark": 1,
+  "negative": 0.25,
+  "visible": true,
+  "exams": [
+   "police_si"
+  ],
+  "qids": [
+   "qua-0010",
+   "qua-0011",
+   "qua-0012",
+   "qua-0013",
+   "qua-0014",
+   "qua-0015",
+   "qua-0016",
+   "qua-0017",
+   "qua-0018",
+   "qua-0019",
+   "qua-0020",
+   "qua-0021",
+   "qua-0022",
+   "qua-0023",
+   "qua-0024",
+   "qua-0025",
+   "qua-0026",
+   "qua-0027",
+   "qua-0028",
+   "qua-0029",
+   "qua-0030",
+   "qua-0031",
+   "qua-0032",
+   "qua-0033",
+   "qua-0034",
+   "qua-0035",
+   "qua-0036",
+   "qua-0037",
+   "qua-0038",
+   "qua-0039"
+  ]
  }
 ]

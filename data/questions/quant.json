@@ -331,5 +331,1113 @@
   "img": "",
   "video": "",
   "paper": "KJ-TT-001"
+ },
+ {
+  "id": "qua-0010",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Ginger and turmeric propagate naturally through:",
+   "te": "అల్లం మరియు పసుపు సహజంగా ఏ విధమైన కాండాల ద్వారా వ్యాప్తి చెందుతాయి?"
+  },
+  "o": {
+   "en": [
+    "Tubers",
+    "Rhizomes",
+    "Bulbs",
+    "Runners"
+   ],
+   "te": [
+    "దుంపలు",
+    "భూగర్భ కాండాలు",
+    "కాండాలు",
+    "నేలపై పాకే కాండాలు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0011",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "An organism that transmits a pathogen from an infected host to another host is called:",
+   "te": "వ్యాధికారకాన్ని (Pathogen) ఒక సోకిన అతిథేయి నుండి మరొక అతిథేయికి వ్యాపింపజేసే జీవిని ఏమంటారు? A) Secondary host / సెకండరీ హోస్ట్"
+  },
+  "o": {
+   "en": [
+    "Primary host",
+    "Vector",
+    "Parasite"
+   ],
+   "te": [
+    "ప్రైమరీ హోస్ట్",
+    "వెక్టార్",
+    "పేరాసైట్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0012",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which disease is caused specifically by a deficiency of Vitamin B1?",
+   "te": "విటమిన్ B1 లోపం వల్ల ప్రత్యేకంగా ఏ వ్యాధి వస్తుంది?"
+  },
+  "o": {
+   "en": [
+    "Rickets",
+    "Night blindness",
+    "Scurvy",
+    "Beri-beri"
+   ],
+   "te": [
+    "రికెట్స్",
+    "రేచీకటి",
+    "స్కర్వ",
+    "బెరిబెరి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0013",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which mirror is used as a rear-view mirror in vehicles?",
+   "te": "వాహనాలలో వెనుక దృశ్యాలను చూడటానికి ఏ అద్దాన్ని ఉపయోగిస్తారు?"
+  },
+  "o": {
+   "en": [
+    "Concave mirror",
+    "Convex mirror",
+    "Plane mirror",
+    "Cylindrical mirror"
+   ],
+   "te": [
+    "పుటాకార దర్పణం",
+    "కుంభాకార దర్పణం",
+    "సమతల దర్పణం",
+    "స్థూపాకార దర్పణ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0014",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is a thermoplastic polymer?",
+   "te": "క్రింది వాటిలో థర్మోప్లాస్టిక్ పాలిమర్ ఏది?"
+  },
+  "o": {
+   "en": [
+    "Bakelite",
+    "Melamine-formaldehyde resin",
+    "Polyethene",
+    "Vulcanised rubber"
+   ],
+   "te": [
+    "బేకలైట్",
+    "మెలమైన్-ఫార్మాల్డిహైడ్ రెసిన్",
+    "పాలిథీన్",
+    "వల్కనైజ్డ్ రబ్బరు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0015",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Bats can navigate in darkness by emitting and detecting:",
+   "te": "గబ్బిలాలు ఏ తరంగాలను విడుదల చేసి, వాటిని గుర్తించడం ద్వారా చీకటిలో దిశను తెలుసుకుంటాయి?"
+  },
+  "o": {
+   "en": [
+    "Radio waves",
+    "Infrasonic waves",
+    "Ultrasonic waves",
+    "Visible light waves"
+   ],
+   "te": [
+    "రేడియో తరంగాలు",
+    "అవశ్రవ్య తరంగాలు",
+    "పరాశ్రవ్య తరంగాలు",
+    "దృశ్య కాంతి తరంగాలు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0016",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A sound wave travels at 330 m/s and has a wavelength of 1.5 m. What is its frequency?",
+   "te": "ఒక ధ్వని తరంగం 330 మీ/సె వేగంతో ప్రయాణిస్తూ , దాని తరంగదైర్ఘ్యం 1.5 మీ. అయితే, దాని పౌనఃపున్యం ఎంత?"
+  },
+  "o": {
+   "en": [
+    "220 Hz",
+    "110 Hz",
+    "495 Hz",
+    "330 Hz"
+   ],
+   "te": [
+    "220 Hz",
+    "110 Hz",
+    "495 Hz",
+    "330 Hz"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0017",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following pairs is correctly matched?",
+   "te": "క్రింది జతలలో సరైన జత ఏది?"
+  },
+  "o": {
+   "en": [
+    "Mond process — Purification of nickel",
+    "Van Arkel process — Purification of copper",
+    "Zone refining — Extraction of iron from haematite",
+    "Froth flotation — Purification of nickel carbonyl"
+   ],
+   "te": [
+    "మోండ్ ప్రక్రియ — నికెల్ శుద్ధి",
+    "వాన్ ఆర్కెల్ ప్రక్రియ — రాగి శుద్ధి",
+    "జోన్ రిఫైనింగ్ — హేమటైట్ ఖనిజం నుండి ఇనుము వెలికితీత",
+    "నురుగు తేలిక ప్రక్రియ — నికెల్ కార్బొనైల్ శుద్ధి"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0018",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which statement about German silver is correct?",
+   "te": "జర్మన్ సిల్వర్‌కు సంబంధించి సరైన వాక్యం ఏది?"
+  },
+  "o": {
+   "en": [
+    "It contains a large proportion of actual silver",
+    "It contains copper, zinc and nickel.",
+    "It contains only copper and tin.",
+    "It is an alloy of iron and chromium."
+   ],
+   "te": [
+    "ఇందులో నిజమైన వెండి అధిక పరిమాణంలో ఉంటుంది.",
+    "ఇందులో రాగి, జింక్ మరియు నికెల్ ఉంటాయి.",
+    "ఇందులో రాగి మరియు తగరం మాత్రమే ఉంటాయి.",
+    "ఇది ఇనుము మరియు క్రోమియం మిశ్రమ లోహం."
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0019",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "What is the chemical formula of cinnabar?",
+   "te": "సిన్నబార్ యొక్క రసాయన సూత్రం ఏది?"
+  },
+  "o": {
+   "en": [
+    "HgS",
+    "ZnS",
+    "PbS",
+    "Fe₂O₃"
+   ],
+   "te": [
+    "HgS",
+    "ZnS",
+    "PbS",
+    "Fe₂O₃"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0020",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Bauxite is considered the principal ore of which element?",
+   "te": "బాక్సైట్‌ను ఏ మూలకానికి ప్రధాన ఖనిజంగా పరిగణిస్తారు?"
+  },
+  "o": {
+   "en": [
+    "Zinc",
+    "Aluminium",
+    "Lead",
+    "Mercury"
+   ],
+   "te": [
+    "జింక్",
+    "అల్యూమినియం",
+    "సీసం",
+    "పాదరసం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0021",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which cell organelle is known as the “suicide bag” of the cell?",
+   "te": "కణంలోని “ఆత్మహత్య సంచి”గా పిలువబడే కణాంగం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Ribosome",
+    "Lysosome",
+    "Mitochondrion",
+    "Golgi apparatus"
+   ],
+   "te": [
+    "రైబోసోమ్",
+    "లైసోసోమ్",
+    "మైటోకాండ్రియా",
+    "గాల్జీ ఉపకరణం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0022",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is the chemical formula of baking soda?",
+   "te": "బేకింగ్ సోడా యొక్క రసాయన ఫార్ములా ఏది?"
+  },
+  "o": {
+   "en": [
+    "Na₂CO₃",
+    "NaHCO₃",
+    "NaOH",
+    "NaCl"
+   ],
+   "te": [
+    "Na₂CO₃",
+    "NaHCO₃",
+    "NaOH",
+    "NaCl"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0023",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The modern periodic law is based on the periodicity of properties with respect to:",
+   "te": "ఆధునిక ఆవర్తన నియమం ప్రకారం మూలకాల ధర్మాలు దేని ఆధారంగా ఆవర్తనంగా మారుతాయి?"
+  },
+  "o": {
+   "en": [
+    "Atomic mass",
+    "Atomic number",
+    "Neutron number",
+    "Mass number"
+   ],
+   "te": [
+    "పరమాణు ద్రవ్యరాశి",
+    "పరమాణు సంఖ్య",
+    "న్యూట్రాన్ల సంఖ్య",
+    "ద్రవ్యరాశి సంఖ్య"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0024",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which radioactive emission has the greatest penetrating power among alpha, beta and gamma radiation?",
+   "te": "ఆల్ఫా, బీటా, గామా వికిరణాలలో అత్యధిక చొచ్చుకుపోయే సామర్థ్యం దేనికి ఉంటుంది?"
+  },
+  "o": {
+   "en": [
+    "Alpha rays",
+    "Beta rays",
+    "Gamma rays",
+    "All have equal penetration"
+   ],
+   "te": [
+    "ఆల్ఫా కిరణాలు",
+    "బీటా కిరణాలు",
+    "గామా కిరణాలు",
+    "అన్నింటికీ సమాన సామర్థ్యం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0025",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A fuse wire should have which combination of properties?",
+   "te": "ఫ్యూజ్ తీగలో ఏ లక్షణాల కలయిక ఉండాలి?"
+  },
+  "o": {
+   "en": [
+    "High resistivity and high melting point",
+    "Low resistivity and high melting point",
+    "High resistivity and low melting point",
+    "Low resistivity and low melting point"
+   ],
+   "te": [
+    "అధిక విశిష్ట నిరోధకత మరియు అధిక ద్రవీభవన స్థానం",
+    "తక్కువ విశిష్ట నిరోధకత మరియు అధిక ద్రవీభవన స్థానం",
+    "అధిక విశిష్ట నిరోధకత మరియు తక్కువ ద్రవీభవన స్థానం",
+    "తక్కువ విశిష్ట నిరోధకత మరియు తక్కువ ద్రవీభవన స్థానం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0026",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "An object has potential energy of 400 J. Its mass is 20 kg and (g = 10) m/s². Find its height.",
+   "te": "ఒక వస్తువు స్థితిజ శక్తి 400 జౌళ్లు. దాని ద్రవ్యరాశి 20 కిలోగ్రాములు మరియు (g = 10) మీ/సె². అయితే, ఆ వస్తువు ఎత్తును కనుగొనండి."
+  },
+  "o": {
+   "en": [
+    "0.5 m",
+    "4 m",
+    "1 m",
+    "2 m"
+   ],
+   "te": [
+    "0.5 మీ",
+    "4 మీ",
+    "1 మీ",
+    "2 మీ"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0027",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Who is credited with the discovery of the proton?",
+   "te": "ప్రోటాన్ ఆవిష్కరణకు గుర్తింపు పొందిన శాస్త్రవేత్త ఎవరు?"
+  },
+  "o": {
+   "en": [
+    "Ernest Rutherford",
+    "J. J. Thomson",
+    "Max Planck",
+    "James Chadwick"
+   ],
+   "te": [
+    "ఎర్నెస్ట్ రూథర్‌ఫోర్డ్",
+    "జె. జె. థామ్సన్",
+    "మాక్స్ ప్లాంక్",
+    "జేమ్స్ చాడ్విక్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0028",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "With reference to eutrophication, consider the following statements:\nI. It decreases dissolved oxygen in water.\nII. It is a phenomenon of nutrient enrichment of a water body.\nChoose the correct answer:",
+   "te": "యూట్రోఫికేషన్‌కు సంబంధించి క్రింది వాక్యాలను పరిశీలించండి:\nఇది నీటిలో కరిగిన ఆక్సిజన్ పరిమాణాన్ని తగ్గిస్తుంది.\nఇది జలాశయంలో పోషక పదార్థాలు అధికంగా చేరే ప్రక్రియ.\nసరైన సమాధానాన్ని ఎంచుకోండి:"
+  },
+  "o": {
+   "en": [
+    "Both statements are true",
+    "Both statements are false",
+    "Statement I is true, but Statement II is false",
+    "Statement I is false, but Statement II is true"
+   ],
+   "te": [
+    "రెండు వాక్యాలూ సరైనవి",
+    "రెండు వాక్యాలూ తప్పు",
+    "వాక్యం I సరైనది, కానీ వాక్యం II తప్పు",
+    "వాక్యం I తప్పు, కానీ వాక్యం II సరైనది"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0029",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following vertebrates has a two-chambered heart?",
+   "te": "క్రింది సకశేరుకాలలో రెండు గదులు కలిగిన గుండె ఏ జీవికి ఉంటుంది?"
+  },
+  "o": {
+   "en": [
+    "Frog",
+    "Lizard",
+    "Fish",
+    "Pigeon"
+   ],
+   "te": [
+    "కప్ప",
+    "బల్లి",
+    "చేప",
+    "పావురం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0030",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which international agreement is primarily associated with controlling substances that deplete the ozone layer?",
+   "te": "ఓజోన్ పొరను క్షీణింపజేసే పదార్థాలను నియంత్రించడానికి ప్రధానంగా సంబంధం ఉన్న అంతర్జాతీయ ఒప్పందం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Kyoto Protocol",
+    "Montreal Protocol",
+    "Ramsar Convention",
+    "Basel Convention"
+   ],
+   "te": [
+    "క్యోటో ప్రోటోకాల్",
+    "మాంట్రియల్ ప్రోటోకాల్",
+    "రామ్‌సర్ కన్వెన్షన్",
+    "బాసెల్ కన్వెన్షన్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0031",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is the correct pathway of air entering the human respiratory system?",
+   "te": "మానవ శ్వాసకోశ వ్యవస్థలోకి గాలి ప్రవేశించే సరైన మార్గం క్రింది వాటిలో ఏది?"
+  },
+  "o": {
+   "en": [
+    "Nose → Pharynx → Larynx → Trachea → Bronchi → Bronchioles → Alveoli",
+    "Nose → Larynx → Pharynx → Bronchioles → Trachea → Alveoli",
+    "Nose → Trachea → Pharynx → Larynx → Alveoli → Bronchi",
+    "Nose → Bronchi → Trachea → Larynx → Bronchioles → Alveoli"
+   ],
+   "te": [
+    "ముక్కు → గ్రసని → స్వరపేటిక → శ్వాసనాళం → శ్వాసనాళ శాఖలు → సూక్ష్మ శ్వాసనాళాలు → వాయుకోశాలు",
+    "ముక్కు → స్వరపేటిక → గ్రసని → సూక్ష్మ శ్వాసనాళాలు → శ్వాసనాళం → వాయుకోశాలు",
+    "ముక్కు → శ్వాసనాళం → గ్రసని → స్వరపేటిక → వాయుకోశాలు → శ్వాసనాళ శాఖలు",
+    "ముక్కు → శ్వాసనాళ శాఖలు → శ్వాసనాళం → స్వరపేటిక → సూక్ష్మ శ్వాసనాళాలు → వాయుకోశాలు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0032",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following gases is commonly known as marsh gas?",
+   "te": "క్రింది వాయువులలో ఏది సాధారణంగా మార్ష్ గ్యాస్ (చిత్తడి నేలల వాయువు) అని పిలవబడుతుంది?"
+  },
+  "o": {
+   "en": [
+    "Ethane",
+    "Methane",
+    "Butane",
+    "Acetylene"
+   ],
+   "te": [
+    "ఈథేన్",
+    "మీథేన్",
+    "బ్యూటేన్",
+    "ఎసిటిలీన్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0033",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "I. Glycolysis occurs in the cytoplasm in both prokaryotic and eukaryotic cells.\nII. The Krebs cycle occurs in the mitochondrial matrix in typical eukaryotic cells.\nChoose the correct answer:",
+   "te": "Consider the following statements:క్రింది వాక్యాలను పరిశీలించండి:\nప్రోకారియోటిక్ మరియు యూకారియోటిక్ కణాలలో గ్లైకోలిసిస్ ప్రక్రియ కణద్రవ్యంలో జరుగుతుంది.\nసాధారణ యూకారియోటిక్ కణాలలో క్రెబ్స్ చక్రం మైటోకాండ్రియా మాతృకలో జరుగుతుంది.\nసరైన సమాధానాన్ని ఎంచుకోండి:"
+  },
+  "o": {
+   "en": [
+    "Both statements are true",
+    "Both statements are false",
+    "Statement I is true, but Statement II is false",
+    "Statement I is false, but Statement II is true"
+   ],
+   "te": [
+    "రెండు వాక్యాలూ సరైనవి",
+    "రెండు వాక్యాలూ తప్పు",
+    "వాక్యం I సరైనది, కానీ వాక్యం II తప్పు",
+    "వాక్యం I తప్పు, కానీ వాక్యం II సరైనది"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0034",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is the correct chromosome composition of a typical human female?",
+   "te": "సాధారణ మానవ స్త్రీలో క్రోమోజోముల సరైన నిర్మాణం క్రింది వాటిలో ఏది?"
+  },
+  "o": {
+   "en": [
+    "44 + XY",
+    "44 + XX",
+    "22 + XX",
+    "46 + XY"
+   ],
+   "te": [
+    "44 + XY",
+    "44 + XX",
+    "22 + XX",
+    "46 + XY"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0035",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which thyroid hormone is commonly elevated in Graves’ disease?",
+   "te": "గ్రేవ్స్ వ్యాధిలో సాధారణంగా ఏ థైరాయిడ్ హార్మోన్ స్థాయి పెరుగుతుంది?"
+  },
+  "o": {
+   "en": [
+    "Parathyroid hormone",
+    "Insulin",
+    "Thyroxine",
+    "Growth hormone"
+   ],
+   "te": [
+    "పారాథైరాయిడ్ హార్మోన్",
+    "ఇన్సులిన్",
+    "థైరాక్సిన్",
+    "వృద్ధి హార్మోన్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0036",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which of the following is a redox reaction?",
+   "te": "క్రింది వాటిలో ఆక్సీకరణ–క్షయకరణ చర్య ఏది?"
+  },
+  "o": {
+   "en": [
+    "HCl + NaOH → NaCl + H₂O",
+    "AgNO₃ + NaCl → AgCl + NaNO₃",
+    "CuO + H₂ → Cu + H₂O",
+    "NaCl → Na⁺ + Cl⁻"
+   ],
+   "te": [
+    "HCl + NaOH → NaCl + H₂O",
+    "AgNO₃ + NaCl → AgCl + NaNO₃",
+    "CuO + H₂ → Cu + H₂O",
+    "NaCl → Na⁺ + Cl⁻"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0037",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which chemical has been illegally or unsafely used for artificial fruit ripening?",
+   "te": "పండ్లను కృత్రిమంగా పండించడానికి అక్రమంగా లేదా అసురక్షితంగా ఉపయోగించిన రసాయనం ఏది?"
+  },
+  "o": {
+   "en": [
+    "Calcium carbonate",
+    "Calcium carbide",
+    "Sodium bicarbonate",
+    "Sodium chloride"
+   ],
+   "te": [
+    "కాల్షియం కార్బోనేట్",
+    "కాల్షియం కార్బైడ్",
+    "సోడియం బైకార్బోనేట్",
+    "సోడియం క్లోరైడ్"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0038",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A 15 N weight is suspended from a spring balance and is fully immersed in water. If the buoyant force acting on the weight is 4 N, the reading shown by the balance will be:",
+   "te": "15 N బరువున్న ఒక వస్తువును స్ప్రింగ్ బ్యాలెన్స్‌కు వేలాడదీసి పూర్తిగా నీటిలో ముంచారు. ఆ వస్తువుపై పనిచేసే ఉత్ప్లావక బలం 4 N అయితే, బ్యాలెన్స్ చూపించే రీడింగ్ ఎంత?"
+  },
+  "o": {
+   "en": [
+    "15 N",
+    "11 N",
+    "4 N",
+    "0 N"
+   ],
+   "te": [
+    "15 న్యూటన్లు",
+    "11 న్యూటన్లు",
+    "4 న్యూటన్లు",
+    "0 న్యూటన్లు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-002"
+ },
+ {
+  "id": "qua-0039",
+  "type": "mcq",
+  "subject": "quant",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The potential difference across the 5 Ω resistor in the following circuit is:",
+   "te": "క్రింది వలయంలో 5 Ω నిరోధం మీద ఉన్న పొటెన్షియల్ భేదం ఎంత?"
+  },
+  "o": {
+   "en": [
+    "10 V",
+    "3.33 V",
+    "5 V",
+    "6.67 V"
+   ],
+   "te": [
+    "10 V",
+    "3.33 V",
+    "5 V",
+    "6.67 V"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "data:image/jpeg;base64,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",
+  "video": "",
+  "paper": "KJ-TT-002"
  }
 ]
