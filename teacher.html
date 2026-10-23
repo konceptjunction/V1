@@ -21,6 +21,12 @@
   .sec-t td{vertical-align:middle}
   .sec-t select,.sec-t input{padding:6px 8px}
   details.card summary{cursor:pointer;font-weight:600}
+  /* V13: Telugu typing */
+  .te-btn.on{background:var(--accent)!important;color:var(--accent-ink)!important;border-color:var(--accent)!important;font-weight:700}
+  body.te-on :is(#qt,#et,#ot0,#ot1,#ot2,#ot3,#nte,#ltt,#lbt,#pt,#tepad,[data-f$=".te"]){outline:2px dashed var(--accent);outline-offset:1px}
+  .te-hint{position:absolute;z-index:90;display:none;background:#14213d;color:#fff;padding:5px 10px;border-radius:8px;font:14px "Noto Sans Telugu","Nirmala UI",system-ui,sans-serif;box-shadow:var(--shadow);pointer-events:none}
+  .te-chart td{white-space:nowrap;padding:5px 8px}
+  .topbar{flex-wrap:wrap}
   .tabs button{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:7px 12px;font-size:13px}
   .tabs button.on{background:var(--brand2);color:#fff;border-color:var(--brand2)}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -43,12 +49,15 @@
   <img class="logo" src="assets/icons/logo.png" alt="KJ">
   <div class="ttl"><b>KONCEPT JUNCTION</b><small>Teacher Upload</small></div>
   <span class="pill acc" id="dirtyPill" style="display:none"></span>
+  <button class="tb-btn te-btn" id="teBtn" title="Telugu typing on/off (F2)">అ Telugu typing: OFF</button>
+  <button class="tb-btn" id="teHelp" title="How to type Telugu">?</button>
   <button class="tb-btn" id="hdrSet" style="display:none">⚙️ Settings</button>
   <a class="tb-btn" href="home.html" style="text-decoration:none">Student view ↗</a>
 </header>
 <main id="t"></main>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/common.js"></script>
+<script src="assets/js/telugu.js"></script>
 <script src="assets/js/teacher.js"></script>
 </body>
 </html>

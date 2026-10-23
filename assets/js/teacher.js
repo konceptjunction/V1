@@ -23,7 +23,10 @@
   let SUBS = [], EXAMS = [];
   const FIXED = ["data/exams.json", "data/papers.json", "data/notes.json", "data/current_affairs.json", "data/announcements.json", "data/subjects.json"];
   function markDirty(path) {
-    dirty.add(path); S.set("t_dirtylist", [...dirty]); S.set("t_work_" + path, W[path]); pill();
+    dirty.add(path); S.set("t_dirtylist", [...dirty]);
+    let saved = false; try { localStorage.setItem("kj_t_work_" + path, JSON.stringify(W[path])); saved = true; } catch (e) {}
+    if (!saved && !markDirty._warned) { markDirty._warned = true; KJ.toast("Big change – too large to keep in this browser. Press 🚀 Publish before closing this tab.", 6000); }
+    pill();
   }
   function clearDirty(path) { dirty.delete(path); S.set("t_dirtylist", [...dirty]); S.del("t_work_" + path); pill(); }
   function pill() { const p = $("#dirtyPill"); p.style.display = dirty.size ? "" : "none"; p.textContent = dirty.size + " unpublished"; }
@@ -87,7 +90,7 @@ ${dev ? `<p class="small"><a href="#" id="lr">Forget this device</a></p>` : ""}
     const G = cfg(), miss = [];
     if (!pat()) miss.push("GitHub token");
     if (!G.owner || G.owner.startsWith("YOUR_")) miss.push("GitHub user");
-    if (!G.cloud || G.cloud.startsWith("YOUR_") || !G.preset || G.preset.startsWith("YOUR_")) miss.push("Cloudinary");
+    /* V13: Cloudinary is optional now – uploads go to GitHub when it is not set */
     const bar = miss.length && tab !== "settings" ? `<div class="setbar">⚙️ Not set yet: <b>${miss.join(", ")}</b><span class="sp"></span><button class="btn acc sm" id="goSet">Open Settings</button></div>` : "";
     root().innerHTML = bar + `<div class="tabs">${TABS.map(([k, n]) => `<button data-tab="${k}" class="${k === tab ? "on" : ""}">${n}${k === "publish" && dirty.size ? " (" + dirty.size + ")" : ""}</button>`).join("")}</div><div id="tp"></div>`;
     if ($("#goSet")) $("#goSet").onclick = () => { tab = "settings"; draw(); };
@@ -228,6 +231,35 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     if (m && (m[1].match(/[A-Za-z]/g) || []).length >= 8) return { en: m[1].trim(), te: m[2].trim() };
     return { en: "", te: t };
   }
+  /* V13: a two-column table row of a "Match List-I with List-II" question, e.g.
+       a) Green Revolution / హరిత విప్లవం   i) Fish production / చేపల ఉత్పత్తి
+       List-I (Coast) / జాబితా-I (తీరం)     List-II (State) / జాబితా-II (రాష్ట్రం)
+     → English line  "a) Green Revolution  |  i) Fish production"
+       Telugu line   "a) హరిత విప్లవం  |  i) చేపల ఉత్పత్తి"
+     Row markers are renumbered in order (OCR often reads i/ii as 1/11, d as 1). */
+  const ROMAN = ["i", "ii", "iii", "iv", "v", "vi"];
+  function splitTableRow(l, cur) {
+    const m = l.match(/^(.*?[A-Za-z].*?)\s\/\s([\u0C00-\u0C7F][^A-Za-z]*?)\s+([\[|(]?(?:List\b|[0-9A-Za-z\u0C66-\u0C6F]{1,4}[.):]).*?\s\/\s.+)$/);
+    if (!m) return null;
+    const right = m[3].match(/^(.*?)\s\/\s(.+)$/);
+    if (!right) return null;
+    const mk = /^[\[|(]?\s*([0-9A-Za-z\u0C66-\u0C6F]{1,4})\s*[.):]\s*/;
+    const edge = (x) => x.replace(/^[\s|\[\]'"`]+|[\s|\[\]'"`]+$/g, "");
+    let lEn = edge(m[1]), lTe = edge(m[2]), rEn = edge(right[1]), rTe = edge(right[2]);
+    if (/^List\b/i.test(lEn) || /^[\[|(]?List\b/i.test(rEn)) {              // header row
+      const fix = (s, n) => s.replace(/(List|జాబితా)\s*[-–]?\s*[0-9Il!|\]]*/i, (a, w) => w + "-" + n);
+      cur.tbl = { rows: 0 };
+      return { en: fix(lEn, "I") + "   |   " + fix(rEn.replace(/^[\[|(]\s*/, ""), "II"), te: fix(lTe, "I") + "   |   " + fix(rTe, "II") };
+    }
+    const lm = lEn.match(mk), rm = rEn.match(mk);
+    if (!lm || !rm) return null;
+    const t = (cur.tbl = cur.tbl || { rows: 0 }), k = t.rows++;
+    if (k === 0) { t.lNum = /^\d/.test(lm[1]); t.lUp = /^[A-Z]$/.test(lm[1]); t.rLet = /^[A-D]$/.test(rm[1]) || (t.lNum && /^[a-dA-DpP]$/.test(rm[1])); }
+    const L = t.lNum ? (k + 1) + "." : (t.lUp ? "ABCDEF" : "abcdef")[k] + ")";
+    const R = t.rLet ? "ABCDEF"[k] + "." : ROMAN[k] + ")";
+    lEn = lEn.replace(mk, ""); rEn = rEn.replace(mk, "");
+    return { en: `${L} ${lEn}   |   ${R} ${rEn}`, te: `${L} ${lTe}   |   ${R} ${rTe}` };
+  }
   /* Model-paper text (Word paste or PDF read):
        1. English question …            ← a new question only when the number is the next one (1, 2, 3 …)
        తెలుగు ప్రశ్న …                     so statement lists "1. … 2. …" inside a question stay inside it
@@ -275,6 +307,8 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         if (p.te) cur.o.te[k] = (cur.o.te[k] ? cur.o.te[k] + " " : "") + p.te;
         continue;
       }
+      const row = splitTableRow(l, cur);                  // V13: match-the-following rows
+      if (row) { cur.q.en.push(row.en); cur.q.te.push(row.te); continue; }
       const p = splitEnTe(l);
       if (p.en) cur.q.en.push(p.en); if (p.te) cur.q.te.push(p.te);
     }
@@ -321,7 +355,13 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
       await page.render({ canvasContext: ctx, viewport: vp }).promise;
       const im = ctx.getImageData(0, 0, c.width, c.height), d = im.data;      // remove the grey watermark
-      for (let k = 0; k < d.length; k += 4) { const v = (d[k] * 0.3 + d[k + 1] * 0.59 + d[k + 2] * 0.11) < 140 ? 0 : 255; d[k] = d[k + 1] = d[k + 2] = v; }
+      const Wd = c.width, Ht = c.height, dark = new Uint8Array(Wd * Ht), keep = new Uint8Array(Wd * Ht);
+      for (let k = 0, q = 0; k < d.length; k += 4, q++) dark[q] = keep[q] = (d[k] * 0.3 + d[k + 1] * 0.59 + d[k + 2] * 0.11) < 140 ? 1 : 0;
+      /* V13: erase table border lines (long straight runs) so OCR reads the table cells */
+      const hMin = Math.round(120 * vp.scale / 3.5), vMin = Math.round(45 * vp.scale / 3.5);
+      for (let y = 0; y < Ht; y++) { let x = 0; while (x < Wd) { if (dark[y * Wd + x]) { const s0 = x; while (x < Wd && dark[y * Wd + x]) x++; if (x - s0 >= hMin) for (let z = s0; z < x; z++) keep[y * Wd + z] = 0; } else x++; } }
+      for (let x = 0; x < Wd; x++) { let y = 0; while (y < Ht) { if (dark[y * Wd + x]) { const s0 = y; while (y < Ht && dark[y * Wd + x]) y++; if (y - s0 >= vMin) for (let z = s0; z < y; z++) keep[z * Wd + x] = 0; } else y++; } }
+      for (let k = 0, q = 0; k < d.length; k += 4, q++) { const v = keep[q] ? 0 : 255; d[k] = d[k + 1] = d[k + 2] = v; }
       ctx.putImageData(im, 0, 0);
       const r = await worker.recognize(c);
       all += r.data.text + "\n";
@@ -343,6 +383,29 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     return rows.filter((r) => r.some((x) => x.trim()));
   }
   const CSV_HEAD = ["subject", "topic", "exams", "year", "level", "q_en", "q_te", "o1_en", "o2_en", "o3_en", "o4_en", "o1_te", "o2_te", "o3_te", "o4_te", "ans", "exp_en", "exp_te", "video", "img"];
+
+  /* ---------- V13: "Already Uploaded" check ---------- */
+  const normQ = (q) => String((q && q.q && (q.q.en || q.q.te)) || "").toLowerCase().replace(/[^a-z0-9\u0C00-\u0C7F]+/g, " ").trim();
+  function findExisting(list, title, set, key) {
+    const papers = W["data/papers.json"] || [];
+    const tl = String(title || "").trim().toLowerCase(), st = String(set || "").trim().toLowerCase();
+    let paper = papers.find((p) => (key && p.key === key) || (tl && String(p.title?.en || "").trim().toLowerCase() === tl && String(p.set || "").trim().toLowerCase() === st));
+    const have = new Map(); allQs().forEach((q) => { const k = normQ(q); if (k.length > 12) have.set(k, q); });
+    const dupIds = []; list.forEach((x) => { const h = have.get(normQ(x)); if (h) dupIds.push(h.id); });
+    if (!paper && dupIds.length) {                       // which test do the repeated questions belong to?
+      let best = null, n = 0; papers.forEach((p) => { const c = p.qids.filter((id) => dupIds.includes(id)).length; if (c > n) { n = c; best = p; } });
+      paper = n ? best : null;
+    }
+    const ratio = list.length ? dupIds.length / list.length : 0;
+    return { paper, dups: dupIds.length, ratio, blocked: !!(key && papers.some((p) => p.key === key)) || !!(tl && papers.some((p) => String(p.title?.en || "").trim().toLowerCase() === tl && String(p.set || "").trim().toLowerCase() === st)) || ratio >= 0.6, have };
+  }
+  function alreadyPopup(info, total) {
+    const p = info.paper;
+    KJ.modal(`<h3 style="margin-top:0;color:var(--bad)">⚠ Already Uploaded</h3>
+<p>${p ? `This paper is already in the app as <b>${esc(p.title.en)}</b> (Set ${esc(p.set || "-")}, ${p.qids.length} Qs).` : "These questions are already in the question bank."}</p>
+<p class="small">${info.dups} of ${total} questions are already in the bank. Nothing was imported.</p>
+<p class="small muted">To upload it again, first open 🎯 Topic Tests and use <b>🗑 Delete test + its questions</b> on the old test, then Publish.</p>`);
+  }
 
   P.import = (el) => {
     /* V9: left = paper (PDF / file / text) · right = subject & Topic Test details */
@@ -382,6 +445,8 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         if (!$("#ptitle").value) $("#ptitle").value = f.name.replace(/\.pdf$/i, "").replace(/^KJ[_ ]*/i, "").replace(/_/g, " ").trim() + (r.set ? " – Set " + r.set : "");
         $("#mkp").checked = true;
         const q = prev();
+        const ex0 = findExisting(q, $("#ptitle").value, $("#pset").value, "");                           // V13
+        if (ex0.blocked) alreadyPopup(ex0, q.length);
         st.innerHTML = `✔ ${r.pages} page(s) read ${r.mode === "ocr" ? "with OCR" : "as text"} → <b>${q.length}</b> questions. ${r.mode === "ocr" ? "Please check spellings, " : ""}type the answer key, choose Subject, then Import.`;
       } catch (err) { st.innerHTML = '<span style="color:var(--bad)">✖ Could not read the PDF: ' + esc(err.message) + "</span>"; }
       e.target.value = "";
@@ -389,6 +454,8 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
     $("#pt").oninput = () => S.set("t_import_text", $("#pt").value);
     $("#pi").onclick = () => {
       const r = prev(); if (!r.length) return KJ.toast("Nothing to import");
+      const dupInfo = findExisting(r, $("#mkp").checked ? $("#ptitle").value : "", $("#pset").value, "");      // V13
+      if (dupInfo.blocked) return alreadyPopup(dupInfo, r.length);
       if (r.some((x) => x.a == null) && !KJ.confirm("Some questions have no answer in the key – they will default to A. Continue?")) return;
       const sid = $("#ps").value, ex = $$("#pe input:checked").map((x) => x.value), ids = [];
       r.forEach((x) => {
@@ -419,8 +486,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
           /* V6: Topic Test bundle  { "topic_test": {...}, "questions": [...] }  → questions + Topic Test in one go */
           if (items && !Array.isArray(items) && Array.isArray(items.questions)) { TT = items.topic_test || null; items = items.questions; }
           if (!Array.isArray(items)) throw new Error("JSON must be a list of questions or a Topic Test bundle");
-          if (TT && TT.key && W["data/papers.json"].some((p) => p.key === TT.key) &&
-              !KJ.confirm("This Topic Test (" + (TT.title?.en || TT.key) + ") was already imported. Import it again as a second copy?")) { $("#cres").textContent = "Cancelled – nothing imported."; e.target.value = ""; return; }
+          /* V13: duplicate test → "Already Uploaded" (checked below for all file types) */
         }
         else {
           const rows = parseCSV(text), h = rows.shift().map((x) => x.trim().toLowerCase());
@@ -435,15 +501,27 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
           });
         }
       } catch (err) { $("#cres").textContent = "✖ " + err.message; return; }
+      const ex = findExisting(items, TT && TT.title && TT.title.en, TT && TT.set, TT && TT.key);   // V13
+      if (ex.blocked) { alreadyPopup(ex, items.length); $("#cres").innerHTML = '<span style="color:var(--bad)">⚠ Already Uploaded – nothing imported.</span>'; e.target.value = ""; return; }
+      let skipped = 0;
+      items = items.filter((x) => { if (ex.have.has(normQ(x))) { skipped++; return false; } return true; });
       let ok = 0, bad = []; const newIds = [];
+      const usedIds = new Set(allQs().map((q) => q.id)), touched = new Set(), maxNo = {};      // V13: fast id handling
+      const nextIdFast = (sid) => {
+        if (maxNo[sid] == null) maxNo[sid] = Math.max(0, ...bank(sid).map((q) => +(String(q.id).split("-")[1] || 0)).filter((x) => !isNaN(x)));
+        let id; do { id = sid.slice(0, 3) + "-" + String(++maxNo[sid]).padStart(4, "0"); } while (usedIds.has(id));
+        return id;
+      };
       items.forEach((it, i) => {
         const row = TT ? "Q" + (i + 1) : "row " + (i + 2);
         if (!SUBS.find((s) => s.id === it.subject)) return bad.push(row + ": unknown subject '" + it.subject + "'");
         if (it.type === "mcq" && !(it.a >= 0)) return bad.push(row + ": bad answer");
-        it.id = it.id && !allQs().some((q) => q.id === it.id) ? it.id : nextId(it.subject);
+        it.id = it.id && !usedIds.has(it.id) ? it.id : nextIdFast(it.subject);
+        usedIds.add(it.id);
         it.img = it.img || ""; it.video = it.video || ""; it.e = it.e || { en: "", te: "" };
-        bank(it.subject).push(it); markDirty(bankPath(it.subject)); ok++; newIds.push(it.id);
+        bank(it.subject).push(it); touched.add(it.subject); ok++; newIds.push(it.id);
       });
+      touched.forEach((sid) => markDirty(bankPath(sid)));          // V13: save once per subject (fast for big files)
       let ttMsg = "";
       if (TT && newIds.length) {                         // V6: create the Topic Test from the imported questions
         const papers = W["data/papers.json"];
@@ -456,7 +534,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         items.forEach((it) => { if (newIds.includes(it.id)) it.paper = pid; });
         ttMsg = `<br>✔ Topic Test created: <b>${esc(p.title.en)}</b> (Set ${esc(p.set)}, ${newIds.length} Qs, ${p.duration_min} min, ${p.visible ? "Visible" : "Hidden"}) – check it in 🎯 Topic Tests, then 🚀 Publish.`;
       }
-      $("#cres").innerHTML = `✔ Imported ${ok} questions` + ttMsg + (bad.length ? `<br>✖ Skipped ${bad.length}:<br>${bad.map(esc).join("<br>")}` : "");
+      $("#cres").innerHTML = `✔ Imported ${ok} questions` + (skipped ? ` · skipped ${skipped} already in the bank` : "") + ttMsg + (bad.length ? `<br>✖ Skipped ${bad.length}:<br>${bad.map(esc).join("<br>")}` : "");
       e.target.value = "";
       pill();
     };
@@ -476,7 +554,7 @@ ${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><s
 <div class="row"><div style="flex:1"><label>Minutes</label><input type="number" data-k="${k}" data-f="duration_min" value="${p.duration_min}"></div><div style="flex:1"><label>Mark</label><input type="number" step="0.25" data-k="${k}" data-f="mark" value="${p.mark}"></div>
 <div style="flex:1"><label>Negative fraction</label><input type="number" step="0.01" data-k="${k}" data-f="negative" value="${p.negative}"></div><div style="flex:1"><label>Date</label><input type="date" data-k="${k}" data-f="date" value="${esc(p.date || "")}"></div></div>
 <label>Question IDs in order (comma separated) – ${p.qids.length} Qs, ${p.qids.filter((id) => !map.has(id)).length} missing</label><textarea data-k="${k}" data-f="qids">${esc(p.qids.join(", "))}</textarea>
-<div class="row" style="margin-top:8px"><button class="btn alt sm" data-pr="${k}">🖨 Question paper</button><button class="btn alt sm" data-prk="${k}">🖨 With answer key</button><button class="btn alt sm" data-word="${k}">⬇ Word</button><span class="sp"></span><button class="btn bad sm" data-del="${k}">Delete</button></div></div>`).join("")}`;
+<div class="row" style="margin-top:8px"><button class="btn alt sm" data-pr="${k}">🖨 Question paper</button><button class="btn alt sm" data-prk="${k}">🖨 With answer key</button><button class="btn alt sm" data-word="${k}">⬇ Word</button><span class="sp"></span><button class="btn bad sm" data-del="${k}">Delete test</button><button class="btn bad sm" data-delall="${k}" title="Delete the test and its questions from the bank">🗑 Delete test + its questions</button></div></div>`).join("")}`;
     $("#np").onclick = () => { papers.push({ id: "KJ-TT-" + String(papers.length + 1).padStart(3, "0"), subject: SUBS[0].id, topic: "", set: "A", title: { en: "New Topic Test", te: "" }, date: KJ.today(), duration_min: 30, mark: 1, negative: 0.25, visible: false, qids: [] }); markDirty("data/papers.json"); draw(); };
     el.onchange = (e) => {
       const t = e.target;
@@ -489,8 +567,15 @@ ${papers.map((p, k) => `<div class="card"><div class="row"><b>${esc(p.id)}</b><s
       markDirty("data/papers.json");
     };
     el.onclick = (e) => {
-      const b = e.target.closest("[data-pr],[data-prk],[data-word],[data-del]"); if (!b) return;
-      const k = +(b.dataset.pr ?? b.dataset.prk ?? b.dataset.word ?? b.dataset.del), p = papers[k];
+      const b = e.target.closest("[data-pr],[data-prk],[data-word],[data-del],[data-delall]"); if (!b) return;
+      const k = +(b.dataset.pr ?? b.dataset.prk ?? b.dataset.word ?? b.dataset.del ?? b.dataset.delall), p = papers[k];
+      if (b.dataset.delall != null) {                     // V13: remove the test and the questions used only by it
+        const used = new Set(papers.filter((x, i) => i !== k).flatMap((x) => x.qids));
+        const del = p.qids.filter((id) => !used.has(id));
+        if (!KJ.confirm(`Delete "${p.title.en}" and its ${del.length} question(s) from the bank?` + (p.qids.length > del.length ? `\n(${p.qids.length - del.length} question(s) also used in other tests will be kept.)` : "") + "\nPress 🚀 Publish afterwards.")) return;
+        SUBS.forEach((s) => { const bk = bank(s.id), n0 = bk.length; for (let i = bk.length - 1; i >= 0; i--) if (del.includes(bk[i].id)) bk.splice(i, 1); if (bk.length !== n0) markDirty(bankPath(s.id)); });
+        papers.splice(k, 1); markDirty("data/papers.json"); draw(); KJ.toast("Deleted test and " + del.length + " question(s)"); return;
+      }
       const qs = p.qids.map((id) => map.get(id)).filter(Boolean);
       if (b.dataset.del != null) { if (KJ.confirm("Delete topic test " + p.id + "? (questions stay in the bank)")) { papers.splice(k, 1); markDirty("data/papers.json"); draw(); } return; }
       if (b.dataset.word != null) return exportWord(p.title.en + " – Set " + p.set, qs, true);
@@ -508,9 +593,13 @@ ${notes.length ? `<table class="t"><tr><th>Title</th><th>Subject</th><th>Type</t
 <label>Type</label><select id="nt"><option value="notes">${esc(C.NOTES_BRAND)}</option><option value="concepts">${esc(C.CONCEPTS_BRAND)}</option></select>
 <label>Subject</label><select id="ns">${SUBS.map((s) => `<option value="${s.id}">${esc(s.name.en)}</option>`).join("")}</select>
 <label>Title (English)</label><input id="ne"><label>Title (తెలుగు)</label><input id="nte">
-<label>PDF URL (or upload)</label><input id="nu"><label class="btn alt sm" style="margin-top:6px">⬆ Upload PDF to Cloudinary<input type="file" id="nf" accept="application/pdf" hidden></label>
+<label>PDF URL (or upload)</label><input id="nu"><div class="row" style="margin-top:6px"><label class="btn alt sm" style="margin:0">⬆ Upload PDF to Cloudinary<input type="file" id="nf" accept="application/pdf" hidden></label>
+<label class="btn acc sm" style="margin:0">⬆ Upload PDF to GitHub (≤ ${GH_MAX_MB} MB)<input type="file" id="nfg" accept="application/pdf" hidden></label></div>
 <div class="small muted" id="nst"></div>
 <div class="row" style="margin-top:10px"><span class="sp"></span><button class="btn ok" id="na">Add</button></div></div></div>`;
+    $("#nfg").onchange = async (e) => { const f = e.target.files[0]; if (!f) return;          // V13
+      try { $("#nst").textContent = "Uploading " + (f.size / 1048576).toFixed(2) + " MB to GitHub…"; $("#nu").value = await ghUploadFile(f, "notes"); $("#nst").textContent = "✔ Uploaded to GitHub – students can open it after 1–3 min"; if (!$("#ne").value) $("#ne").value = f.name.replace(/\.pdf$/i, ""); }
+      catch (err) { $("#nst").textContent = "✖ " + err.message; } e.target.value = ""; };
     $("#nf").onchange = async (e) => { const f = e.target.files[0]; if (!f) return;
       try { $("#nu").value = await cloudUpload(f, "pdfs", (p) => ($("#nst").textContent = "Uploading " + p + "%")); $("#nst").textContent = "✔ Uploaded"; if (!$("#ne").value) $("#ne").value = f.name.replace(/\.pdf$/i, ""); }
       catch (err) { $("#nst").textContent = "✖ " + err.message; } };
@@ -664,6 +753,55 @@ ${XD.map(card).join("")}
     const j = await r.json().catch(() => ({}));
     return { ok: r.ok, status: r.status, j };
   }
+  /* ---------- V13: GitHub Git Data API – large files (up to 25 MB each), all files in ONE commit ----------
+     The Contents API used before only handles files up to 1 MB comfortably; blobs + trees handle up to 100 MB.
+     KJ keeps a safe limit of 25 MB per file (same as Power Pulse). */
+  const GH_MAX_MB = 25;
+  async function ghApi(path, method = "GET", body) {
+    const G = cfg();
+    const r = await fetch(`https://api.github.com/repos/${G.owner}/${G.repo}${path}`, { method, cache: "no-store",
+      headers: { Authorization: "Bearer " + pat(), Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", ...(body ? { "Content-Type": "application/json" } : {}) },
+      body: body ? JSON.stringify(body) : undefined });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(r.status + " " + (j.message || ""));
+    return j;
+  }
+  /* files: [{ path, b64, size }]  →  one commit on the branch */
+  async function ghCommit(files, message, log) {
+    const G = cfg(), br = encodeURIComponent(G.branch);
+    for (const f of files) if (f.size > GH_MAX_MB * 1048576) throw new Error(`${f.path} is ${(f.size / 1048576).toFixed(1)} MB – the limit is ${GH_MAX_MB} MB per file`);
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const ref = await ghApi(`/git/ref/heads/${br}`), base = ref.object.sha;
+        const baseTree = (await ghApi(`/git/commits/${base}`)).tree.sha, tree = [];
+        for (const f of files) {
+          log && log(`  ⬆ ${f.path} (${f.size >= 1048576 ? (f.size / 1048576).toFixed(2) + " MB" : (f.size / 1024).toFixed(1) + " KB"})`);
+          const b = await ghApi("/git/blobs", "POST", { content: f.b64, encoding: "base64" });
+          tree.push({ path: G.prefix + f.path, mode: "100644", type: "blob", sha: b.sha });
+        }
+        const nt = await ghApi("/git/trees", "POST", { base_tree: baseTree, tree });
+        const nc = await ghApi("/git/commits", "POST", { message, tree: nt.sha, parents: [base] });
+        await ghApi(`/git/refs/heads/${br}`, "PATCH", { sha: nc.sha });
+        return nc.sha;
+      } catch (err) {
+        if (attempt === 2 || !/^(409|422)/.test(err.message)) throw err;        // branch moved meanwhile → try once more
+        log && log("  … branch changed, retrying");
+      }
+    }
+  }
+  const fileB64 = (file) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1] || ""); r.onerror = () => rej(new Error("could not read file")); r.readAsDataURL(file); });
+  /* upload a PDF / image / video straight into the repo (media/…) – returns the path used by the app */
+  async function ghUploadFile(file, kind, onProg) {
+    if (!pat()) throw new Error("Add your GitHub token in ⚙️ Settings first");
+    if (file.size > GH_MAX_MB * 1048576) throw new Error(`File is ${(file.size / 1048576).toFixed(1)} MB – GitHub limit here is ${GH_MAX_MB} MB${/video/.test(file.type) ? ". For longer videos use a YouTube (unlisted) link." : ""}`);
+    onProg && onProg("reading");
+    const safe = file.name.toLowerCase().replace(/[^a-z0-9.\-_]+/g, "_").replace(/_+/g, "_").slice(-60);
+    const path = `media/${kind}/${KJ.today()}_${Date.now().toString(36)}_${safe}`;
+    const b64data = await fileB64(file); onProg && onProg("uploading");
+    await ghCommit([{ path, b64: b64data, size: file.size }], "KJ upload: " + path);
+    return path;
+  }
+
   P.publish = (el) => {
     const G = cfg();
     const sizes = Object.keys(W).map((p) => ({ p, n: Array.isArray(W[p]) ? W[p].length : 0, kb: (new Blob([JSON.stringify(W[p])]).size / 1024).toFixed(1) }));
@@ -676,11 +814,22 @@ ${dirty.size ? `<ul>${[...dirty].map((p) => `<li class="dirty">${esc(p)}</li>`).
 <p class="small muted">Students see updates after GitHub Pages rebuilds (usually 1–3 minutes) and they reopen the app.</p></div>
 <div class="card"><h3 style="margin-top:0">🗄 Storage report</h3><table class="t"><tr><th>File</th><th>Items</th><th>KB</th></tr>
 ${sizes.map((s) => `<tr><td class="${dirty.has(s.p) ? "dirty" : ""}">${esc(s.p)}</td><td>${s.n}</td><td>${s.kb}</td></tr>`).join("")}</table>
-<p class="small muted">Media (images, videos, PDFs) live in Cloudinary, so the repo stays small.</p></div></div>`;
+<p class="small muted">Limit per file: <b>${GH_MAX_MB} MB</b> (largest data file now: ${Math.max(0, ...sizes.map((x) => +x.kb)).toFixed(1)} KB). Media go to Cloudinary, or to the repo's <code>media/</code> folder (up to ${GH_MAX_MB} MB each).</p></div></div>`;
     const log = (m) => { $("#plog").textContent += "\n" + m; $("#plog").scrollTop = 1e9; };
     $("#pub").onclick = async () => {
       if (!pat()) return KJ.toast("Add your GitHub token in Settings first");
       $("#pub").disabled = true;
+      /* V13: one commit with all changed files (handles large files) */
+      try {
+        const list = [...dirty], files = list.map((p) => { const txt = JSON.stringify(W[p], null, 1), bb = b64(txt); return { path: p, b64: bb, size: new Blob([txt]).size }; });
+        log("→ " + list.length + " file(s) in one commit");
+        await ghCommit(files, "KJ Teacher Upload: " + list.length + " file(s) (" + new Date().toLocaleString() + ")", log);
+        list.forEach(clearDirty); log("  ✔ published"); log("All done ✔"); setTimeout(draw, 1500); return;
+      } catch (err) {
+        log("  ✖ " + err.message + (/401|Bad credentials/.test(err.message) ? "  → token wrong/expired (Settings)" : /403|404/.test(err.message) ? "  → check repo name & token permission: Contents = Read and write" : ""));
+        if (/limit is/.test(err.message)) { $("#pub").disabled = false; return; }
+        log("Trying file-by-file (older method)…");
+      }
       for (const p of [...dirty]) {
         try {
           log("→ " + p);
@@ -793,7 +942,8 @@ ${rows.map((r, n) => `<tr><td>${n + 1}</td><td>${esc(r[ix("Name")])}</td><td>${e
   /* ---------------- utilities ---------------- */
   function cloudUpload(file, kind, onProg) {
     const G = cfg();
-    if (!G.cloud || G.cloud.startsWith("YOUR_")) return Promise.reject(new Error("Set Cloudinary cloud name & preset in Settings"));
+    if (!G.cloud || G.cloud.startsWith("YOUR_") || !G.preset || G.preset.startsWith("YOUR_"))   // V13: no Cloudinary → upload to GitHub (≤ 25 MB)
+      return ghUploadFile(file, kind, (s) => onProg && onProg(s === "uploading" ? 50 : 5));
     return new Promise((res, rej) => {
       const fd = new FormData(); fd.append("file", file); fd.append("upload_preset", G.preset); fd.append("folder", G.folder + "/" + kind);
       const x = new XMLHttpRequest();

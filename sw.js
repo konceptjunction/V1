@@ -1,6 +1,6 @@
 /* KONCEPT JUNCTION — service worker (V1)
    Bump VERSION in every new upload pack so phones pick up new files. */
-const VERSION = "kj-v12";
+const VERSION = "kj-v13";
 const SHELL = [
   "./", "home.html", "index.html", "manifest.json",
   "assets/css/app.css",
@@ -58,6 +58,7 @@ self.addEventListener("fetch", (e) => {
   if (BYPASS.test(url.host)) return;
   if (CDN.test(url.host)) { e.respondWith(staleWhileRevalidate(req)); return; }
   if (url.origin !== location.origin) return;
+  if (/\.(pdf|mp4|webm|mov|m4v)$/i.test(url.pathname)) return;   // V13: big media from media/ – network only ("Save offline" keeps PDFs)
   if (req.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.includes("/data/") || url.pathname.endsWith("config.js")) {
     e.respondWith(networkFirst(req)); return;
   }
