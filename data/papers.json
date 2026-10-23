@@ -1,57 +1,7 @@
 [
  {
-  "id": "KJ-TT-002",
-  "subject": "science",
-  "topic": "",
-  "set": "A",
-  "title": {
-   "en": "GENERAL SCIENCE SAMPLE PAPER",
-   "te": ""
-  },
-  "date": "2026-10-23",
-  "duration_min": 30,
-  "mark": 1,
-  "negative": 0.25,
-  "visible": true,
-  "exams": [
-   "police_si"
-  ],
-  "qids": [
-   "sci-0001",
-   "sci-0002",
-   "sci-0003",
-   "sci-0004",
-   "sci-0005",
-   "sci-0006",
-   "sci-0007",
-   "sci-0008",
-   "sci-0009",
-   "sci-0010",
-   "sci-0011",
-   "sci-0012",
-   "sci-0013",
-   "sci-0014",
-   "sci-0015",
-   "sci-0016",
-   "sci-0017",
-   "sci-0018",
-   "sci-0019",
-   "sci-0020",
-   "sci-0021",
-   "sci-0022",
-   "sci-0023",
-   "sci-0024",
-   "sci-0025",
-   "sci-0026",
-   "sci-0027",
-   "sci-0028",
-   "sci-0029",
-   "sci-0030"
-  ]
- },
- {
-  "id": "KJ-TT-003",
-  "subject": "economy",
+  "id": "KJ-TT-001",
+  "subject": "reasoning",
   "topic": "",
   "set": "A",
   "title": {
@@ -67,15 +17,15 @@
    "police_si"
   ],
   "qids": [
-   "eco-0001",
-   "eco-0002",
-   "eco-0003",
-   "eco-0004",
-   "eco-0005",
-   "eco-0006",
-   "eco-0007",
-   "eco-0008",
-   "eco-0009"
+   "rea-0001",
+   "rea-0002",
+   "rea-0003",
+   "rea-0004",
+   "rea-0005",
+   "rea-0006",
+   "rea-0007",
+   "rea-0008",
+   "rea-0009"
   ]
  }
 ]
