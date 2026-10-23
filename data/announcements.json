@@ -1,6 +1,30 @@
 [
- { "id": "ann-0001", "date": "2026-10-21", "pin": true,
-   "title": { "en": "Welcome to KONCEPT JUNCTION", "te": "కాన్సెప్ట్ జంక్షన్‌కు స్వాగతం" },
-   "body": { "en": "Choose your target exam on the Home screen. Daily Quiz, Subject Practice and Full Mock Tests work offline once opened.", "te": "హోమ్ స్క్రీన్‌లో మీ లక్ష్య పరీక్షను ఎంచుకోండి. ఒకసారి తెరిచిన తర్వాత డైలీ క్విజ్, సబ్జెక్ట్ ప్రాక్టీస్, మాక్ టెస్టులు ఆఫ్‌లైన్‌లో కూడా పనిచేస్తాయి." },
-   "link": "" }
+ {
+  "id": "ann-0001",
+  "date": "2026-10-21",
+  "pin": true,
+  "title": {
+   "en": "Welcome to KONCEPT JUNCTION",
+   "te": "కాన్సెప్ట్ జంక్షన్‌కు స్వాగతం"
+  },
+  "body": {
+   "en": "Choose your target exam on the Home screen. Daily Quiz, Subject Practice and Full Mock Tests work offline once opened.",
+   "te": "హోమ్ స్క్రీన్‌లో మీ లక్ష్య పరీక్షను ఎంచుకోండి. ఒకసారి తెరిచిన తర్వాత డైలీ క్విజ్, సబ్జెక్ట్ ప్రాక్టీస్, మాక్ టెస్టులు ఆఫ్‌లైన్‌లో కూడా పనిచేస్తాయి."
+  },
+  "link": ""
+ },
+ {
+  "id": "i-mvkwhassxmeb",
+  "date": "2026-10-23",
+  "title": {
+   "en": "Geography Test uploaded",
+   "te": ""
+  },
+  "body": {
+   "en": "Geography Test uploaded",
+   "te": ""
+  },
+  "pin": true,
+  "link": ""
+ }
 ]
