@@ -1,1 +1,335 @@
-[]
+[
+ {
+  "id": "rea-0001",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Simplify the following expression using the BODMAS rule.\n[7+7×(7+7÷7)]+7÷7",
+   "te": "BODMAS నియమాన్ని ఉపయోగించి క్రింది గణిత వ్యక్తీకరణను సరళీకరించండి.\n[7+7×(7+7÷7)]+7÷7"
+  },
+  "o": {
+   "en": [
+    "63",
+    "57",
+    "58",
+    "64"
+   ],
+   "te": [
+    "63",
+    "57",
+    "58",
+    "64"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0002",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Find the greatest number among the following.",
+   "te": "క్రింది సంఖ్యలలో అత్యధికమైన సంఖ్యను కనుగొనండి."
+  },
+  "o": {
+   "en": [
+    "2⁶⁰",
+    "3⁴⁸",
+    "4³⁶",
+    "5²⁴"
+   ],
+   "te": [
+    "2⁶⁰",
+    "3⁴⁸",
+    "4³⁶",
+    "5²⁴"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0003",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A shopkeeper charges his customer 14% more than the cost price. If a customer paid ₹18,240 for a mobile phone, then the cost price of the mobile phone was:",
+   "te": "ఒక దుకాణదారుడు ఒక మొబైల్ ఫోన్‌పై కొనుగోలు ధర కంటే 14% ఎక్కువ ధరను వసూలు చేస్తాడు. ఒక వినియోగదారుడు ఆ మొబైల్ ఫోన్‌కు ₹18,240 చెల్లించినట్లయితే, ఆ మొబైల్ ఫోన్ కొనుగోలు ధర ఎంత?"
+  },
+  "o": {
+   "en": [
+    "₹20,794",
+    "₹15,687",
+    "₹16,600",
+    "₹16,000"
+   ],
+   "te": [
+    "₹20,794",
+    "₹15,687",
+    "₹16,600",
+    "₹16,000"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0004",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "Which option will replace the question mark (?) in the following series?\n1210, 648, 294, 100, ?",
+   "te": "క్రింది శ్రేణిలో ప్రశ్నార్థకం (?) స్థానంలో ఏ సంఖ్య వస్తుంది?\n1210, 648, 294, 100, ?"
+  },
+  "o": {
+   "en": [
+    "17",
+    "18",
+    "19",
+    "13"
+   ],
+   "te": [
+    "17",
+    "18",
+    "19",
+    "13"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0005",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The equations 5x+2y-9=0 and 10x+4y-18=0 represent:",
+   "te": "5x+2y-9=0 మరియు 10x+4y-18=0 అనే సమీకరణాలు దేనిని సూచిస్తాయి?"
+  },
+  "o": {
+   "en": [
+    "Parallel distinct lines",
+    "Intersecting lines",
+    "Coincident lines",
+    "Perpendicular lines"
+   ],
+   "te": [
+    "వేర్వేరు సమాంతర రేఖలు",
+    "ఖండించుకునే రేఖలు",
+    "ఏకీభవించే రేఖలు",
+    "లంబ రేఖలు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0006",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "For what value of k do the equations 3x+ky+4=0 and 6x+4y+8=0 have infinitely many solutions?",
+   "te": "అనంతమైన సాధనలు ఉండటానికి 3x+ky+4=0 మరియు 6x+4y+8=0 సమీకరణాలలో k విలువ ఎంత?"
+  },
+  "o": {
+   "en": [
+    "k=2",
+    "k=4",
+    "k=6",
+    "k=8"
+   ],
+   "te": [
+    "k=2",
+    "k=4",
+    "k=6",
+    "k=8"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0007",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A dealer sold two articles for ₹1,200 each. On one article, he gained 20%, and on the other, he incurred a loss of 20%. What was his overall result?",
+   "te": "ఒక వ్యాపారి రెండు వస్తువులను ఒక్కొక్కటి ₹1,200 చొప్పున విక్రయించాడు. ఒక వస్తువుపై 20% లాభం, మరొక వస్తువుపై 20% నష్టం పొందాడు. మొత్తం మీద అతని ఫలితం ఏమిటి?"
+  },
+  "o": {
+   "en": [
+    "No profit, no loss",
+    "4% profit",
+    "4% loss",
+    "2% loss"
+   ],
+   "te": [
+    "లాభం లేదు, నష్టం లేదు",
+    "4% లాభం",
+    "4% నష్టం",
+    "2% నష్టం"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0008",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "The average of six numbers is a. The average of three of these numbers is b. If the average of the remaining three numbers is c, then which of the following is correct?",
+   "te": "ఆరు సంఖ్యల సగటు a. వాటిలో మూడు సంఖ్యల సగటు b. మిగిలిన మూడు సంఖ్యల సగటు c అయితే, క్రింది వాటిలో సరైనది ఏది?"
+  },
+  "o": {
+   "en": [
+    "a=b+c",
+    "2a=b+c",
+    "3a=b+c",
+    "a=2b+c"
+   ],
+   "te": [
+    "a=b+c",
+    "2a=b+c",
+    "3a=b+c",
+    "a=2b+c"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ },
+ {
+  "id": "rea-0009",
+  "type": "mcq",
+  "subject": "reasoning",
+  "topic": "",
+  "exams": [
+   "police_si"
+  ],
+  "year": "",
+  "level": "easy",
+  "q": {
+   "en": "A student needs to score 40% marks to pass the exam. He scored 70 marks and failed by 20 marks. Find the total marks.",
+   "te": "ఒక విద్యార్థి పరీక్షలో ఉత్తీర్ణత సాధించడానికి 40% మార్కులు పొందాలి. అతను 70 మార్కులు సాధించి, 20 మార్కుల తేడాతో తప్పిపోయాడు. మొత్తం మార్కులను కనుగొనండి."
+  },
+  "o": {
+   "en": [
+    "200 marks",
+    "225 marks",
+    "250 marks",
+    "275 marks"
+   ],
+   "te": [
+    "200 మార్కులు",
+    "225 మార్కులు",
+    "250 మార్కులు",
+    "275 మార్కులు"
+   ]
+  },
+  "a": 0,
+  "e": {
+   "en": "",
+   "te": ""
+  },
+  "img": "",
+  "video": "",
+  "paper": "KJ-TT-001"
+ }
+]

@@ -1,1 +1,31 @@
-[]
+[
+ {
+  "id": "KJ-TT-001",
+  "subject": "reasoning",
+  "topic": "",
+  "set": "A",
+  "title": {
+   "en": "SAMPLE APTITUDE AND REASONING",
+   "te": ""
+  },
+  "date": "2026-10-24",
+  "duration_min": 9,
+  "mark": 1,
+  "negative": 0.25,
+  "visible": true,
+  "exams": [
+   "police_si"
+  ],
+  "qids": [
+   "rea-0001",
+   "rea-0002",
+   "rea-0003",
+   "rea-0004",
+   "rea-0005",
+   "rea-0006",
+   "rea-0007",
+   "rea-0008",
+   "rea-0009"
+  ]
+ }
+]
