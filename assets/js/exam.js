@@ -113,7 +113,7 @@
     el.innerHTML = `
 <div class="row small muted"><span class="qno">Question ${st.cur + 1} of ${st.qs.length}</span><span class="sp"></span>
 <span class="pill">+${st.mark}${st.neg ? " / −" + +(st.mark * st.neg).toFixed(2) : ""}</span></div>
-<div class="qtext">${KJ.txt(q.q)}</div>
+<div class="qtext">${KJ.qHtml(q.q)}</div>
 ${q.img ? `<img class="qimg" src="${esc(q.img)}" alt="">` : ""}
 <div class="opts">${(q.o?.en || []).map((_, i) => `<button class="opt ${sel === i ? "sel" : ""}" data-o="${i}"><span class="k">${KJ.LETTERS[i]}</span><span>${KJ.optTxt(q, i)}</span></button>`).join("")}</div>`;
     el.onclick = (e) => {

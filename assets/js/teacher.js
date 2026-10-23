@@ -113,6 +113,7 @@ ${dev ? `<p class="small"><a href="#" id="lr">Forget this device</a></p>` : ""}
 <label>Exams this question suits</label><div id="fe">${EXAMS.map((x) => `<label class="chk"><input type="checkbox" value="${x.id}" ${(q.exams || []).includes(x.id) ? "checked" : ""}>${esc(x.name.en)}</label>`).join("")}</div>
 <label>Question – English</label><textarea id="qe">${esc(q.q.en || "")}</textarea>
 <label>ప్రశ్న – తెలుగు</label><textarea id="qt" class="t-te" style="color:var(--ink)">${esc(q.q.te || "")}</textarea>
+<p class="small muted" style="margin:4px 0 0">📋 <b>Match the following:</b> put each table row on its own line with <code> | </code> between the two columns – e.g. <code>List-I: Revolution | List-II: Product</code>, <code>a) Green Revolution | i) Fish production</code> – and the same rows in the Telugu box. Students see a table.</p>
 <div id="mcqBox"><label>Options (English | తెలుగు) – tick the correct one</label>
 ${[0, 1, 2, 3].map((i) => `<div class="optrow"><label class="chk" style="margin:0"><input type="radio" name="fa" value="${i}" ${q.a === i ? "checked" : ""}>${KJ.LETTERS[i]}</label>
 <input id="oe${i}" value="${esc(q.o?.en?.[i] || "")}"><input id="ot${i}" value="${esc(q.o?.te?.[i] || "")}"></div>`).join("")}</div>
@@ -144,7 +145,7 @@ ${[0, 1, 2, 3].map((i) => `<div class="optrow"><label class="chk" style="margin:
       const o = read();
       $("#mcqBox").style.display = o.type === "mcq" ? "" : "none";
       $("#expLbl").textContent = o.type === "mcq" ? "Explanation – English" : "Model answer – English";
-      $("#pv").innerHTML = `<div class="qtext">${KJ.txt(o.q, "bi")}</div>${o.img ? `<img class="qimg" src="${esc(o.img)}">` : ""}
+      $("#pv").innerHTML = `<div class="qtext">${KJ.qHtml(o.q, "bi")}</div>${o.img ? `<img class="qimg" src="${esc(o.img)}">` : ""}
 ${o.type === "mcq" ? `<div class="opts">${o.o.en.map((_, i) => `<div class="opt ${i === o.a ? "right" : ""}"><span class="k">${KJ.LETTERS[i]}</span><span>${KJ.optTxt(o, i, "bi")}</span></div>`).join("")}</div>` : ""}
 ${o.e.en || o.e.te ? `<div class="exp">${KJ.txt(o.e, "bi")}</div>` : ""}${o.video ? '<div class="small">🎬 video attached</div>' : ""}`;
       KJ.math($("#pv"));

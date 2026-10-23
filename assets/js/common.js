@@ -46,6 +46,59 @@
     if (!te || te === en) return fmt(en);
     return '<div class="t-en">' + fmt(en) + '</div><div class="t-te">' + fmt(te) + "</div>";
   };
+  /* ================= V14: Match-the-following tables =================
+     A question line with " | " in the middle is a table row:
+       English box:  List-I: Revolution | List-II: Associated product
+                     a) Green Revolution | i) Fish production
+       Telugu box:   జాబితా-I: విప్లవం | జాబితా-II: సంబంధిత ఉత్పత్తి
+                     a) హరిత విప్లవం | i) చేపల ఉత్పత్తి
+     It is drawn as a bordered 2-column table; in EN+తె each cell reads "a) Green Revolution / హరిత విప్లవం". */
+  const ROWSEP = /\s\|\s/;
+  KJ.splitTable = function (o) {
+    const parts = (txt) => {
+      const L = String(txt || "").split("\n"), before = [], rows = [], after = [];
+      L.forEach((l0) => {
+        const l = l0.replace(/^\s*\|\s*/, "").replace(/\s*\|\s*$/, "");
+        const c = l.split(ROWSEP);
+        if (c.length === 2 && c[0].trim() && c[1].trim()) { rows.push(c.map((x) => x.replace(/^[\s|]+|[\s|]+$/g, ""))); }
+        else if (/^\s*\|?\s*$/.test(l)) {}
+        else (rows.length ? after : before).push(l);
+      });
+      return { before, rows, after };
+    };
+    const en = parts(o && o.en), te = parts(o && o.te);
+    if (!en.rows.length && !te.rows.length) return null;
+    return { en, te };
+  };
+  const stripMk = (s) => s.replace(/^\(?\s*(?:[a-hA-H]|[ivx]{1,4}|\d{1,2})\s*[.)]\s*/, "");
+  const stripListTe = (s) => s.replace(/^జాబితా\s*[-–]\s*[IVX1l]+\s*:\s*/, "");
+  function cell(enC, teC, lang, head) {
+    enC = enC || ""; teC = teC || "";
+    if (lang === "en" || !teC) return fmt(enC || teC);
+    if (lang === "te" || !enC) return '<span class="t-te">' + fmt(teC || enC) + "</span>";
+    const t = head ? stripListTe(teC) : stripMk(teC);
+    return fmt(enC) + (t && t !== enC ? ' / <span class="t-te">' + fmt(t) + "</span>" : "");
+  }
+  KJ.tableHtml = function (T, lang) {
+    const n = Math.max(T.en.rows.length, T.te.rows.length);
+    let h = '<div class="mt-wrap"><table class="mt">';
+    for (let i = 0; i < n; i++) {
+      const e = T.en.rows[i] || ["", ""], t = T.te.rows[i] || ["", ""];
+      const head = i === 0 && (/^\s*List\b/i.test(e[0]) || /జాబితా/.test(t[0]));
+      const tag = head ? "th" : "td";
+      h += "<tr>" + [0, 1].map((k) => `<${tag}>${cell(e[k], t[k], lang, head)}</${tag}>`).join("") + "</tr>";
+    }
+    return h + "</table></div>";
+  };
+  /* question text with tables (used everywhere a question is shown) */
+  KJ.qHtml = function (o, lang) {
+    lang = lang || KJ.lang();
+    const T = o && typeof o === "object" ? KJ.splitTable(o) : null;
+    if (!T) return KJ.txt(o, lang);
+    const blk = (a, b) => KJ.txt({ en: a.join("\n").trim(), te: b.join("\n").trim() }, lang);
+    return blk(T.en.before, T.te.before) + KJ.tableHtml(T, lang) + blk(T.en.after, T.te.after);
+  };
+
   /* option label in the model-paper style:  "English / తెలుగు" */
   KJ.optTxt = function (q, i, lang) {
     lang = lang || KJ.lang();
@@ -171,8 +224,20 @@
     const e = KJ.esc;
     const qHtml = questions.map((q, n) => {
       const qe = q.q?.en || "", qt = q.q?.te || "";
-      let s = '<div class="pq"><div class="qe">' + (n + 1) + ". " + (lang === "te" ? e(qt || qe) : e(qe)) + "</div>";
-      if (lang === "bi" && qt && qt !== qe) s += '<div class="qt">' + e(qt) + "</div>";
+      const TB = KJ.splitTable(q.q || {});                    // V14: match-the-following table
+      let s;
+      if (TB) {
+        const j = (a) => e(a.join("\n").trim()).replace(/\n/g, "<br>");
+        s = '<div class="pq"><div class="qe">' + (n + 1) + ". " + (lang === "te" ? j(TB.te.before) : j(TB.en.before)) + "</div>";
+        if (lang === "bi" && TB.te.before.join("").trim()) s += '<div class="qt">' + j(TB.te.before) + "</div>";
+        s += KJ.tableHtml(TB, lang);
+        const ea = j(TB.en.after), ta = j(TB.te.after);
+        if (lang !== "te" && ea) s += '<div class="qe">' + ea + "</div>";
+        if (lang !== "en" && ta) s += '<div class="qt">' + ta + "</div>";
+      } else {
+        s = '<div class="pq"><div class="qe">' + (n + 1) + ". " + (lang === "te" ? e(qt || qe) : e(qe)) + "</div>";
+        if (lang === "bi" && qt && qt !== qe) s += '<div class="qt">' + e(qt) + "</div>";
+      }
       if (q.img) s += '<img class="qi" src="' + e(q.img) + '">';
       if (q.type === "conv") {
         s += '<div class="lines"></div>';
@@ -205,6 +270,7 @@ body{font-family:"Times New Roman",Georgia,serif;color:#111;margin:0;padding-bot
 .qe{font-size:15px;margin-bottom:3px}
 .qt{font-family:"Noto Sans Telugu","Nirmala UI","Gautami",sans-serif;font-size:14px}
 .op{font-size:15px;margin:5px 0}
+.mt{border-collapse:collapse;margin:8px 0 6px;font-size:14.5px}.mt th,.mt td{border:1.2px solid #111;padding:4px 8px;text-align:left;vertical-align:top}.mt th{font-weight:700}.mt .t-te{font-family:"Noto Sans Telugu","Nirmala UI","Gautami",sans-serif}
 .ind{margin-left:22px}
 .qi{max-width:60%;display:block;margin:6px 0}
 .lines{height:120px;background:repeating-linear-gradient(#fff 0 27px,#bbb 27px 28px)}

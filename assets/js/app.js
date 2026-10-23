@@ -83,7 +83,7 @@
     return `<div class="card">
  <div class="row small"><span class="qno">Q${n}</span>${verdict}<span class="tag">${esc(q.topic || "")}${q.year ? " · " + esc(q.year) : ""}</span><span class="sp"></span>
   <button class="btn alt sm" data-bm="${esc(q.id)}">${isBm ? "★" : "☆"}</button></div>
- <div class="qtext">${KJ.txt(q.q)}</div>${q.img ? `<img class="qimg" src="${esc(q.img)}">` : ""}
+ <div class="qtext">${KJ.qHtml(q.q)}</div>${q.img ? `<img class="qimg" src="${esc(q.img)}">` : ""}
  ${opts}
  ${q.e && (q.e.en || q.e.te) ? `<div class="exp">${KJ.txt(q.e)}</div>` : ""}
  ${q.video ? `<button class="btn acc sm" style="margin-top:10px" data-vid="${esc(q.video)}">🎬 ${KJ.t("video")}</button>` : ""}
@@ -279,7 +279,7 @@ ${ann.length ? `<h2>📢 Announcements</h2>` + ann.slice().sort((a, b) => (b.pin
       el.innerHTML = `<div class="card">
  <div class="row small"><span class="qno">${i + 1} / ${list.length}</span><span class="tag">${esc(q.topic || "")} · ${esc(q.level || "")}${q.year ? " · PYQ " + esc(q.year) : ""}</span><span class="sp"></span>
  <button class="btn alt sm" id="pbm">${bm().has(q.id) ? "★" : "☆"}</button></div>
- <div class="qtext">${KJ.txt(q.q)}</div>${q.img ? `<img class="qimg" src="${esc(q.img)}">` : ""}
+ <div class="qtext">${KJ.qHtml(q.q)}</div>${q.img ? `<img class="qimg" src="${esc(q.img)}">` : ""}
  ${q.type === "conv"
    ? `<button class="btn acc sm" id="show">${KJ.t("answer")}</button><div id="ans"></div>`
    : `<div class="opts">${q.o.en.map((_, k) => `<button class="opt" data-o="${k}"><span class="k">${KJ.LETTERS[k]}</span><span>${KJ.optTxt(q, k)}</span></button>`).join("")}</div><div id="ans"></div>`}
