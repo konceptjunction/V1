@@ -88,7 +88,10 @@
     window.onbeforeunload = () => "Test in progress";
     drawAll();
     /* V17: the clock starts (or continues) only while the test is on screen; leaving pauses it */
+    const fresh = !st.started; st.started = 1;                         // V19: first time on screen = new test
+    if (fresh) st.left = st.dur * 60;                                  // V19: a new test always starts from the full time
     st.endAt = Date.now() + (st.left != null ? st.left : st.dur * 60) * 1000; save();
+    if (fresh) setTimeout(() => KJ.toast("⏱ Timer started – " + st.dur + ":00 for this test"), 300);
     clearInterval(tick); tick = setInterval(timer, 1000); timer();
     const pause = () => { if (!st || !st.endAt) return; st.left = Math.max(0, Math.round((st.endAt - Date.now()) / 1000)); st.endAt = 0; save(); clearInterval(tick); };
     const resume = () => { if (!st || st.endAt || !$("#xt")) return; st.endAt = Date.now() + st.left * 1000; save(); clearInterval(tick); tick = setInterval(timer, 1000); timer(); };

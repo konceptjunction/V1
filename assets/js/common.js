@@ -108,6 +108,89 @@
     return en.length + te.length > 60 ? fmt(en) + '<div class="t-te">' + fmt(te) + "</div>" : fmt(en) + ' / <span class="t-te" style="display:inline">' + fmt(te) + "</span>";
   };
 
+  /* ---------- V20: clean OCR mistakes in a question ----------
+     1. Match-the-following answer codes  "a-iii, 0-1 c-ii" · "2-1, 0-ఴ, c-iii" · "a-ii, bi, c-iii"  →  "a-iii, b-i, c-ii" …
+        (letters are taken from the table, i/ii/iii read as 1/11/111 are corrected, one unreadable value is filled in)
+     2. Junk read from the watermark / page edge after an option or question line is removed
+     3. Telugu read as numbers ("Certiorari / 288558") is dropped – English is shown – and reported */
+  const JUNKCH = /[|\\"=~^<>{}\[\]#@$%&*¬¦]/g, JUNK1 = /[|\\"=~^<>{}\[\]#@$%&*¬¦]/;   // "_" (blanks) is NOT junk
+  const tokJunk = (x) => JUNK1.test(x) || x.replace(/[^\wఀ-౿]/g, "").length <= 2;
+  KJ.isJunk = function (l) {
+    const t = String(l || "").trim(); if (!t) return false;
+    const sym = (t.match(JUNKCH) || []).length; if (sym < 2) return false;
+    const ns = t.replace(/\s/g, ""), letters = (ns.match(/[A-Za-zఀ-౿]/g) || []).length;
+    const toks = t.split(/\s+/), short = toks.filter((x) => x.replace(/[^\wఀ-౿]/g, "").length <= 2).length;
+    return sym >= 3 || letters / ns.length < 0.75 || short / toks.length > 0.4;
+  };
+  const cutJunkTail = (txt) => {                       // "Quo Warranto nr an sr "1, ANAL EE = hid … | | …"  →  "Quo Warranto"
+    const toks = String(txt || "").split(/\s+/);
+    for (let i = 1; i < toks.length - 2; i++) {
+      if (!tokJunk(toks[i])) continue;
+      const tail = toks.slice(i), sym = (tail.join(" ").match(JUNKCH) || []).length;
+      if (sym >= 2 && tail.filter(tokJunk).length / tail.length >= 0.6) return toks.slice(0, i).join(" ").replace(/[\s,;]+$/, "");
+    }
+    return txt;
+  };
+  const teJunk = (t) => String(t || "").replace(/(?:\s+[ఀ-౿][ా-్ౕౖ]?(?:\.{2,}|…)?){2,}\s*\.*\s*$/, "").replace(/\s*(?:\.{2,}|…)\s*$/, "");
+  const romanOf = (r) => { const x = String(r).replace(/[1lI|!ıі\]]/g, "i").replace(/V/g, "v").replace(/X/g, "x").toLowerCase(); return /^(i{1,3}|iv|vi{0,3}|ix|x)$/.test(x) ? x : null; };
+  function fixCode(str, lefts, rights) {
+    const n = lefts.length, toks = String(str).split(/[,;]+|\s+/).filter(Boolean), got = [];
+    for (const tk of toks) {
+      if (got.length >= n) break;
+      let R = null;
+      if (/[-–—]/.test(tk)) R = tk.split(/[-–—]/).pop();
+      else if (/^[a-hA-H0-9౦-౯]\S{1,4}$/.test(tk)) R = tk.slice(1);
+      else if (got.length) { got.push(null); continue; }
+      else return null;                                   // does not start like a code
+      const rr = rights.map((x) => x.toLowerCase()), ro = romanOf(R);
+      const v = rr.includes(ro) ? rights[rr.indexOf(ro)] : (rr.includes(String(R).toLowerCase()) ? rights[rr.indexOf(String(R).toLowerCase())] : null);
+      got.push(v);
+    }
+    if (got.length < n - 1) return null;
+    while (got.length < n) got.push(null);
+    const miss = got.filter((v) => v == null).length;
+    if (miss > 1) return null;
+    if (miss === 1) { const left = rights.filter((r) => !got.includes(r)); if (left.length !== 1) return null; got[got.indexOf(null)] = left[0]; }
+    const dash = (String(str).match(/[-–—]/) || ["-"])[0];
+    return lefts.map((L, k) => L + dash + got[k]).join(", ");
+  }
+  KJ.cleanQ = function (q) {
+    const warn = [], before = JSON.stringify([q.q, q.o]);
+    if (!q || !q.o || !Array.isArray(q.o.en)) return { changed: false, warn };
+    const te0 = q.o.te; q.o.te = q.o.te || [];
+    // question text: junk lines / Telugu junk tails
+    ["en", "te"].forEach((k) => { if (q.q && q.q[k]) q.q[k] = q.q[k].split("\n").filter((l) => !KJ.isJunk(l)).map((l) => (k === "te" ? teJunk(l) : l)).join("\n"); });
+    // match codes
+    const T = KJ.splitTable(q.q || {});
+    let lefts = null, rights = null;
+    if (T && T.en.rows.length) {
+      const rows = T.en.rows.filter((r, i) => !(i === 0 && /^\s*List\b/i.test(r[0])));
+      const mk = (c) => ((c.match(/^\(?\s*([a-hA-H]|[ivx]{1,4}|\d{1,2})\s*[.)]/) || [])[1] || "");
+      lefts = rows.map((r) => mk(r[0])); rights = rows.map((r) => mk(r[1]));
+      if (lefts.some((x) => !x) || rights.some((x) => !x)) lefts = null;
+    }
+    q.o.en.forEach((en, i) => {
+      let te = q.o.te[i] || "";
+      if (lefts && /[-–—]/.test(en) && (en.match(/[-–—]/g) || []).length >= Math.max(1, lefts.length - 2)) {
+        const f = fixCode(en, lefts, rights) || fixCode(cutJunkTail(en), lefts, rights);
+        if (f) {
+          q.o.en[i] = f; q.o.te[i] = f;
+          const vals = f.split(", ").map((x) => x.split(/[-–—]/)[1]);
+          if (new Set(vals).size !== vals.length) warn.push("option " + "ABCD"[i] + ": check the match code (" + f + ")");
+          return;
+        }
+        warn.push("option " + "ABCD"[i] + ": check the match code");
+      }
+      en = cutJunkTail(en); te = teJunk(cutJunkTail(te));
+      const dm = en.match(/^(.*[A-Za-z].*?)\s*\/\s*(\d[\d\s.,]{2,})$/);          // "Certiorari / 288558" in the English part
+      if (dm) { en = dm[1].trim(); if (!te || te === q.o.en[i]) te = dm[2]; }
+      if (te && /^[\d\s.,:;\-–()]+$/.test(te) && /[A-Za-z]{3}/.test(en)) { te = en; warn.push("option " + "ABCD"[i] + ": Telugu not readable – type it"); }
+      q.o.en[i] = en; q.o.te[i] = te;
+    });
+    if (te0 == null && q.o.te.every((x) => !x)) q.o.te = te0;       // keep questions that never had Telugu options as they were
+    return { changed: JSON.stringify([q.q, q.o]) !== before, warn };
+  };
+
   /* KaTeX auto-render (loaded from CDN, cached by service worker for offline use) */
   KJ.math = function (el) {
     if (!el || !window.renderMathInElement) return;
@@ -297,7 +380,19 @@ ${key}
   /* register service worker */
   KJ.registerSW = function () {
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
-      navigator.serviceWorker.register("sw.js").catch((e) => console.warn("SW", e));
+      /* V19: always check for a new version (sw.js never taken from the browser cache) and switch to it at once */
+      navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((reg) => {
+        reg.update().catch(() => {});
+        document.addEventListener("visibilitychange", () => { if (!document.hidden) reg.update().catch(() => {}); });
+      }).catch((e) => console.warn("SW", e));
+      let reloaded = false;
+      const hadCtl = !!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (!hadCtl || reloaded) return;
+        const busy = /teacher\.html/.test(location.pathname) || location.hash === "#/exam";   // never reload during a test or teacher editing
+        if (busy) { KJ.toast("✔ App updated – it will be used from the next page"); return; }
+        reloaded = true; location.reload();
+      });
     }
   };
 })();

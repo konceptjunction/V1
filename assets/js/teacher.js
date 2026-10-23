@@ -197,12 +197,20 @@ ${o.e.en || o.e.te ? `<div class="exp">${KJ.txt(o.e, "bi")}</div>` : ""}${o.vide
     if (fq) list = list.filter((q) => JSON.stringify(q).toLowerCase().includes(fq.toLowerCase()));
     el.innerHTML = `<div class="card"><div class="row"><select id="bs" style="max-width:280px"><option value="all">All subjects (${allQs().length})</option>
 ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${esc(s.name.en)} (${bank(s.id).length})</option>`).join("")}</select>
-<input id="bq" placeholder="Search text / id / topic" value="${esc(fq)}" style="max-width:260px"><span class="sp"></span><span class="small muted">${list.length} shown</span></div>
+<input id="bq" placeholder="Search text / id / topic" value="${esc(fq)}" style="max-width:260px"><span class="sp"></span><span class="small muted">${list.length} shown</span><button class="btn acc sm" id="fixOcr" title="Repair match codes, remove junk text, report Telugu read as numbers">🔧 Fix OCR mistakes</button></div>
+<div id="fixRes" class="small"></div>
 <div class="qlist" style="margin-top:8px">${list.map((q) => `<div class="qi"><span class="pill">${esc(q.id)}</span><span class="q">${esc((q.q.en || q.q.te || "").slice(0, 140))}
 <div class="tag">${esc(subName(q.subject))} · ${esc(q.topic || "")} · ${q.type === "conv" ? "Conventional" : "Ans " + KJ.LETTERS[q.a]}${q.video ? " · 🎬" : ""}${q.paper ? " · " + esc(q.paper) : ""}</div></span>
 <button class="btn alt sm" data-ed="${esc(q.id)}" data-s="${q.subject}">Edit</button><button class="btn alt sm" data-del="${esc(q.id)}" data-s="${q.subject}">🗑</button></div>`).join("") || '<div class="empty">No questions</div>'}</div></div>`;
     $("#bs").onchange = (e) => { S.set("t_bsub", e.target.value); draw(); };
     $("#bq").onchange = (e) => { S.set("t_bq", e.target.value); draw(); };
+    $("#fixOcr").onclick = () => {                              // V20: clean every question already in the bank
+      let n = 0; const warns = [];
+      SUBS.forEach((sb) => { let ch = false; bank(sb.id).forEach((q) => { const r = KJ.cleanQ(q); if (r.changed) { n++; ch = true; } r.warn.forEach((w) => warns.push(q.id + " " + w)); }); if (ch) markDirty(bankPath(sb.id)); });
+      draw();
+      $("#fixRes").innerHTML = `<div class="card" style="margin:8px 0;border-color:var(--ok)">✔ Fixed <b>${n}</b> question(s). ${n ? "Press 🚀 <b>Publish</b> so students see it." : ""}` +
+        (warns.length ? `<br><b style="color:var(--warn)">Please check ${warns.length} place(s) by hand (➕ Add / Edit):</b><br>${warns.map((w) => "• " + esc(w)).join("<br>")}` : "<br>Nothing else to check.") + "</div>";
+    };
     el.onclick = (e) => {
       const ed = e.target.closest("[data-ed]"), del = e.target.closest("[data-del]");
       if (ed) { editing = { sid: ed.dataset.s, q: bank(ed.dataset.s).find((x) => x.id === ed.dataset.ed) }; tab = "add"; draw(); }
@@ -240,7 +248,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
      Row markers are renumbered in order (OCR often reads i/ii as 1/11, d as 1). */
   const ROMAN = ["i", "ii", "iii", "iv", "v", "vi"];
   function splitTableRow(l, cur) {
-    const m = l.match(/^(.*?[A-Za-z].*?)\s\/\s([\u0C00-\u0C7F][^A-Za-z]*?)\s+([\[|(]?(?:List\b|[0-9A-Za-z\u0C66-\u0C6F]{1,4}[.):]).*?\s\/\s.+)$/);
+    const m = l.match(/^(.*?[A-Za-z].*?)\s\/\s([\u0C00-\u0C7F](?:[^A-Za-z]|[IVX](?![a-z]))*?)\s+([\[|(]?(?:List\b|[0-9A-Za-z\u0C66-\u0C6F]{1,4}[.):]).*?\s\/\s.+)$/);
     if (!m) return null;
     const right = m[3].match(/^(.*?)\s\/\s(.+)$/);
     if (!right) return null;
@@ -301,6 +309,7 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
         cur.o.en.push(p.en || p.te); cur.o.te.push(p.te);
         continue;
       }
+      if (cur.inOpt && KJ.isJunk(l)) continue;           // V20: watermark / page-edge noise after an option
       if (cur.inOpt && cur.blk2) { const k = cur.blk2 - 1; cur.o.te[k] = (cur.o.te[k] + " " + l).trim(); continue; }
       if (cur.inOpt && cur.o.en.length) {
         const k = cur.o.en.length - 1, p = splitEnTe(l);
@@ -313,7 +322,11 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
       const p = splitEnTe(l);
       if (p.en) cur.q.en.push(p.en); if (p.te) cur.q.te.push(p.te);
     }
-    return out.map((x) => ({ no: x.no, q: { en: x.q.en.join("\n"), te: x.q.te.join("\n") }, o: { en: x.o.en, te: x.o.te.map((t, i) => t || x.o.en[i]) }, a: key[x.no] != null ? key[x.no] : null }));
+    return out.map((x) => {
+      const q = { no: x.no, q: { en: x.q.en.join("\n"), te: x.q.te.join("\n") }, o: { en: x.o.en, te: x.o.te.map((t, i) => t || x.o.en[i]) }, a: key[x.no] != null ? key[x.no] : null };
+      q.warn = KJ.cleanQ(q).warn;                           // V20: repair match codes, junk, Telugu read as numbers
+      return q;
+    });
   };
 
   /* ---------- V7: read a PDF question paper into the paste box ----------
@@ -455,9 +468,9 @@ ${SUBS.map((s) => `<option value="${s.id}" ${s.id === fsub ? "selected" : ""}>${
 </div></div>`;
     const prev = () => {
       const r = KJ.parsePaperText($("#pt").value, $("#pk").value);
-      const noKey = r.filter((x) => x.a == null).length, bad4 = r.filter((x) => x.o.en.length !== 4);
-      $("#pres").innerHTML = `<p class="small"><b>${r.length}</b> questions found · <span style="${noKey ? "color:var(--bad);font-weight:700" : ""}">${noKey} without answer key</span> · <span style="${bad4.length ? "color:var(--warn);font-weight:700" : ""}">${bad4.length} not having 4 options${bad4.length ? " (Q" + bad4.map((x) => x.no).join(", Q") + ")" : ""}</span></p>` +
-        r.slice(0, 200).map((x) => `<div class="small" style="border-top:1px solid var(--line);padding:4px 0"><b>${x.no}.</b> ${esc(x.q.en)} <span class="t-te" style="display:inline">${esc(x.q.te)}</span><br>${x.o.en.map((o, i) => `<span class="${i === x.a ? "pill acc" : "pill"}">${KJ.LETTERS[i]}) ${esc(o)}${x.o.te[i] ? " / " + esc(x.o.te[i]) : ""}</span>`).join(" ")}</div>`).join("");
+      const noKey = r.filter((x) => x.a == null).length, bad4 = r.filter((x) => x.o.en.length !== 4), wq = r.filter((x) => x.warn && x.warn.length);
+      $("#pres").innerHTML = `<p class="small"><b>${r.length}</b> questions found · <span style="${noKey ? "color:var(--bad);font-weight:700" : ""}">${noKey} without answer key</span> · <span style="${bad4.length ? "color:var(--warn);font-weight:700" : ""}">${bad4.length} not having 4 options${bad4.length ? " (Q" + bad4.map((x) => x.no).join(", Q") + ")" : ""}</span>${wq.length ? `<br><b style="color:var(--warn)">⚠ Check after import (➕ Add / Edit):</b> ` + wq.map((x) => "Q" + x.no + " – " + x.warn.map(esc).join("; ")).join(" · ") : ""}</p>` +
+        r.slice(0, 200).map((x) => `<div class="small" style="border-top:1px solid var(--line);padding:4px 0"><b>${x.no}.</b> ${esc(x.q.en)} <span class="t-te" style="display:inline">${esc(x.q.te)}</span><br>${x.o.en.map((o, i) => `<span class="${i === x.a ? "pill acc" : "pill"}">${KJ.LETTERS[i]}) ${esc(o)}${x.o.te[i] && x.o.te[i] !== o ? " / " + esc(x.o.te[i]) : ""}</span>`).join(" ")}</div>`).join("");
       return r;
     };
     /* V16: Subject + Exam Type must be chosen before a paper can be uploaded */

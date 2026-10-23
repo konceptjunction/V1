@@ -1,6 +1,6 @@
 /* KONCEPT JUNCTION — service worker (V1)
    Bump VERSION in every new upload pack so phones pick up new files. */
-const VERSION = "kj-v18";
+const VERSION = "kj-v20";
 const SHELL = [
   "./", "home.html", "index.html", "manifest.json",
   "assets/css/app.css",
@@ -59,7 +59,8 @@ self.addEventListener("fetch", (e) => {
   if (CDN.test(url.host)) { e.respondWith(staleWhileRevalidate(req)); return; }
   if (url.origin !== location.origin) return;
   if (/\.(pdf|mp4|webm|mov|m4v)$/i.test(url.pathname)) return;   // V13: big media from media/ – network only ("Save offline" keeps PDFs)
-  if (req.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.includes("/data/") || url.pathname.endsWith("config.js")) {
+  /* V19: pages, data AND app code (.js / .css) are network-first, so phones always get the newest version; cache is used offline */
+  if (req.mode === "navigate" || /\.(html|js|css|json)$/i.test(url.pathname) || url.pathname.includes("/data/")) {
     e.respondWith(networkFirst(req)); return;
   }
   e.respondWith(cacheFirst(req));
